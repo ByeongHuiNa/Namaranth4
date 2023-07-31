@@ -1,0 +1,6 @@
+INDEX VERSION 1.4+C:\DouZone\workspace\namaranth4_work\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+497964927.index
+493865176.index
+1384792320.index
+800892624.index
+946756652.index

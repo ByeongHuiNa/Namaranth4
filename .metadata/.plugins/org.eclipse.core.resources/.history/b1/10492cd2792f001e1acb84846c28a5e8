@@ -1,0 +1,6 @@
+package org.namaranth.mapper;
+
+public interface BoardMapper {
+	
+
+}

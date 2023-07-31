@@ -1,0 +1,8 @@
+package org.namaranth.mapper;
+
+import java.util.List;
+
+public interface UserMapper {
+	public List<Users> list();
+
+}
