@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.namaranth.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -16,11 +17,21 @@ import lombok.extern.log4j.Log4j;
 public class UserMapperTests {
 	
 	@Autowired
-	private UserMapper mapper;
+	private EmailMapper mapper;
 	
+	@Autowired
+	private EmailService service;
+	
+//	@Test
+//	public void test() {
+//		mapper.getList();
+//	}
 	@Test
-	public void test() {
-		mapper.list();
+	public void testGet() {
+		
+		
+		log.info(service.get(3));
+		
 	}
 
 }

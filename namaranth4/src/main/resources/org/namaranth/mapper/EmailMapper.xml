@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.namaranth.mapper.EmailMapper">
+
+
+
+<select id = "getList" resultType="org.namaranth.domain.EmailVO">
+	select u.user_name, m.mail_title, m.mail_regdate, m.mail_no
+		from mail m, users u
+		where m.user_no = u.user_no
+</select>
+
+<select id="read" resultType="org.namaranth.domain.EmailVO">
+	select u.user_name, m.mail_title, m.mail_regdate, m.mail_content, m.mail_no
+		from mail m, users u
+		where m.user_no = u.user_no
+		and mail_no = #{mail_no}
+</select>
+	
+	
+</mapper>
+  
