@@ -21,6 +21,7 @@
 	<link rel="icon" href="../../resources/dist/assets/images/favicon.ico" type="image/x-icon">
 </head>
 <body>
+
 	<!-- [ auth-signin ] start -->
 	<div class="auth-wrapper">
 		<div class="auth-content text-center">
@@ -29,19 +30,22 @@
 				<div class="row align-items-center ">
 					<div class="col-md-12">
 						<div class="card-body">
-							<h4 class="mb-3 f-w-400">로그인</h4>
-							<hr>
-							<div class="form-group mb-3">
-								<input type="text" class="form-control" id="Id" placeholder="사원번호">
-							</div>
-							<div class="form-group mb-4">
-								<input type="password" class="form-control" id="Password" placeholder="비밀번호">
-							</div>
-							<div class="custom-control custom-checkbox text-left mb-4 mt-2">
-								<input type="checkbox" class="custom-control-input" id="customCheck1">
-								<label class="custom-control-label" for="customCheck1">아이디 저장</label>
-							</div>
-							<button class="btn btn-block btn-primary mb-4">로그인</button>
+							<form method="post" action="/login">
+								<h4 class="mb-3 f-w-400">로그인</h4>
+								<hr>
+								<div class="form-group mb-3">
+									<input type="text" class="form-control" name="username" id="id" placeholder="이메일">
+								</div>
+								<div class="form-group mb-4">
+									<input type="password" class="form-control" name="password" id="password" placeholder="비밀번호">
+								</div>
+								<div class="custom-control custom-checkbox text-left mb-4 mt-2">
+									<input type="checkbox" class="custom-control-input" id="customCheck1">
+									<label class="custom-control-label" for="customCheck1">아이디 저장</label>
+								</div>
+								<button type="submit" class="btn btn-block btn-primary mb-4">로그인</button>
+								<input type="hidden" name="${_csrf.parameterName}" value="${_csfr.token}"/>
+							</form>
 							<hr>
 							<a href="auth-signup.html" class="mb-0 text-muted">아이디 찾기</a>
 							<span href="auth-signup.html">&nbsp|&nbsp</span>

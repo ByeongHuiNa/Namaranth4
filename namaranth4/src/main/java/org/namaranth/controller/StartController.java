@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class StartController {
 
-	@GetMapping("/main")
-	public void main() {
-		
-	}
+//	@GetMapping("/main")
+//	public void main() {
+//		
+//	}
 }

@@ -1,8 +1,10 @@
-package org.namaranth.mapper;
+package org.namaranth.service;
+
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.namaranth.domain.UsersVO;
+import org.namaranth.mapper.UserMapperTests;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -12,25 +14,14 @@ import lombok.extern.log4j.Log4j;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
 @Log4j
-public class UserMapperTests {
-	
-	@Autowired
-	private UserMapper mapper;
-	
-//	@Test
-//	public void test() {
-//		mapper.list();
-//	}
-	
-//	@Test
-//	public void testReadUser() {
-//		UsersVO vo = mapper.readUser("aaa@aaa.com");
-//		log.info(vo);
-//	}
+public class UserServiceTests {
 
+	@Autowired
+	private UserService service;
+	
 	@Test
-	public void testReadDept() {
-		String dept = mapper.readDept("aaa@aaa.com");
-		log.info(dept);
+	public void test() {
+		service.getDept("aaa@aaa.com");
 	}
+
 }
