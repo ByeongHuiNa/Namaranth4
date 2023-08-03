@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.namaranth.mapper.ScheduleMapper">
+	
+	<select id="getSchedule" resultType="org.namaranth.domain.ScheduleVO">
+		select distinct s.sch_no, s.sch_name, s.sch_start, s.sch_end, s.sch_place, s.sch_noti, s.sch_con, s.sch_allday
+		from schedule s
+		left join sch_parti sp on s.sch_no = sp.sch_no
+		where s.user_no = 1 or sp.user_no = 1
+		
+	</select>
+	
+	
+</mapper>
