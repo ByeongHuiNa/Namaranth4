@@ -1,0 +1,14 @@
+.appside{
+	border-right: 1px solid #bdbdbd;
+	height: 1000px;
+}
+
+.regi_btn{
+	width:80%;
+	margin-left: 10%;
+	margin-right: 10%; 
+}
+
+tbody tr {
+	height: 30px;
+}
