@@ -21,16 +21,20 @@
 				<div class="main-menu-header">
 					<img class="img-radius" src="../../resources/dist/assets/images/user/avatar-2.jpg" alt="User-Profile-Image">
 					<div class="user-details">
-						<span>이름</span>
-						<div id="more-details">부서명/직급<i class="fa fa-chevron-down m-l-5"></i></div>
+						<span id="username"></span>
+						<div id="more-details"><i class="fa fa-chevron-down m-l-5"></i></div>
 					</div>
 				</div>
 				<div class="collapse" id="nav-user-link">
 					<ul class="list-unstyled">
 						<li class="list-group-item"><a href="user-profile.html"><i class="feather icon-user m-r-5"></i>마이페이지</a></li>
 						<li class="list-group-item"><a href="#!"><i class="feather icon-settings m-r-5"></i>회원정보수정</a></li>
-						<li class="list-group-item"><a href="auth-normal-sign-in.html"><i class="feather icon-log-out m-r-5"></i>로그아웃
-						</a></li>
+						<li class="list-group-item">
+							<form action="/logout" method="post">
+								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+								<button id="logoutBtn"><i class="feather icon-log-out m-r-5"></i>로그아웃</button>
+							</form>
+						</li>
 					</ul>
 				</div>
 			</div>

@@ -1,6 +1,7 @@
 package org.namaranth.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,4 +20,6 @@ public class UsersVO {
 	private String user_pwd;
 	private String user_profile;
 	private DeptVO dept;
+
+	private List<AuthVO> authList;
 }

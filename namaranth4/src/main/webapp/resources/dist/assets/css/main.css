@@ -1,0 +1,50 @@
+@charset "EUC-KR";
+
+#mypage{
+	margin-bottom: 0px;
+	height: 366px;
+	overflow-y :auto;
+}
+
+#alertMsg {
+	padding: 5px 0px; 
+}
+
+#email {
+	height: 420px;
+}
+
+#logoutBtn {
+	border: 0;
+    background-color: transparent;
+    color: #d0dcda;
+    padding: 0px;
+}
+
+.longBox {
+	height: 400px;
+}
+
+.mainCard {
+    position: relative;
+    display: flex;
+	height: 270px;
+	overflow-y :auto;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 0px solid rgba(0, 0, 0, 0.125);
+    border-radius: 2px;
+    box-shadow: 0 2px 1px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+    transition: box-shadow 0.2s ease-in-out;
+    border-top: 3px solid #8CDDCD;
+    margin-bottom: 10px !important;
+}
+
+.paddingSet {
+	padding-left: 5px !important;
+	padding-right: 5px !important;
+}
