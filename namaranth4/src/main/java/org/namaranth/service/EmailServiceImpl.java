@@ -3,7 +3,7 @@ package org.namaranth.service;
 import java.util.List;
 
 import org.namaranth.domain.EmailVO;
-import org.namaranth.domain.UserVO;
+import org.namaranth.domain.UsersVO;
 import org.namaranth.mapper.EmailMapper;
 import org.springframework.stereotype.Service;
 

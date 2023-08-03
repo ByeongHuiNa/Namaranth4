@@ -41,7 +41,7 @@
 		and mail_no = #{mail_no}
 </select>
 
-<select id="readReceiver" resultType="org.namaranth.domain.UserVO">
+<select id="readReceiver" resultType="org.namaranth.domain.UsersVO">
 	select user_name, user_email
 		from mail_rcver mr, mail m, users u
         where mr.mail_no = m.mail_no
