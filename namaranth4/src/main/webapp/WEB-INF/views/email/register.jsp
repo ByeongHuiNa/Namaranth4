@@ -6,8 +6,9 @@
 <%@ page session="false" %>
 <html>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"/>
-<link rel="stylesheet" type="text/scss" href="../../resources/dist/assets/scss/style.scss" />
-<link rel="stylesheet" type="text/css" href="../../resources/dist/assets/css/style.css" />
+<link rel="stylesheet" type="text/scss" href="../../../resources/dist/assets/scss/style.scss" />
+<link rel="stylesheet" type="text/css" href="../../../resources/dist/assets/css/style.css" />
+<link rel="stylesheet" href="../../../resources/dist/assets/css/summernote-lite.css">
 
 <head>
     <title>Flat Able - Premium Admin Template by Phoenixcoded</title>
@@ -25,10 +26,10 @@
     <meta name="keywords" content="">
     <meta name="author" content="Phoenixcoded" />
     <!-- Favicon icon -->
-    <link rel="icon" href="../../resources/dist/assets/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../../../resources/dist/assets/images/favicon.ico" type="image/x-icon">
 
     <!-- vendor css -->
-    <link rel="stylesheet" href="../../resources/dist/assets/css/style.css">
+    <link rel="stylesheet" href="../../../resources/dist/assets/css/style.css">
 </head>
 <body class="">
 	<!-- [ Pre-loader ] start -->
@@ -42,96 +43,87 @@
 	<!-- [ Pre-loader ] End -->
 	
 	<!-- [ navigation menu ] start -->
-	<%@include file="layouts/nav.jsp"%>
+	<%@include file="../layouts/nav.jsp"%>
 	<!-- [ navigation menu ] end -->
 	
 	<!-- [ Header ] start -->
-	<%@include file="layouts/header.jsp"%>
+	<%@include file="../layouts/header.jsp"%>
 	<!-- [ Header ] end -->
 
 	<!-- [ Main Content ] start -->
-	<div class="pcoded-main-container">
-	    <div class="pcoded-content">
-	        <!-- [ breadcrumb ] start -->
-	        <div class="page-header">
+	<section class="pcoded-main-container">
+    <div class="pcoded-content">
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
             <div class="page-block">
                 <div class="row align-items-center">
                     <div class="col-md-12">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">전체메일함</h5>
+                            <h5 class="m-b-10">메일작성</h5>
                         </div>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
-                            <li class="breadcrumb-item"><a href="#!">메일함</a></li>
-                            <li class="breadcrumb-item"><a href="#!">전체메일함</a></li>
+                            <li class="breadcrumb-item"><a href="#!">E-Mail</a></li>
+                            <li class="breadcrumb-item"><a href="#!">메일작성</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
-	        
-	         <!-- [ stiped-table ] start -->
-            <div class="col-xl-12">
+        <!-- [ breadcrumb ] end -->
+        <!-- [ Main Content ] start -->
+        <div class="row">
+            
+            <!-- [ form-element ] start -->
+            <form role="form" action="/email/register" method="post">
+            <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header">
-                    <button type="button" class="btn  btn-primary">삭제</button>
-                    <button type="button" class="btn  btn-primary">답장</button>
-                    <button type="button" class="btn  btn-primary">전달</button>
-                        
+	                    
+	                    <button type="submit" class="btn  btn-primary">전송</button>
+	                    <button type="button" class="btn  btn-primary">임시저장</button>
                     </div>
-                    <div class="card-body table-border-style">
-                   
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th><input type="checkbox"></th>
-                                        <th>이름</th>
-                                        <th>제목</th>
-                                        <th>날짜</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                
-                                <c:forEach items="${allmail}" var="email">
-                                <tr>
-                                	<td><input type="checkbox"></td>
-                                	<td> <c:out value="${email.mail_no}"/></td>
-                                	<td><a href='/getmail?mail_no=<c:out value="${email.mail_no}"/>'> <c:out value="${email.mail_title}"/></a></td>
-                                	<td> <fmt:formatDate pattern="yyyy-MM-dd"
-									value="${email.mail_regdate}" /></td>
-                                
-                                </tr>
-                                
-                                </c:forEach>
-                                    <!--  <tr>
-                                        <td>1</td>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Jacob</td>
-                                        <td>Thornton</td>
-                                        <td>@fat</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>Larry</td>
-                                        <td>the Bird</td>
-                                        <td>@twitter</td>
-                                    </tr>-->
-                                </tbody>
-                            </table>
+                    
+                    <div class="card-body">
+                        <h5>보내는사람 <input type="text" name="user_no"/> </h5>
+                        <h5>받는사람 <input type="text"/> </h5>
+                        <h5>제목 <input type="text" name="mail_title"/> </h5>
+                        
+                        <hr>
+                        <div class="row">
+                          
+                            <div class="col-md-12">
+                                <form>
+                              
+                             		
+                                    <div class="form-group">
+                                       
+                                        <textarea class="form-control" id="summernote" name="mail_content" rows="3" readonly="readonly"></textarea>
+                                    </div>
+                                    
+                                </form>
+                            </div>
+                        </div>
+                        
+                        
+                            
+                        </div>
+                    </div>
+                </div>
+                </form>
+                
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- [ stiped-table ] end -->
-	        <!-- [ Main Content ] end -->
-	    </div>
-	</div>
+            <!-- [ form-element ] end -->
+        </div>
+        <!-- [ Main Content ] end -->
+
+    </div>
+</section>
+<!-- [ Main Content ] end -->
 	<!-- [ Main Content ] end -->
 	
     <!-- Warning Section start -->
@@ -182,14 +174,34 @@
     <!-- Warning Section Ends -->
 
     <!-- Required Js -->
-    <script src="../../resources/dist/assets/js/vendor-all.min.js"></script>
-    <script src="../../resources/dist/assets/js/plugins/bootstrap.min.js"></script>
-	<script src="../../resources/dist/assets/js/pcoded.min.js"></script>
+    <script src="../../../resources/dist/assets/js/vendor-all.min.js"></script>
+    <script src="../../../resources/dist/assets/js/plugins/bootstrap.min.js"></script>
+	<script src="../../../resources/dist/assets/js/pcoded.min.js"></script>
+	
+	<script src="../../../resources/dist/assets/js/summernote-lite.js"></script>
+	<script src="../../../resources/dist/assets/js/lang/summernote-ko-KR.js"></script>
 <!-- Apex Chart -->
-<script src="../../resources/dist/assets/js/plugins/apexcharts.min.js"></script>
+<script src="../../../resources/dist/assets/js/plugins/apexcharts.min.js"></script>
 
 <!-- custom-chart js -->
-<script src="../../resources/dist/assets/js/pages/dashboard-main.js"></script>
+<script src="../../../resources/dist/assets/js/pages/dashboard-main.js"></script>
 </body>
+<script type="text/javascript">
+$(document).ready(function() {
+	//여기 아래 부분
+	$('#summernote').summernote({
+		  height: 300,                 // 에디터 높이
+		  minHeight: null,             // 최소 높이
+		  maxHeight: null,             // 최대 높이
+		  focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
+		  lang: "ko-KR",					// 한글 설정
+		  placeholder: '최대 2048자까지 쓸 수 있습니다'	//placeholder 설정
+          
+	});
+});
+
+
+
+</script>
 
 </html>

@@ -6,8 +6,8 @@
 <%@ page session="false" %>
 <html>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"/>
-<link rel="stylesheet" type="text/scss" href="../../resources/dist/assets/scss/style.scss" />
-<link rel="stylesheet" type="text/css" href="../../resources/dist/assets/css/style.css" />
+<link rel="stylesheet" type="text/scss" href="../../../resources/dist/assets/scss/style.scss" />
+<link rel="stylesheet" type="text/css" href="../../../resources/dist/assets/css/style.css" />
 
 <head>
     <title>Flat Able - Premium Admin Template by Phoenixcoded</title>
@@ -25,10 +25,10 @@
     <meta name="keywords" content="">
     <meta name="author" content="Phoenixcoded" />
     <!-- Favicon icon -->
-    <link rel="icon" href="../../resources/dist/assets/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../../../resources/dist/assets/images/favicon.ico" type="image/x-icon">
 
     <!-- vendor css -->
-    <link rel="stylesheet" href="../../resources/dist/assets/css/style.css">
+    <link rel="stylesheet" href="../../../resources/dist/assets/css/style.css">
 </head>
 <body class="">
 	<!-- [ Pre-loader ] start -->
@@ -42,82 +42,96 @@
 	<!-- [ Pre-loader ] End -->
 	
 	<!-- [ navigation menu ] start -->
-	<%@include file="layouts/nav.jsp"%>
+	<%@include file="../layouts/nav.jsp"%>
 	<!-- [ navigation menu ] end -->
 	
 	<!-- [ Header ] start -->
-	<%@include file="layouts/header.jsp"%>
+	<%@include file="../layouts/header.jsp"%>
 	<!-- [ Header ] end -->
 
 	<!-- [ Main Content ] start -->
-	<section class="pcoded-main-container">
-    <div class="pcoded-content">
-        <!-- [ breadcrumb ] start -->
-        <div class="page-header">
+	<div class="pcoded-main-container">
+	    <div class="pcoded-content">
+	        <!-- [ breadcrumb ] start -->
+	        <div class="page-header">
             <div class="page-block">
                 <div class="row align-items-center">
                     <div class="col-md-12">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">메일조회</h5>
+                            <h5 class="m-b-10">전체메일함</h5>
                         </div>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
+                            <li class="breadcrumb-item"><a href="#!">메일함</a></li>
                             <li class="breadcrumb-item"><a href="#!">전체메일함</a></li>
-                            <li class="breadcrumb-item"><a href="#!">메일조회</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- [ breadcrumb ] end -->
-        <!-- [ Main Content ] start -->
-        <div class="row">
-            
-            <!-- [ form-element ] start -->
-            <div class="col-sm-12">
+	        
+	         <!-- [ stiped-table ] start -->
+            <div class="col-xl-12">
                 <div class="card">
                     <div class="card-header">
-	                    <button type="button" class="btn  btn-primary">삭제</button>
-	                    <button type="button" class="btn  btn-primary">답장</button>
-	                    <button type="button" class="btn  btn-primary">전달</button>
-                    </div>
-                    <div class="card-body">
-                        <h5>보낸사람 : <c:out value="${getmail.user_name}" /></h5>
-                        <h5>받는사람 : </h5>
-                        <h5><c:out value="${getmail.mail_regdate}"/></h5>
-                        <hr>
-                        <div class="row">
-                          
-                            <div class="col-md-12">
-                                <form>
-                              
-                             
-                                    <div class="form-group">
-                                        <label for="exampleFormControlTextarea1">Example textarea</label>
-                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" readonly="readonly"><c:out value="${getmail.mail_content}" /></textarea>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                    <button type="button" class="btn  btn-primary">삭제</button>
+                    <button type="button" class="btn  btn-primary">답장</button>
+                    <button type="button" class="btn  btn-primary">전달</button>
                         
-                        
-                            
-                        </div>
                     </div>
-                </div>
-                
-                            </div>
+                    <div class="card-body table-border-style">
+                   
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox"></th>
+                                        <th>이메일</th>
+                                        <th>제목</th>
+                                        <th>날짜</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                
+                                <c:forEach items="${allmail}" var="email">
+                                <tr>
+                                	<td><input type="checkbox"></td>
+                                	<td> <c:out value="${email.user_email}"/></td>
+                                	<td><a href='/email/getmail?mail_no=<c:out value="${email.mail_no}"/>'> <c:out value="${email.mail_title}"/></a></td>
+                                	<td> <fmt:formatDate pattern="yyyy년 MM월 dd일 a hh시 mm분"
+									value="${email.mail_regdate}" /></td>
+                                
+                                </tr>
+                                
+                                </c:forEach>
+                                    <!--  <tr>
+                                        <td>1</td>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <td>@mdo</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>Jacob</td>
+                                        <td>Thornton</td>
+                                        <td>@fat</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>Larry</td>
+                                        <td>the Bird</td>
+                                        <td>@twitter</td>
+                                    </tr>-->
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- [ form-element ] end -->
-        </div>
-        <!-- [ Main Content ] end -->
-
-    </div>
-</section>
-<!-- [ Main Content ] end -->
+            <!-- [ stiped-table ] end -->
+	        <!-- [ Main Content ] end -->
+	    </div>
+	</div>
 	<!-- [ Main Content ] end -->
 	
     <!-- Warning Section start -->
@@ -168,14 +182,14 @@
     <!-- Warning Section Ends -->
 
     <!-- Required Js -->
-    <script src="../../resources/dist/assets/js/vendor-all.min.js"></script>
-    <script src="../../resources/dist/assets/js/plugins/bootstrap.min.js"></script>
-	<script src="../../resources/dist/assets/js/pcoded.min.js"></script>
+    <script src="../../../resources/dist/assets/js/vendor-all.min.js"></script>
+    <script src="../../../resources/dist/assets/js/plugins/bootstrap.min.js"></script>
+	<script src="../../../resources/dist/assets/js/pcoded.min.js"></script>
 <!-- Apex Chart -->
-<script src="../../resources/dist/assets/js/plugins/apexcharts.min.js"></script>
+<script src="../../../resources/dist/assets/js/plugins/apexcharts.min.js"></script>
 
 <!-- custom-chart js -->
-<script src="../../resources/dist/assets/js/pages/dashboard-main.js"></script>
+<script src="../../../resources/dist/assets/js/pages/dashboard-main.js"></script>
 </body>
 
 </html>
