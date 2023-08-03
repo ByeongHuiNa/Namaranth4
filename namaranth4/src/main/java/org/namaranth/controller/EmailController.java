@@ -1,7 +1,11 @@
 package org.namaranth.controller;
 
+import java.security.Principal;
+
 import org.namaranth.domain.EmailVO;
+import org.namaranth.domain.UsersVO;
 import org.namaranth.service.EmailService;
+import org.namaranth.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,21 +24,62 @@ import lombok.extern.log4j.Log4j;
 public class EmailController {
 	
 	private EmailService service;
+	
+	private UserService userService;
+	
 
-	@GetMapping("/r1")
-	public void r1() {
-		
-	}
+	
 	
 	@GetMapping("/allmail")
-	public void allmail(Model model) {
+	public void allmail(Principal principal, Model model) {
+		String user_email = principal.getName(); 
+		UsersVO VO = userService.getUser(user_email);
+	    model.addAttribute("user", VO);
+	    String deptName = userService.getDept(user_email);
+	    model.addAttribute("dept", deptName);
+	      
 		log.info("allmail");
-		model.addAttribute("allmail", service.getList());
+		model.addAttribute("allmail", service.getAllList(VO.getUser_no()));
+		log.info("유저번호 @@@@@@@@@@@: " +  VO.getUser_no());
+		log.info(model);
+	}
+	
+	@GetMapping("/sendmail")
+	public void sendmail(Principal principal, Model model) {
+		String user_email = principal.getName(); 
+		UsersVO VO = userService.getUser(user_email);
+	    model.addAttribute("user", VO);
+	    String deptName = userService.getDept(user_email);
+	    model.addAttribute("dept", deptName);
+	      
+		log.info("allmail");
+		model.addAttribute("allmail", service.getSendList(VO.getUser_no()));
+		log.info("유저번호 @@@@@@@@@@@: " +  VO.getUser_no());
+		log.info(model);
+	}
+	
+	@GetMapping("/receivemail")
+	public void receivemail(Principal principal, Model model) {
+		String user_email = principal.getName(); 
+		UsersVO VO = userService.getUser(user_email);
+	    model.addAttribute("user", VO);
+	    String deptName = userService.getDept(user_email);
+	    model.addAttribute("dept", deptName);
+	      
+		log.info("allmail");
+		model.addAttribute("allmail", service.getReceiveList(VO.getUser_no()));
+		log.info("유저번호 @@@@@@@@@@@: " +  VO.getUser_no());
 		log.info(model);
 	}
 	
 	@GetMapping("/getmail")
-	public void getmail(@RequestParam("mail_no") int mail_no, Model model) {
+	public void getmail(@RequestParam("mail_no") int mail_no, Model model, Principal principal) {
+		String user_email = principal.getName(); 
+		UsersVO VO = userService.getUser(user_email);
+	    model.addAttribute("user", VO);
+	    String deptName = userService.getDept(user_email);
+	    model.addAttribute("dept", deptName);
+		
 		log.info("/getmail");
 		model.addAttribute("getmail", service.get(mail_no));
 		model.addAttribute("getreceiver", service.getReceiver(mail_no));
@@ -42,12 +87,22 @@ public class EmailController {
 	}
 	
 	@GetMapping("/register")
-	public void register() {}
+	public void register(Model model, Principal principal) {
+		String user_email = principal.getName(); 
+		UsersVO VO = userService.getUser(user_email);
+	    model.addAttribute("user", VO);
+	    String deptName = userService.getDept(user_email);
+	    model.addAttribute("dept", deptName);
+	    //model.addAttribute("user_no", VO.getUser_no());
+		
+	}
 	
 	@PostMapping("/register")
-	public String registermail(EmailVO email, RedirectAttributes rttr) {
+	public String registermail(EmailVO email, RedirectAttributes rttr, int receiver_no) {
+		
 		log.info("register : " + email);
 		service.register(email);
+		service.registerUser(receiver_no);
 		return "redirect:/email/allmail";
 	}
 	

@@ -50,6 +50,9 @@
 	<!-- [ Header ] end -->
 
 	<!-- [ Main Content ] start -->
+	<input id="userinfo_name" type="hidden" value="${user.user_name}"/>
+	<input id="userinfo_dept" type="hidden" value="${dept}"/>
+	<input id="userinfo_position" type="hidden" value="${user.user_position}"/>
 	<div class="pcoded-main-container">
 	    <div class="pcoded-content">
 	        <!-- [ breadcrumb ] start -->
@@ -190,6 +193,15 @@
 
 <!-- custom-chart js -->
 <script src="../../../resources/dist/assets/js/pages/dashboard-main.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    let info = '<span>' + $("#userinfo_dept").val() + "/" + $('#userinfo_position').val() + "</span>";
+    $('#username').text($('#userinfo_name').val());
+    $('#more-details').prepend(info);
+});
+
+</script>
 </body>
 
 </html>

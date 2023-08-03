@@ -2,6 +2,8 @@ package org.namaranth.mapper;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.namaranth.domain.EmailVO;
+import org.namaranth.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -14,7 +16,8 @@ import lombok.extern.log4j.Log4j;
 public class UserMapperTests {
 	
 	@Autowired
-	private UserMapper mapper;
+	private EmailMapper em;
+	private EmailService es;
 	
 //	@Test
 //	public void test() {
@@ -29,7 +32,9 @@ public class UserMapperTests {
 
 	@Test
 	public void testReadDept() {
-		String dept = mapper.readDept("aaa@aaa.com");
-		log.info(dept);
+
+		es.getReceiveList(3);
+		
+		
 	}
 }

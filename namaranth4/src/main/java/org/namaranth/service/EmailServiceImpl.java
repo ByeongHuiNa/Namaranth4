@@ -18,9 +18,21 @@ public class EmailServiceImpl implements EmailService {
 	private EmailMapper mapper;
 	
 	@Override
-	public List<EmailVO> getList() {
+	public List<EmailVO> getAllList(int user_no) {
 		log.info("getList..");
-		return mapper.getList();
+		return mapper.getAllList(user_no);
+	}
+	
+	@Override
+	public List<EmailVO> getSendList(int user_no) {
+		log.info("getSendList..");
+		return mapper.getSendList(user_no);
+	}
+	
+	@Override
+	public List<EmailVO> getReceiveList(int user_no) {
+		log.info("getReceiveList..");
+		return mapper.getReceiveList(user_no);
 	}
 	
 	@Override
@@ -41,5 +53,13 @@ public class EmailServiceImpl implements EmailService {
 		mapper.insert(email);
 		
 	}
+
+	@Override
+	public void registerUser(int user_no) {
+		mapper.insertReceiver(user_no);
+		
+	}
+
+	
 
 }

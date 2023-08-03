@@ -6,10 +6,26 @@
 
 
 
-<select id = "getList" resultType="org.namaranth.domain.EmailVO">
+<select id = "getAllList" resultType="org.namaranth.domain.EmailVO">
 	select u.user_name, m.mail_title, m.mail_regdate, m.mail_no, u.user_no, u.user_email
 		from mail m, users u
 		where m.user_no = u.user_no
+		and u.user_no = #{user_no}
+</select>
+
+<select id = "getSendList" resultType="org.namaranth.domain.EmailVO">
+	select u.user_name, m.mail_title, m.mail_regdate, m.mail_no, u.user_no, u.user_email
+		from mail m, users u
+		where m.user_no = u.user_no
+		and u.user_no = #{user_no}
+</select>
+
+<select id = "getReceiveList" resultType="org.namaranth.domain.EmailVO">
+	select u.user_name, u.user_email, m.mail_no, m.mail_regdate, m.mail_title, m.mail_content, r.user_no
+	    from mail m, mail_rcver r, users u
+	    	where m.mail_no = r.mail_no
+	    	and u.user_no = m.user_no
+	    	and r.user_no = #{user_no}
 </select>
 
 <!--  <select id="read" resultType="org.namaranth.domain.EmailVO">
@@ -41,6 +57,7 @@
 		and mail_no = #{mail_no}
 </select>
 
+
 <select id="readReceiver" resultType="org.namaranth.domain.UsersVO">
 	select user_name, user_email
 		from mail_rcver mr, mail m, users u
@@ -50,15 +67,33 @@
 	
 </select>
 
-<insert id="insert">
-	<!--  <selectKey keyProperty="mail_no" order="BEFORE" resultType="int">
+<!--   <insert id="insert">
+	 <selectKey keyProperty="mail_no" order="BEFORE" resultType="int">
 		select seq_mail.nextval from mail
-	</selectKey> -->
+	</selectKey> 
 	
 	insert into mail (mail_no, user_no, mail_title, mail_content)
 		values(seq_mail.nextval, #{user_no}, #{mail_title}, #{mail_content})
 
+</insert> 
+-->
+
+<insert id="insert">
+	
+	  insert into mail (mail_no, user_no, mail_title, mail_content)
+		values(seq_mail.nextval, #{user_no}, #{mail_title}, #{mail_content})  
+		
+	   
+
 </insert>
+
+<insert id="insertReceiver">
+	insert into mail_rcver (mail_no, user_no)
+		 values(seq_mail.currval, #{receiver_no}) 
+
+</insert>
+
+
 
 
 </mapper>

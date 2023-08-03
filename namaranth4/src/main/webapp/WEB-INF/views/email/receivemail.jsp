@@ -50,79 +50,91 @@
 	<!-- [ Header ] end -->
 
 	<!-- [ Main Content ] start -->
-	<input id="userinfo_name" type="hidden" value="${user.user_name}"/><input id="userinfo_dept" type="hidden" value="${dept}"/><input id="userinfo_position" type="hidden" value="${user.user_position}"/>
-	<section class="pcoded-main-container">
-    <div class="pcoded-content">
-        <!-- [ breadcrumb ] start -->
-        <div class="page-header">
+	<input id="userinfo_name" type="hidden" value="${user.user_name}"/>
+	<input id="userinfo_dept" type="hidden" value="${dept}"/>
+	<input id="userinfo_position" type="hidden" value="${user.user_position}"/>
+	<div class="pcoded-main-container">
+	    <div class="pcoded-content">
+	        <!-- [ breadcrumb ] start -->
+	        <div class="page-header">
             <div class="page-block">
                 <div class="row align-items-center">
                     <div class="col-md-12">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">메일조회</h5>
+                            <h5 class="m-b-10">수신메일함</h5>
                         </div>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
-                            <li class="breadcrumb-item"><a href="/email/allmail">전체메일함</a></li>
-                            <li class="breadcrumb-item"><a href="#!">메일조회</a></li>
+                            <li class="breadcrumb-item"><a href="#!">메일함</a></li>
+                            <li class="breadcrumb-item"><a href="#!">수신메일함</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- [ breadcrumb ] end -->
-        <!-- [ Main Content ] start -->
-        <div class="row">
-            
-            <!-- [ form-element ] start -->
-            <div class="col-sm-12">
+	        
+	         <!-- [ stiped-table ] start -->
+            <div class="col-xl-12">
                 <div class="card">
                     <div class="card-header">
-	                    <button type="button" class="btn  btn-primary">삭제</button>
-	                    <button type="button" class="btn  btn-primary">답장</button>
-	                    <button type="button" class="btn  btn-primary">전달</button>
-                    </div>
-                    <div class="card-body">
-                        <h5>보낸사람 : <c:out value="${getmail.user_name}" /> <c:out value="${getmail.user_email}" /></h5>
-                        <h5>받는사람 : <c:forEach items="${getreceiver}" var="receiver"><c:out value="${receiver.user_name} "/><c:out value="${receiver.user_email} "/>, </c:forEach></h5>
-                        <h5><fmt:formatDate pattern="yyyy년 MM월 dd일 a hh시 mm분"
-									value="${getmail.mail_regdate}" />
-                       </h5>
-                        <hr>
-                        <div class="row">
-                          
-                            <div class="col-md-12">
-                                <form>
-                              
-                             		
-                                    <div class="form-group">
-		                                       
-										<textarea class="form-control" id="exampleFormControlTextarea1" rows="3" readonly="readonly">${getmail.mail_content}"</textarea>
-										<div>"${getmail.mail_content}"</div>
-                                    </div>
-                                    
-                                </form>
-                            </div>
-                        </div>
+                    <button type="button" class="btn  btn-primary">삭제</button>
+                    <button type="button" class="btn  btn-primary">답장</button>
+                    <button type="button" class="btn  btn-primary">전달</button>
                         
-                        
-                            
-                        </div>
                     </div>
-                </div>
-                
-                            </div>
+                    <div class="card-body table-border-style">
+                   
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox"></th>
+                                        <th>이메일</th>
+                                        <th>제목</th>
+                                        <th>날짜</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                
+                                <c:forEach items="${allmail}" var="email">
+                                <tr>
+                                	<td><input type="checkbox"></td>
+                                	<td> <c:out value="${email.user_email}"/></td>
+                                	<td><a href='/email/getmail?mail_no=<c:out value="${email.mail_no}"/>'> <c:out value="${email.mail_title}"/></a></td>
+                                	<td> <fmt:formatDate pattern="yyyy년 MM월 dd일 a hh시 mm분"
+									value="${email.mail_regdate}" /></td>
+                                
+                                </tr>
+                                
+                                </c:forEach>
+                                    <!--  <tr>
+                                        <td>1</td>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <td>@mdo</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>Jacob</td>
+                                        <td>Thornton</td>
+                                        <td>@fat</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>Larry</td>
+                                        <td>the Bird</td>
+                                        <td>@twitter</td>
+                                    </tr>-->
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- [ form-element ] end -->
-        </div>
-        <!-- [ Main Content ] end -->
-
-    </div>
-</section>
-<!-- [ Main Content ] end -->
+            <!-- [ stiped-table ] end -->
+	        <!-- [ Main Content ] end -->
+	    </div>
+	</div>
 	<!-- [ Main Content ] end -->
 	
     <!-- Warning Section start -->

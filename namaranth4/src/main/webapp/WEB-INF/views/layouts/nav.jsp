@@ -44,7 +44,7 @@
 					<label>Main</label>
 				</li>
 				<li class="nav-item">
-				    <a href="index.html" class="nav-link "><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">메인페이지</span></a>
+				    <a href="/main" class="nav-link "><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">메인페이지</span></a>
 				</li>
 				<li class="nav-item">
 				    <a href="form_elements.html" class="nav-link "><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span class="pcoded-mtext">공지사항</span></a>
@@ -63,12 +63,12 @@
 					<label>E-mail</label>
 				</li>
 				<li class="nav-item">
-				    <a href="index.html" class="nav-link "><span class="pcoded-micon"><i class="bi bi-pencil-square" style="color:white;"></i></span><span class="pcoded-mtext">메일작성</span></a>
+				    <a href="/email/register" class="nav-link "><span class="pcoded-micon"><i class="bi bi-pencil-square" style="color:white;"></i></span><span class="pcoded-mtext">메일작성</span></a>
 				</li>
 				<li class="nav-item pcoded-hasmenu">
 					<a href="#!" class="nav-link "><span class="pcoded-micon"><i class="bi bi-envelope" style="color:white;"></i></span><span class="pcoded-mtext">메일함</span></a>
 					<ul class="pcoded-submenu">
-						<li><a href="/allmail">전체메일함</a></li>
+						<li><a href="/email/allmail">전체메일함</a></li>
 						<li><a href="bc_button.html">수신메일함</a></li>
 						<li><a href="bc_badges.html">발신메일함</a></li>
 						<li><a href="bc_breadcrumb-pagination.html">임시보관함</a></li>

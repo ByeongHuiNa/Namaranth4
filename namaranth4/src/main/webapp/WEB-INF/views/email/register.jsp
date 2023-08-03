@@ -51,6 +51,10 @@
 	<!-- [ Header ] end -->
 
 	<!-- [ Main Content ] start -->
+	
+	<input id="userinfo_name" type="hidden" value="${user.user_name}"/>
+	<input id="userinfo_dept" type="hidden" value="${dept}"/>
+	<input id="userinfo_position" type="hidden" value="${user.user_position}"/>
 	<section class="pcoded-main-container">
     <div class="pcoded-content">
         <!-- [ breadcrumb ] start -->
@@ -72,6 +76,8 @@
         </div>
         <!-- [ breadcrumb ] end -->
         <!-- [ Main Content ] start -->
+        <input id="userinfo_name" type="hidden" value="${user.user_name}"/><input id="userinfo_dept" type="hidden" value="${dept}"/><input id="userinfo_position" type="hidden" value="${user.user_position}"/>
+        
         <div class="row">
             
             <!-- [ form-element ] start -->
@@ -85,8 +91,8 @@
                     </div>
                     
                     <div class="card-body">
-                        <h5>보내는사람 <input type="text" name="user_no"/> </h5>
-                        <h5>받는사람 <input type="text"/> </h5>
+                         <input id="userinfo_no "type="hidden" name="user_no" value="${user.user_no}"/>
+                        <h5>받는사람 <input type="text" name="receiver_no"/> </h5>
                         <h5>제목 <input type="text" name="mail_title"/> </h5>
                         
                         <hr>
@@ -185,6 +191,16 @@
 
 <!-- custom-chart js -->
 <script src="../../../resources/dist/assets/js/pages/dashboard-main.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    let info = '<span>' + $("#userinfo_dept").val() + "/" + $('#userinfo_position').val() + "</span>";
+    $('#username').text($('#userinfo_name').val());
+    $('#more-details').prepend(info);
+});
+
+</script>
+
 </body>
 <script type="text/javascript">
 $(document).ready(function() {
