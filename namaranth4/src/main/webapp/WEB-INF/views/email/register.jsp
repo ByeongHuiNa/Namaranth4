@@ -87,7 +87,8 @@
                     <div class="card-header">
 	                    
 	                    <button type="submit" class="btn  btn-primary">전송</button>
-	                    <button type="button" class="btn  btn-primary">임시저장</button>
+	                   
+	                    <button type="submit" formaction="/email/tsregister" class="btn  btn-primary">임시저장</button>
                     </div>
                     
                     <div class="card-body">
@@ -116,6 +117,7 @@
                         </div>
                     </div>
                 </div>
+                	
                 </form>
                 
                             </div>

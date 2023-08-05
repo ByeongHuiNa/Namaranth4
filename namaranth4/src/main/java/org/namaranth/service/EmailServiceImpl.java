@@ -60,6 +60,19 @@ public class EmailServiceImpl implements EmailService {
 		
 	}
 
+	@Override
+	public void tsregister(EmailVO email) {
+		log.info("tsregister......" + email);
+		mapper.tsinsert(email);
+		
+	}
+
+	@Override
+	public List<EmailVO> getTsList(int user_no) {
+		log.info("getTsList..");
+		return mapper.getTsList(user_no);
+	}
+
 	
 
 }

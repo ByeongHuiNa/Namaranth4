@@ -29,6 +29,22 @@
 
     <!-- vendor css -->
     <link rel="stylesheet" href="../../../resources/dist/assets/css/style.css">
+    
+<style>
+    /* 동적으로 생성되는 테이블에 스타일을 적용하는 클래스 스타일 */
+    .doc-content-table table {
+        border-collapse: collapse; /* 테이블 셀 병합 */
+        border: 1px solid #000;    /* 테이블 테두리 스타일 */
+        width: 900px;              /* 테이블 가로 폭 */
+    }
+
+    .doc-content-table td {
+        border: 1px solid #000;    /* 셀 테두리 스타일 */
+        padding: 8px;              /* 셀 안의 여백 */
+        text-align: center;         /* 셀 내용 가운데 정렬 */
+    }
+</style>
+
 </head>
 <body class="">
 	<!-- [ Pre-loader ] start -->
@@ -98,7 +114,7 @@
                                     <div class="form-group">
 		                                       
 										<textarea class="form-control" id="exampleFormControlTextarea1" rows="3" readonly="readonly">${getmail.mail_content}"</textarea>
-										<div>"${getmail.mail_content}"</div>
+										<div class="doc-content-table">${getmail.mail_content}</div>
                                     </div>
                                     
                                 </form>
@@ -189,7 +205,16 @@ $(document).ready(function() {
     $('#more-details').prepend(info);
 });
 
+
+
 </script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".doc-content-table table").addClass("doc-content-table");
+        $(".doc-content-table table").removeClass("table table-bordered");
+    });
+    </script>
 </body>
 
 </html>

@@ -4,14 +4,67 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.namaranth.mapper.EmailMapper">
 
+<resultMap type="org.namaranth.domain.EmailVO" id="emailMap">
+	<id column="mail_no" property="mail_no"/>
+	<result column="mail_title" property="mail_title"/>
+	<result column="mail_content" property="mail_content"/>
+	<result column="mail_regdate" property="mail_regdate"/>
+	<collection property="user" ofType="org.namaranth.domain.UsersVO">
+		<id column="user_no" property="user_no"/>
+		<result column="user_name" property="user_name"/>
+		<result column="user_birth" property="user_birth"/>
+		<result column="user_phone" property="user_phone"/>
+		<result column="user_position" property="user_position"/>
+		<result column="user_email" property="user_email"/>
+		<result column="user_pwd" property="user_pwd"/>
+		<result column="user_profile" property="user_profile"/>
+		<collection property="dept" ofType="org.namaranth.domain.DeptVO">
+			<id column="dept_no" property="dept_no"/>
+			<result column="dept_name" property="dept_name"/>
+			<result column="dept_local" property="dept_local"/>
+		</collection>
+	</collection>
+</resultMap>
 
 
-<select id = "getAllList" resultType="org.namaranth.domain.EmailVO">
+
+
+<!--  <select id = "getAllList" resultType="org.namaranth.domain.EmailVO">
+	select u.user_name, m.mail_title, m.mail_regdate, m.mail_no, u.user_no, u.user_email, ur.user.email
+		FROM mail m
+			JOIN users u ON m.user_no = u.user_no
+			JOIN mail_rcver rcv ON m.mail_no = rcv.mail_no
+			JOIN users ur ON rcv.user_no = ur.user_no
+			where u.user_no = #{user_no} OR ur.user_no = #{user_no}
+</select> -->
+
+<!--  <select id = "getAllList" resultType="org.namaranth.domain.EmailVO">
+	SELECT u.user_email,
+       m.mail_title,
+       ur.user_email
+		FROM mail m
+		JOIN users u ON m.user_no = u.user_no
+		JOIN mail_rcver rcv ON m.mail_no = rcv.mail_no
+		JOIN users ur ON rcv.user_no = ur.user_no
+		WHERE u.user_no = #{user_no} OR ur.user_no = #{user_no}
+</select>   -->
+
+<!--  <select id = "getSendList" resultType="org.namaranth.domain.EmailVO">
 	select u.user_name, m.mail_title, m.mail_regdate, m.mail_no, u.user_no, u.user_email
 		from mail m, users u
 		where m.user_no = u.user_no
 		and u.user_no = #{user_no}
-</select>
+</select> -->
+
+<!--  <select id = "getSendList" resultType="org.namaranth.domain.EmailVO">
+	SELECT m.user_no, u.user_email, m.mail_title, u_rcv.user_email, m.mail_regdate, m.mail_no
+		FROM mail m
+		JOIN users u ON m.user_no = u.user_no
+		JOIN mail_rcver mr ON m.mail_no = mr.mail_no
+		JOIN users u_rcv ON mr.user_no = u_rcv.user_no
+		where u.user_no = #{user_no}
+		
+</select> -->
 
 <select id = "getSendList" resultType="org.namaranth.domain.EmailVO">
 	select u.user_name, m.mail_title, m.mail_regdate, m.mail_no, u.user_no, u.user_email
@@ -19,6 +72,8 @@
 		where m.user_no = u.user_no
 		and u.user_no = #{user_no}
 </select>
+
+
 
 <select id = "getReceiveList" resultType="org.namaranth.domain.EmailVO">
 	select u.user_name, u.user_email, m.mail_no, m.mail_regdate, m.mail_title, m.mail_content, r.user_no
@@ -86,6 +141,25 @@
 	   
 
 </insert>
+
+<insert id="tsinsert">
+	
+	  insert into mail_ts (mailts_no, user_no, mailts_title, mailts_content)
+		values(seq_mail.nextval, #{user_no}, #{mail_title}, #{mail_content})  
+		
+	   
+
+</insert>
+
+<select id="getTsList">
+	SELECT mt.user_no, u.user_email, mt.mailts_title, u_rcv.user_email, mt.mailts_no
+			FROM mail_ts mt
+			JOIN users u ON mt.user_no = u.user_no
+			JOIN mail_rcver mr ON mt.mailts_no = mr.mail_no
+			JOIN users u_rcv ON mr.user_no = u_rcv.user_no
+			where u.user_no = #{user_no}
+
+</select>
 
 <insert id="insertReceiver">
 	insert into mail_rcver (mail_no, user_no)

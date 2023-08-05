@@ -33,7 +33,7 @@ public class UserMapperTests {
 	@Test
 	public void testReadDept() {
 
-		es.getReceiveList(3);
+		em.getAllList(2);
 		
 		
 	}

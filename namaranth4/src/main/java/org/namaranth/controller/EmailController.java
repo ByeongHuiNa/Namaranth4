@@ -39,7 +39,8 @@ public class EmailController {
 	    model.addAttribute("dept", deptName);
 	      
 		log.info("allmail");
-		model.addAttribute("allmail", service.getAllList(VO.getUser_no()));
+		model.addAttribute("sendmail", service.getSendList(VO.getUser_no()));
+		model.addAttribute("receivemail", service.getReceiveList(VO.getUser_no()));
 		log.info("유저번호 @@@@@@@@@@@: " +  VO.getUser_no());
 		log.info(model);
 	}
@@ -54,7 +55,9 @@ public class EmailController {
 	      
 		log.info("allmail");
 		model.addAttribute("allmail", service.getSendList(VO.getUser_no()));
+		//model.addAttribute("getreceiver", service.getReceiver(2)); //메일번호
 		log.info("유저번호 @@@@@@@@@@@: " +  VO.getUser_no());
+		
 		log.info(model);
 	}
 	
@@ -71,6 +74,23 @@ public class EmailController {
 		log.info("유저번호 @@@@@@@@@@@: " +  VO.getUser_no());
 		log.info(model);
 	}
+	
+	@GetMapping("/tsmail")
+	public void tsmail(Principal principal, Model model) {
+		String user_email = principal.getName(); 
+		UsersVO VO = userService.getUser(user_email);
+	    model.addAttribute("user", VO);
+	    String deptName = userService.getDept(user_email);
+	    model.addAttribute("dept", deptName);
+	      
+		log.info("allmail");
+		model.addAttribute("allmail", service.getSendList(VO.getUser_no()));
+		//model.addAttribute("getreceiver", service.getReceiver(2)); //메일번호
+		log.info("유저번호 @@@@@@@@@@@: " +  VO.getUser_no());
+		
+		log.info(model);
+	}
+	
 	
 	@GetMapping("/getmail")
 	public void getmail(@RequestParam("mail_no") int mail_no, Model model, Principal principal) {
@@ -105,6 +125,19 @@ public class EmailController {
 		service.registerUser(receiver_no);
 		return "redirect:/email/allmail";
 	}
+	
+	@PostMapping("/tsregister")
+	public String tsregistermail(EmailVO email, RedirectAttributes rttr) {
+		
+		log.info("tsregister : " + email);
+		service.tsregister(email);
+		
+		return "redirect:/email/allmail";
+	}
+	
+	
+	
+	
 	
 	
 }

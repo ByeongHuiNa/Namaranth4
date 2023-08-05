@@ -13,6 +13,8 @@ public interface EmailService {
 	
 	public List<EmailVO> getReceiveList(int user_no);
 	
+	public List<EmailVO> getTsList(int user_no); //임시메일select
+	
 	public EmailVO get(int mail_no);
 	
 	public List<EmailVO> getReceiver(int mail_no);
@@ -20,4 +22,6 @@ public interface EmailService {
 	public void register(EmailVO email);
 	
 	public void registerUser(int user_no);
+	
+	public void tsregister(EmailVO email); //임시메일저장
 }
