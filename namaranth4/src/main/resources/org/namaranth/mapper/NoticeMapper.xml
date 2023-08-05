@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.namaranth.mapper.NoticeMapper">
+
+	<resultMap type="org.namaranth.domain.NoticeVO" id="noticeMap">
+		<id property="noti_no" column="noti_no"/>
+		<result property="noti_title" column="noti_title"/>
+		<result property="noti_content" column="noti_content"/>
+		<result property="noti_regdate" column="noti_regdate"/>
+		<collection property="user" ofType="org.namaranth.domain.UsersVO">
+			<id column="user_no" property="user_no"/>
+			<result column="user_name" property="user_name"/>
+			<result column="user_birth" property="user_birth"/>
+			<result column="user_phone" property="user_phone"/>
+			<result column="user_position" property="user_position"/>
+			<result column="user_email" property="user_email"/>
+			<result column="user_pwd" property="user_pwd"/>
+			<result column="user_profile" property="user_profile"/>
+			<collection property="authList" resultMap="authMap"></collection>
+			<collection property="dept" ofType="org.namaranth.domain.DeptVO">
+				<id column="dept_no" property="dept_no"/>
+				<result column="dept_name" property="dept_name"/>
+				<result column="dept_local" property="dept_local"/>
+			</collection>
+		</collection>
+	</resultMap>
+	
+	<!-- 권한 -->
+	<resultMap type="org.namaranth.domain.AuthVO" id="authMap">
+		<result property="user_no" column="user_no"/>
+		<result property="auth" column="auth"/>
+	</resultMap>
+
+	<!-- 공지사항 첨부파일 -->
+<!-- 	<resultMap type="org.namaranth.domain.NoticeAttachVO" id="notiAttachMap">
+			<result property="noti_uuid" column="noti_uuid"/>
+			<result property="noti_no" column="noti_no"/>
+			<result property="noti_filepath" column="noti_filepath"/>
+			<result property="noti_filename" column="noti_filename"/>
+			<result property="noti_filetype" column="noti_filetype"/>
+		</resultMap>
+-->
+
+	<!-- 공지사항 조회 -->
+	<select id="noticeList" resultMap="noticeMap">
+		SELECT noti.noti_no, noti.noti_title, noti.noti_content, noti.noti_regdate, 
+		  	users.user_no, users.user_name, users.user_birth, users.user_phone, 
+		  	users.user_position, users.user_email, users.user_pwd, users.user_profile
+				FROM notice noti LEFT OUTER JOIN users users	
+				ON noti.user_no = users.user_no
+				ORDER BY noti_no ASC
+	</select>
+</mapper>

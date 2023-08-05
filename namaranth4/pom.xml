@@ -129,7 +129,6 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<version>${org.springframework-version}</version>
-			<scope>test</scope>
 		</dependency>
 
 		<!-- jdbc 연결 -->

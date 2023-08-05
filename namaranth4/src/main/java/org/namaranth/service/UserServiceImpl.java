@@ -2,6 +2,8 @@ package org.namaranth.service;
 
 import java.util.List;
 
+import org.namaranth.domain.DocumentVO;
+import org.namaranth.domain.EmailVO;
 import org.namaranth.domain.UsersVO;
 import org.namaranth.mapper.UserMapper;
 import org.springframework.stereotype.Repository;
@@ -27,15 +29,31 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UsersVO getUser(String user_email) {
 		log.info("get User");
-		log.info(mapper.readUser(user_email));
 		return mapper.readUser(user_email);
 	}
 
 	@Override
 	public String getDept(String user_email) {
 		log.info("get Dept");
-		log.info(mapper.readDept(user_email));
 		return mapper.readDept(user_email);
+	}
+
+	@Override
+	public List<EmailVO> getEmails(int user_no) {
+		log.info("get Email");
+		return mapper.readEmail(user_no);
+	}
+
+//	@Override
+//	public List<DocumentVO> getDocComplete(int user_no) {
+//		log.info("get Doc Complete");
+//		return mapper.readDocComplete(user_no);
+//	}
+
+	@Override
+	public List<DocumentVO> getDoc(int user_no) {
+		log.info("get Doc Request");
+		return mapper.readDoc(user_no);
 	}
 
 }
