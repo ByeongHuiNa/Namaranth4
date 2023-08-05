@@ -27,8 +27,8 @@ public class DocumentMapperTests {
 		vo.setUser(user);
 		vo.setDoc_no(4);
 		vo.getUser().setUser_no(1);
-		vo.setDoc_title("testÁ¦¸ñ");
-		vo.setDoc_content("test³»¿ë");
+		vo.setDoc_title("testï¿½ï¿½ï¿½ï¿½");
+		vo.setDoc_content("testï¿½ï¿½ï¿½ï¿½");
 		mapper.writeDoc(vo);
 	}
 	

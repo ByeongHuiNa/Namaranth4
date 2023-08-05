@@ -17,11 +17,11 @@ public class EmailServiceImpl implements EmailService {
 
 	private EmailMapper mapper;
 	
-	@Override
-	public List<EmailVO> getAllList(int user_no) {
-		log.info("getList..");
-		return mapper.getAllList(user_no);
-	}
+//	@Override
+//	public List<EmailVO> getAllList(int user_no) {
+//		log.info("getList..");
+//		return mapper.getAllList(user_no);
+//	}
 	
 	@Override
 	public List<EmailVO> getSendList(int user_no) {

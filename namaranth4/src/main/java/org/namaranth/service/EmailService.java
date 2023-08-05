@@ -7,7 +7,7 @@ import org.namaranth.domain.UsersVO;
 
 public interface EmailService {
 
-	public List<EmailVO> getAllList(int user_no);
+	//public List<EmailVO> getAllList(int user_no);
 	
 	public List<EmailVO> getSendList(int user_no);
 	
