@@ -30,25 +30,89 @@
 
 
 
-
+<!-- 문서 조회, 리스트 -->
 <select id="get" resultMap="documentMap">
 	select dc.doc_no, dc.doc_title, dc.doc_content, dc.doc_regdate, dc.doc_status, u.user_name, d.dept_name
 	from document dc, users u, dept d
 	where dc.doc_no = #{doc_no} and u.user_no=dc.user_no and u.dept_no = d.dept_no
 </select>
 
-<select id="doclist" resultMap="documentMap">
+<select id="doclist" parameterType="int" resultMap="documentMap">
 	select dc.doc_no, dc.doc_title, dc.doc_content, dc.doc_regdate, dc.doc_status, u.user_name, d.dept_name
 	from document dc, users u, dept d
-	where u.user_no=dc.user_no and u.dept_no = d.dept_no
+	where u.user_no=dc.user_no and u.dept_no = d.dept_no and u.user_no = #{user_no} order by doc_no desc
 </select>
+
+
+<select id="appReqList" parameterType="int" resultMap="documentMap">
+	select dc.doc_no, dc.doc_title, dc.doc_content, dc.doc_regdate, dc.doc_status, u.user_name, d.dept_name
+	from document dc, users u, dept d
+	where u.user_no=dc.user_no and u.dept_no = d.dept_no and dc.doc_no in 
+    (select doc_no from doc_appreq
+	where user_no = #{user_no}
+	and doc_no not in (select doc_no from doc_app where user_no = #{user_no})) and doc_status not in '반려' order by doc_no desc
+</select>
+
+<select id="appRejList" parameterType="int" resultMap="documentMap">
+	select dc.doc_no, dc.doc_title, dc.doc_content, dc.doc_regdate, dc.doc_status, u.user_name, d.dept_name
+	from document dc, users u, dept d
+	where u.user_no=dc.user_no and u.dept_no = d.dept_no and doc_status = '반려' and u.user_no = #{user_no} order by doc_no desc
+</select>
+
+<select id="appComplList" parameterType="int" resultMap="documentMap">
+	select dc.doc_no, dc.doc_title, dc.doc_content, dc.doc_regdate, dc.doc_status, u.user_name, d.dept_name
+	from document dc, users u, dept d
+	where u.user_no=dc.user_no and u.dept_no = d.dept_no and doc_status = '결재 완료' and u.user_no = #{user_no} order by doc_no desc
+</select>
+
+
+<!-- 결재 -->
+<insert id="docAppInsert">
+	<selectKey resultType="int" keyProperty="docapp_no" order="BEFORE">
+		select seq_docapp.nextval from dual
+	</selectKey>
+	insert into doc_app (docapp_no, doc_no, user_no) VALUES (#{docapp_no}, #{doc_no}, #{user_no})
+</insert>
+
+<select id="getDocAppDegree" resultType="String">
+	select doc_appdegree from doc_appreq where doc_no = #{doc_no} and user_no= #{user_no}
+</select>
+
+<update id="docAppUpdate" parameterType="int">
+	update document set doc_status = '결재 완료' where doc_no = #{doc_no}
+</update>
+
+<!-- 반려 -->
+<insert id="docRejInsert">
+	<selectKey resultType="int" keyProperty="docrej_no" order="BEFORE">
+		select seq_docrej.nextval from dual
+	</selectKey>
+	insert into doc_rej (docrej_no, doc_no, user_no, docrej_content) VALUES (#{docrej_no}, #{doc_no}, #{user_no}, #{docrej_content})
+</insert>
+
+<update id="docRejUpdate" parameterType="int">
+	update document set doc_status = '반려' where doc_no = #{doc_no}
+</update>
+
 
 <select id="list" resultType="org.namaranth.domain.DocumentVO">
 	select * from document
 </select>
 	
 <insert id="writeDoc" parameterType="org.namaranth.domain.DocumentVO">
+	<selectKey resultType="int" keyProperty="doc_no" order="BEFORE">
+		select seq_doc.nextval from dual
+	</selectKey>
 	insert into document (doc_no, user_no, doc_title, doc_content)
 	values (#{doc_no}, #{user.user_no}, #{doc_title}, #{doc_content})
 </insert>
+
+<insert id="insertFisrtApp">
+	insert into doc_appreq values (#{doc_no}, #{user_no}, '1차')
+</insert>
+
+<insert id="insertSecondApp">
+	insert into doc_appreq values (#{doc_no}, #{user_no}, '2차')
+</insert>
+
 </mapper>

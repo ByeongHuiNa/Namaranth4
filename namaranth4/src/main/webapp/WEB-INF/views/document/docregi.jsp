@@ -14,6 +14,28 @@
     #summernote table {
         border: 1px solid #000; /* 테두리 색상 변경 */
     }
+    
+    .result-items {
+      cursor: pointer;
+      padding: 5px;
+    }
+    
+    #tb{
+    	border-collapse: collapse;
+    	text-align: center;
+    }
+    
+    #tb th, #tb td{
+    	border: 1px solid #000000;
+    	width: 110px;
+    }
+    
+	.sec_tb{
+    	border:none;
+  		
+    }
+
+
 </style>
 <head>
     <title>게시판</title>
@@ -82,10 +104,38 @@
 		                    <!-- [Document contents] -->
 		                    <div class="card-body">
 		                    	<form id="regi_form" action="/document/docregi" method="post">
-		                    		문서번호 : <input name="doc_no"/>
 		                    		제목 : <input name="doc_title"/>
-		                    		<!-- 기안자: <input name="user_name"/> -->
-		                    		사번: <input name="user.user_no"/>
+		                    		기안자: <input value="${login.user_name }" readonly="readonly"/>
+		                    		
+		                    		<input type="hidden" name="user.user_no" value="${login.user_no }" readonly="readonly"/>
+		                    		
+		                    		<button type="button" class="btn  btn-primary" data-toggle="modal" data-target="#firstappmodal">1차 결재자</button>
+		                    		<button type="button" class="btn  btn-primary" data-toggle="modal" data-target="#secondappmodal">2차 결재자</button>
+		                    		
+		                    		<br>
+		                    		
+		                    		<table id="tb">
+		                    			<tr>
+		                    				<th>1차 결재</th>
+		                    				<td class="sec_tb" style="border-top: none; border-bottom: none; width: 20px;"></td>
+		                    				<th>2차 결재</th>
+		                    			</tr>
+		                    			<tr>
+		                    				<td></td>
+		                    				<td class="sec_tb" style="border-top: none; border-bottom: none; width: 20px; height: 90px;" ></td>
+		                    				<td></td>
+		                    			</tr>
+		                    			<tr>
+		                    				<td id="firstSelectedApprovalUser" class="selected-boxs"></td>
+		                    				<td class="sec_tb" style="border-top: none; border-bottom: none; width: 20px;"></td>
+		                    				<td id="secondSelectedApprovalUser" class="selected-boxs"></td>
+		                    			</tr>
+		                    		</table>
+
+		                    		
+		                    		
+		                    		
+									  <br>
 		                    		<select id="templateDropdown">
 										<option value="" disabled selected>양식선택</option>
 										<option value="expense_report">지출결의서</option>
@@ -93,16 +143,79 @@
 										<option value="round_robin">품의서</option>
 									</select>
 		                    		<br>
-		                    		내용 :
 		                    		<textarea id="summernote" name="doc_content"></textarea>
 		                    		<button id="submit_btn">작성</button>
 		                    		<button id="ts_btn">임시저장</button>
+		                    		
+		                    		<input type="hidden" name="first_app"  id="first_app_input"/>
+		                    		<input type="hidden" name="second_app" id="second_app_input"/>
 		                    	</form>
 		                    </div>
 		                    
 		                    
 		                </div>
 		            </div>
+		            
+		            	<!-- first app -->
+						<div class="modal fade" id="firstappmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="exampleModalLabel">New message</h5>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									</div>
+									<div class="modal-body">
+										<form>
+											<div class="form-group">
+												<label for="recipient-name"  id="col-form-label">1차 결재자</label>
+												<input type="text" class="form-control" id="firstSearchInput">
+											</div>
+											<div class="form-group">
+												<label for="message-text" class="col-form-label">목록</label>
+												<div id="fisrtSearchResults" style="display: none;">
+												    <!-- 검색 결과를 드롭다운으로 표시할 영역 -->
+												</div>
+											</div>
+										</form>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn  btn-secondary" data-dismiss="modal">Close</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<!-- second app -->
+						<div class="modal fade" id="secondappmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="exampleModalLabel">New message</h5>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									</div>
+									<div class="modal-body">
+										<form>
+											<div class="form-group">
+												<label for="recipient-name"  id="col-form-label">Recipient:</label>
+												<input type="text" class="form-control" id="secondSearchInput">
+											</div>
+											<div class="form-group">
+												<label for="message-text" class="col-form-label">목록</label>
+												<div id="secondSearchResults" style="display: none;">
+												    <!-- 검색 결과를 드롭다운으로 표시할 영역 -->
+												</div>
+											</div>
+										</form>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn  btn-secondary" data-dismiss="modal">Close</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+		            
+		            
 		        </div>
 		        <!-- [ Main Content ] end -->
 	    	</div>
@@ -171,6 +284,180 @@
     <script src="../../../resources/dist/assets/js/summernote-lite.js"></script>
     <script type="text/javascript">
     $(document).ready(function() {
+    	
+    	//결재자 추가
+    	$("#firstSearchInput").on("focus keyup", function() {
+    			console.log(1);
+    	        var input = $(this).val();
+    	        var searchResults = $("#fisrtSearchResults");
+    	        var firstSearchInput = $("#firstSearchInput");
+    	        $.ajax({
+    	          url: "/searchApprovalUser",
+    	          type: "GET",
+    	          data: { keyword: input },
+    	          dataType: "json",
+    	          success: function(response) {
+    	            // 서버로부터 받은 결재자 목록(response)을 화면에 표시하거나 자동완성 결과로 사용
+    	            searchResults.empty(); // 기존 결과 초기화
+    	            var filteredResults = response.filter(function(approverData) {
+    	                // 입력한 글자가 포함된 결재자들만 필터링하여 반환
+    	                return approverData.user_name.includes(input) ||
+    	                       approverData.user_email.includes(input) ||
+    	                       approverData.dept.dept_name.includes(input) ||
+    	                       approverData.user_position.includes(input);
+    	              });
+    	            
+    	            filteredResults.forEach(function(approverData) {
+    	            	var resultItem = $("<div>", {
+    	                    text: approverData.user_position + 
+    				  	      "\t" + approverData.user_name +
+    			  	          "\t" + approverData.user_email +
+    			  	          "\t" + approverData.dept.dept_name,
+    	                    class: "result-items"
+    	                  });
+    	              resultItem.on("click", function() {
+    	            	firstSearchInput.empty();
+    	                searchResults.hide();
+    	                firstSelectApprovalUser(approverData);
+    	                $("#first_app_input").val(approverData.user_no);
+    	                $(".modal-footer").find('[data-dismiss="modal"]').trigger("click");
+    	              });
+    	              searchResults.append(resultItem);
+    	            });
+
+    	            // 검색 결과가 있을 경우 드롭다운 표시, 없을 경우 숨김 처리
+    	            if (response.length > 0) {
+    	              searchResults.show();
+    	            } else {
+    	              searchResults.hide();
+    	            }
+    	          },
+    	          error: function(error) {
+    	            console.error("Error fetching approval users:", error);
+    	          }
+    	        });
+	      });
+    	
+    	
+    	$("#secondSearchInput").on("focus keyup", function() {
+			console.log(1);
+	        var input = $(this).val();
+	        var searchResults = $("#secondSearchResults");
+	        var secondSearchInput = $("#secondSearchInput");
+	        $.ajax({
+	          url: "/searchApprovalUser",
+	          type: "GET",
+	          data: { keyword: input },
+	          dataType: "json",
+	          success: function(response) {
+	            // 서버로부터 받은 결재자 목록(response)을 화면에 표시하거나 자동완성 결과로 사용
+	            searchResults.empty(); // 기존 결과 초기화
+	            var filteredResults = response.filter(function(approverData) {
+	                // 입력한 글자가 포함된 결재자들만 필터링하여 반환
+	                return approverData.user_name.includes(input) ||
+	                       approverData.user_email.includes(input) ||
+	                       approverData.dept.dept_name.includes(input) ||
+	                       approverData.user_position.includes(input);
+	              });
+	            
+	            filteredResults.forEach(function(approverData) {
+	            	var resultItem = $("<div>", {
+	                    text: approverData.user_position + 
+				  	      " " + approverData.user_name +
+			  	          " " + approverData.user_email +
+			  	          " " + approverData.dept.dept_name,
+	                    class: "result-items"
+	                  });
+	              resultItem.on("click", function() {
+					secondSearchInput.empty();
+	                searchResults.hide();
+	                secondSelectApprovalUser(approverData);
+	                $("#second_app_input").val(approverData.user_no);
+	                $(".modal-footer").find('[data-dismiss="modal"]').trigger("click");
+	              });
+	              searchResults.append(resultItem);
+	            });
+
+	            // 검색 결과가 있을 경우 드롭다운 표시, 없을 경우 숨김 처리
+	            if (response.length > 0) {
+	              searchResults.show();
+	            } else {
+	              searchResults.hide();
+	            }
+	          },
+	          error: function(error) {
+	            console.error("Error fetching approval users:", error);
+	          }
+	        });
+      });
+	
+	      // 사용자가 드롭다운 항목을 선택했을 때 실행되는 함수
+	      function firstSelectApprovalUser(approverData) {
+	        var selectedBox = $("#firstSelectedApprovalUser");
+	        selectedBox.empty(); // 기존 박스 초기화
+	
+	        // 선택한 결재자 정보를 하나의 박스로 표시
+	        var selectedContent = $("<div>").text(
+	        				approverData.user_position + 
+			  	      " " + approverData.user_name
+	        );
+	        selectedBox.append(selectedContent);
+	      }
+	      
+	      function secondSelectApprovalUser(approverData) {
+		        var selectedBox = $("#secondSelectedApprovalUser");
+		        selectedBox.empty(); // 기존 박스 초기화
+		
+		        // 선택한 결재자 정보를 하나의 박스로 표시
+		        var selectedContent = $("<div>").text(
+		        			approverData.user_position + 
+			  	      " " + approverData.user_name
+		        );
+		        selectedBox.append(selectedContent);
+		      }
+	
+	      
+	      /* // 검색 결과를 화면에 표시하는 함수
+	      function displaySearchResults(response) {
+		        var searchResults = $("#searchResults");
+		        searchResults.empty(); // 기존 결과 초기화
+		        response.forEach(function(approverData) {
+		        	var resultItem = $("<div>", {
+		                text: "이름: " + approverData.user_name +
+		                      ", 이메일: " + approverData.user_email +
+		                      ", 부서: " + approverData.dept.dept_name,
+		                class: "result-items"
+		              });
+		          resultItem.on("click", function(event) {
+					event.stopPropagation();
+		            $("#searchInput").val(approverData.user_name);
+		            searchResults.hide();
+		            selectApprovalUser(approverData); // 선택한 결재자 정보를 박스로 표시
+		            $(".modal-footer").find('[data-dismiss="modal"]').trigger("click");
+		          });
+		          searchResults.append(resultItem);
+		        });
+	
+	        // 검색 결과가 있을 경우 드롭다운 표시, 없을 경우 숨김 처리
+	        if (response.length > 0) {
+	          searchResults.show();
+	        } else {
+	          searchResults.hide();
+	        }
+	      } */
+	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	/*-----------------------------------*/
     	//여기 아래 부분
     	$('#summernote').summernote({
 				height: 300,                 // 에디터 높이
@@ -245,6 +532,9 @@
             // form을 submit
             $("#regi_form").submit();
         });
+    	
+    	
+    	
     	
     });
     </script>
