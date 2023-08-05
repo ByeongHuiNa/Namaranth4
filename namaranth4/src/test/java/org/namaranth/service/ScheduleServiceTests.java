@@ -18,9 +18,17 @@ public class ScheduleServiceTests {
 	@Autowired
 	private ScheduleService service;
 	
+	@Autowired
+	private UserService uService;
+	
+//	@Test
+//	public void test() {
+//		service.getSchedule();
+//	}
+	
 	@Test
 	public void test() {
-		service.getSchedule();
+		uService.getdeptUserList();
 	}
 
 }

@@ -18,6 +18,12 @@ public class ScheduleMapperTests {
 	@Autowired
 	private ScheduleMapper mapper;
 	
+	
+//	@Test
+//	public void test() {
+//		mapper.getSchedule();
+//	}
+	
 	@Test
 	public void test() {
 		mapper.getSchedule();
