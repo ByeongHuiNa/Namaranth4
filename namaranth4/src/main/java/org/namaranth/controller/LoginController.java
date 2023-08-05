@@ -1,8 +1,15 @@
 package org.namaranth.controller;
 
 import java.security.Principal;
+import java.util.List;
 
+import org.namaranth.domain.DocumentVO;
+import org.namaranth.domain.EmailVO;
+import org.namaranth.domain.NoteVO;
+import org.namaranth.domain.NoticeVO;
 import org.namaranth.domain.UsersVO;
+import org.namaranth.service.NoteService;
+import org.namaranth.service.NoticeService;
 import org.namaranth.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +23,9 @@ import lombok.extern.log4j.Log4j;
 @AllArgsConstructor
 public class LoginController {
 	
-	private UserService service;
+	private UserService userService;
+	private NoticeService noticeService;
+	private NoteService noteService;
 	
 	// 로그인 페이지
 	@GetMapping("/login")
@@ -38,11 +47,29 @@ public class LoginController {
 		String user_email = principal.getName();
 		log.info("유저아이디: "+ user_email);
 		
-		UsersVO VO = service.getUser(user_email);
-		model.addAttribute("user", VO);
+		UsersVO users = userService.getUser(user_email);
+		model.addAttribute("user", users);
 		
-		String deptName = service.getDept(user_email);
+		String deptName = userService.getDept(user_email);
 		model.addAttribute("dept", deptName);
+		
+		int user_no = users.getUser_no();
+		List<EmailVO> emails = userService.getEmails(user_no);
+		model.addAttribute("emails", emails);
+		
+		List<DocumentVO> docs = userService.getDoc(user_no);
+		model.addAttribute("docs", docs);
+		
+		List<NoticeVO> notices = noticeService.getNoticeList();
+		model.addAttribute("notices", notices);
+		
+		List<NoteVO> notes = noteService.getList(user_no);
+		model.addAttribute("notes", notes);
 	}
 	
+	// 회원 정보 수정
+	@GetMapping("/userUpdate")
+	public void userUpdate() {
+		log.info("회원정보 수정");
+	}
 }

@@ -30,11 +30,19 @@ public class UserMapperTests {
 //		log.info(vo);
 //	}
 
-	@Test
-	public void testReadDept() {
+//	@Test
+//	public void testReadDept() {
+//		String dept = mapper.readDept("aaa@aaa.com");
+//		log.info(dept);
+//	}
 
-		em.getAllList(2);
-		
-		
+//	@Test
+//	public void testReadEmail() {
+//		mapper.readEmail(1);
+//	}
+	
+	@Test
+	public void testReadDocCom() {
+		mapper.readDoc(4);
 	}
 }
