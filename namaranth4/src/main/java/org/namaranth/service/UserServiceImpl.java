@@ -44,10 +44,4 @@ public class UserServiceImpl implements UserService {
 	      return mapper.listUser();
 	 }
 
-	@Override
-	public List<UsersVO> getdeptUserList() {
-		log.info("get dept and user list");
-		return mapper.listUser();
-	}
-
 }
