@@ -41,7 +41,7 @@ public class EmailController {
 		log.info("allmail");
 		model.addAttribute("sendmail", service.getSendList(VO.getUser_no()));
 		model.addAttribute("receivemail", service.getReceiveList(VO.getUser_no()));
-		log.info("������ȣ @@@@@@@@@@@: " +  VO.getUser_no());
+		
 		log.info(model);
 	}
 	
@@ -55,8 +55,8 @@ public class EmailController {
 	      
 		log.info("allmail");
 		model.addAttribute("allmail", service.getSendList(VO.getUser_no()));
-		//model.addAttribute("getreceiver", service.getReceiver(2)); //���Ϲ�ȣ
-		log.info("������ȣ @@@@@@@@@@@: " +  VO.getUser_no());
+		
+		
 		
 		log.info(model);
 	}
@@ -71,7 +71,7 @@ public class EmailController {
 	      
 		log.info("allmail");
 		model.addAttribute("allmail", service.getReceiveList(VO.getUser_no()));
-		log.info("������ȣ @@@@@@@@@@@: " +  VO.getUser_no());
+		
 		log.info(model);
 	}
 	
@@ -85,8 +85,7 @@ public class EmailController {
 	      
 		log.info("allmail");
 		model.addAttribute("allmail", service.getSendList(VO.getUser_no()));
-		//model.addAttribute("getreceiver", service.getReceiver(2)); //���Ϲ�ȣ
-		log.info("������ȣ @@@@@@@@@@@: " +  VO.getUser_no());
+		
 		
 		log.info(model);
 	}
