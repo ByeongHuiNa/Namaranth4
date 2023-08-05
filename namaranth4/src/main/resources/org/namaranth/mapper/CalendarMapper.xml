@@ -4,6 +4,18 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.namaranth.mapper.CalendarMapper">
 
+	<resultMap type="org.namaranth.domain.CalendarVO" id="calendarMap">
+		<id property="cal_no" column="cal_no"/>
+		<result property="cal_name" column="cal_name"/>
+		<result property="cal_color" column="cal_color"/>
+		<result property="cal_con" column="cal_con"/>
+		<collection property="users" ofType="org.namaranth.domain.UsersVO">
+			<id property="user_no" column="user_no"/>
+			<result property="user_name" column="user_name"/>
+			<result property="user_birth" column="user_birth"/>	
+		</collection>		
+	</resultMap>
+
 	<select id="getList" resultType="org.namaranth.domain.CalendarVO">
 		select distinct c.cal_no, c.cal_name, c.cal_color
 		from calendar c
@@ -12,6 +24,17 @@
 
 	</select>
 	
+	<insert id="insertSelectKey">
+		<selectKey keyProperty="cal_no" order="BEFORE" resultType="int">
+			select seq_cal.nextval from dual
+		</selectKey>
+		insert into calendar (cal_no, user_no, cal_name, cal_color, cal_con)
+		values (#{cal_no}, #{users.user_no}, #{cal_name}, #{cal_color}, #{cal_con})
+	</insert>
 	
+	<insert id="insertCalParti">
+		insert into cal_parti (cal_no, user_no)
+		values (#{cal_no}, #{userCalParti_no})
+	</insert>
 	
 </mapper>

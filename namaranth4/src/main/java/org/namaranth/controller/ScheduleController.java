@@ -3,7 +3,10 @@ package org.namaranth.controller;
 import java.util.List;
 
 import org.namaranth.domain.ScheduleVO;
+import org.namaranth.domain.UsersVO;
 import org.namaranth.service.ScheduleService;
+import org.namaranth.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,10 +22,35 @@ public class ScheduleController {
 
 	private ScheduleService service;
 	
-	@GetMapping("/getList")
-	public ResponseEntity<List<ScheduleVO>> getCalendar(){
+	@Autowired
+	private UserService uService;
+	
+	@GetMapping("/getSchedule")
+	public ResponseEntity<List<ScheduleVO>> getSchedule(){
 	
 	
-	return new ResponseEntity<>(service.getSchedule(), HttpStatus.OK);
+		return new ResponseEntity<>(service.getSchedule(), HttpStatus.OK);
 	}
+	
+	@GetMapping("/pickCalendar")
+	public ResponseEntity<List<ScheduleVO>> pickCalendar(){
+	
+	
+		return new ResponseEntity<>(service.getSchedule(), HttpStatus.OK);
+	}
+	
+	@GetMapping("/showAllCalendar")
+	public ResponseEntity<List<ScheduleVO>> showAllCalendar(){
+	
+	
+		return new ResponseEntity<>(service.getSchedule(), HttpStatus.OK);
+	}
+	
+	@GetMapping("/calPartiList")
+	public List<UsersVO> getUserList(){
+      List<UsersVO> users = uService.getdeptUserList();
+      return users;
+      //return new ResponseEntity<>(uService.getdeptUserList(), HttpStatus.OK);
+   }
+	
 }

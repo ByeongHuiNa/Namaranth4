@@ -37,5 +37,11 @@ public class UserServiceImpl implements UserService {
 		log.info(mapper.readDept(user_email));
 		return mapper.readDept(user_email);
 	}
+	
+	@Override
+	  public List<UsersVO> getdeptUserList() {
+	      log.info("get dept and user list");
+	      return mapper.listUser();
+	 }
 
 }
