@@ -8,5 +8,5 @@ public interface UserService {
 	public List<UsersVO> getUserList();
 	public UsersVO getUser(String user_email);
 	public String getDept(String user_email);
-	
+	public List<UsersVO> getdeptUserList();
 }

@@ -93,10 +93,16 @@
 					<label>Approval</label>
 				</li>
 				<li class="nav-item">
-				    <a href="chart-apex.html" class="nav-link "><span class="pcoded-micon"><i class="feather icon-pie-chart"></i></span><span class="pcoded-mtext">Chart</span></a>
+				    <a href="/document/docboard" class="nav-link "><span class="pcoded-micon"></span><span class="pcoded-mtext">기안문서함</span></a>
 				</li>
 				<li class="nav-item">
-				    <a href="map-google.html" class="nav-link "><span class="pcoded-micon"><i class="feather icon-map"></i></span><span class="pcoded-mtext">Maps</span></a>
+				    <a href="/document/docappReq" class="nav-link "><span class="pcoded-micon"></span><span class="pcoded-mtext">결재요청함</span></a>
+				</li>
+				<li class="nav-item">
+				    <a href="/document/docappRej" class="nav-link "><span class="pcoded-micon"></span><span class="pcoded-mtext">반려문서함</span></a>
+				</li>
+				<li class="nav-item">
+				    <a href="/document/docappComp" class="nav-link "><span class="pcoded-micon"></span><span class="pcoded-mtext">결재완료문서함</span></a>
 				</li>
 				<li class="nav-item pcoded-hasmenu">
 				    <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-lock"></i></span><span class="pcoded-mtext">Authentication</span></a>

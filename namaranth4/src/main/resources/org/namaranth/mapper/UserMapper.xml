@@ -31,6 +31,11 @@
 		select * from users
 	</select>
 	
+	<select id="listUser" resultMap="userMap">
+		select d.dept_name, u.user_no, u.user_name, u.user_position, u.user_email from users u, dept d
+		where u.dept_no = d.dept_no
+	</select>
+	
 	<select id="readUser" resultMap="userMap">
 		SELECT * 
 			FROM users users LEFT OUTER JOIN auth auth 

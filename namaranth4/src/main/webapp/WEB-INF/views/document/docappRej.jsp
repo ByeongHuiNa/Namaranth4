@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page session="false" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,21 +20,6 @@
     <meta name="author" content="Phoenixcoded" />
     <!-- Favicon icon -->
     <link rel="icon" href="../../../resources/dist/assets/images/favicon.ico" type="image/x-icon">
-
-<style>
-    /* 동적으로 생성되는 테이블에 스타일을 적용하는 클래스 스타일 */
-    .doc-content-table table {
-        border-collapse: collapse; /* 테이블 셀 병합 */
-        border: 1px solid #000;    /* 테이블 테두리 스타일 */
-        width: 900px;              /* 테이블 가로 폭 */
-    }
-
-    .doc-content-table td {
-        border: 1px solid #000;    /* 셀 테두리 스타일 */
-        padding: 8px;              /* 셀 안의 여백 */
-        text-align: center;         /* 셀 내용 가운데 정렬 */
-    }
-</style>
 </head>
 <body class="">
 <!-- [ Pre-loader ] start -->
@@ -57,21 +43,30 @@
 
     <div class="col-md-12">
     	<div class="row">
+	    	<div class="col-md-2 appside">
 	    	
+	    		<!-- [ Side Content ] start-->
+				<div class="page-header-title m-t-10">
+						<h4 class="m-t-10 m-b-20">전자결재</h4>
+				</div>
+				<div>
+					<button type="button" class="btn btn-primary regi_btn" id="doc_regi_btn">기안작성</button>
+				</div>
+					
+			</div>
 	    	
-	    	<div class="col-md-12">
-	    	
+	    	<div class="col-md-10">
 	    		<!-- [ breadcrumb ] start -->
 		        <div class="page-header">
 		            <div class="page-block">
 		                <div class="row align-items-center">
 		                    <div class="col-md-12">
 		                        <div class="page-header-title m-t-20">
-		                            <h5 class="m-b-10">문서</h5>
+		                            <h5 class="m-b-10">반려문서함</h5>
 		                        </div>
 		                        <ul class="breadcrumb">
 		                            <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
-		                            <li class="breadcrumb-item"><a href="#!">기안문서</a></li>
+		                            <li class="breadcrumb-item"><a href="#!">반려문서함</a></li>
 		                        </ul>
 		                    </div>
 		                </div>
@@ -84,69 +79,47 @@
 		            <div class="col-sm-12">
 		                <div class="card borderless">
 		                    <div class="card-header">
-		                        <h5>문서</h5>
+		                        <h5>Basic Component</h5>
 		                    </div>
 		                    
-		                    <!-- [Document contents] -->
-		                    <div class="card-body">
-		                    	<form>
-		                    		문서번호 : <input name="doc_title" value="${get.doc_no }" readonly="readonly"/>
-		                    		제목 : <input name="doc_title" value="${get.doc_title }" readonly="readonly"/>
-		                    		기안자: <input name="user_name" value="${get.user.user_name }" readonly="readonly"/>
-									<div class="doc-content-table">${get.doc_content}</div>
-									</form>
+		                    <!-- [table] -->
+		                    <div class="card-body table-border-style">
+		                        <div class="table-responsive">
+		                            <table class="table table-hover">
+		                                <thead>
+		                                    <tr>
+		                                        <th>문서번호</th>
+		                                        <th>제목</th>
+		                                        <th>기안자</th>
+		                                        <th>결재상태</th>
+		                                        <th>기안일자</th>
+		                                    </tr>
+		                                </thead>
+		                                <tbody id="doc_list">
+		                                    <c:forEach items="${list }" var="list">
+		                                    	<tr class="list_btn">
+		                                    		<td class="doc_no">${list.doc_no}</td>
+		                                    		<td>${list.doc_title}</td>
+		                                    		<td>${list.user.user_name }</td>
+		                                    		<td>${list.doc_status}</td>
+		                                    		<td><fmt:formatDate value="${list.doc_regdate}" pattern="yy년 MM월 dd일 HH:mm"/></td>
+		                                    		<%-- <td>${list.doc_regdate}</td> --%>
+		                                    				                                    		
+		                                    	</tr>
+		                                    </c:forEach>
+		                                </tbody>
+		                            </table>
+		                        </div>
 		                    </div>
-		                    
 		                    
 		                </div>
 		            </div>
 		        </div>
-		        <form id="app_form" action="/document/docApp" method="post">
-						<input type="hidden" name="doc_no" value="${get.doc_no }">
-						<button id="app_submit_btn">결재하기</button>
-				</form>
-				
-				
-				<!-- reject modal -->
-				<button type="button" class="btn  btn-primary" data-toggle="modal" data-target="#rejModal">반려</button>
-						<div class="modal fade" id="rejModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-							<div class="modal-dialog" role="document">
-								<div class="modal-content">
-									<div class="modal-header">
-										<h5 class="modal-title" id="exampleModalLabel">반려</h5>
-										<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-									</div>
-									<div class="modal-body">
-										<form id="rej_form" action="/document/docRej" method="post">
-											<div class="form-group">
-												<label for="recipient-name" class="col-form-label">반려 의견 작성</label>
-											</div>
-											<div class="form-group">
-												<input type="hidden" name="doc_no" value="${get.doc_no }">
-												<label for="message-text" class="col-form-label">의견작성:</label>
-												<textarea class="form-control" name="docrej_content" id="message-text"></textarea>
-											</div>
-										</form>
-									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn  btn-secondary" data-dismiss="modal">닫기</button>
-										<button type="button" class="btn  btn-primary" id="rej_submit_btn">확인</button>
-									</div>
-								</div>
-							</div>
-						</div>
-				
-				
-		        
 		        <!-- [ Main Content ] end -->
 	    	</div>
     	</div>
     </div>
     
-        
-        
-        
-
 </section>
 <!-- [ Main Content ] end -->
     <!-- Warning Section start -->
@@ -201,22 +174,29 @@
     <script src="../../../resources/dist/assets/js/vendor-all.min.js"></script>
     <script src="../../../resources/dist/assets/js/plugins/bootstrap.min.js"></script>
     <script src="../../../resources/dist/assets/js/pcoded.min.js"></script>
+    
+    <!-- button custom -->
     <script type="text/javascript">
-    $(document).ready(function() {
-        $(".doc-content-table table").addClass("doc-content-table");
-        $(".doc-content-table table").removeClass("table table-bordered");
-        
-        
-        $("#app_submit_btn").click(function() {
-            // form을 submit
-            $("#app_form").submit();
-        });
-        
-        $("#rej_submit_btn").click(function() {
-            // form을 submit
-            $("#rej_form").submit();
-        });
-    });
+	    $(document).ready(function() {
+	    	
+	    	//문서리스트 중 하나를 클릭 했을 경우 문서를 조회하는 버튼
+	        $("#doc_list").on("click", ".list_btn", function() {
+	            // 클릭한 행의 doc_no 값을 가져오기
+	           	var docNo = $(this).find(".doc_no").text();    
+	            // 클릭한 행의 doc_no 값을 이용하여 이동할 URL 생성
+	            var url = "/document/docshow?doc_no=" + docNo;
+	            // URL로 페이지 이동
+	            window.location.href = url;
+	        });
+	    	
+	    	//문서작성 버튼을 클릭할 경우 문서작성으로 이동하는 코드
+	        $("#doc_regi_btn").on("click", function() {    
+	            var url = "/document/docregi";
+	            window.location.href = url;
+	        });
+	        
+	        
+	    });
     </script>
 </body>
 </html>

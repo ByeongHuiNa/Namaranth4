@@ -29259,8 +29259,8 @@ new-task label input[type=checkbox] {
 
 .fc-event,
 .fc-event:not([href]) {
-    background-color: #1abc9c;
-    border-color: #1abc9c;
+    /* background-color: #1abc9c;
+    border-color: #1abc9c; */
     color: #fff;
     padding: 5px 10px;
     border-radius: 2px;
