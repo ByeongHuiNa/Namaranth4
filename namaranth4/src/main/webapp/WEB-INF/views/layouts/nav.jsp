@@ -81,7 +81,7 @@
 				    <label>Schedule</label>
 				</li>
 				<li class="nav-item">
-				    <a href="form_elements.html" class="nav-link "><span class="pcoded-micon"><i class="bi bi-calendar3" style="color:white;"></i></span><span class="pcoded-mtext">캘린더</span></a>
+				    <a href="/calendar/calendar" class="nav-link "><span class="pcoded-micon"><i class="bi bi-calendar3" style="color:white;"></i></span><span class="pcoded-mtext">캘린더</span></a>
 				</li>
 				<li class="nav-item">
 				    <a href="tbl_bootstrap.html" class="nav-link "><span class="pcoded-micon"><i class="bi bi-gear-fill" style="color:white;"></i></span><span class="pcoded-mtext">환경설정</span></a>

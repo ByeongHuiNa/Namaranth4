@@ -14,8 +14,13 @@ public class ScheduleServiceImpl implements ScheduleService {
 	private ScheduleMapper mapper;
 	
 	@Override
-	public List<ScheduleVO> getSchedule() {
-		return mapper.getSchedule();
+	public List<ScheduleVO> getSchedule(int user_no) {
+		return mapper.getSchedule(user_no);
+	}
+
+	@Override
+	public void registerSch(ScheduleVO sch) {
+		mapper.insertSelectKey(sch);
 	}
 
 }

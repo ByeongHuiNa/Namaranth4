@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/scss" href="../../../resources/dist/assets/scss/style.scss" />
 <link rel="stylesheet" type="text/css" href="../../../resources/dist/assets/css/style.css" />
 <head>
@@ -30,12 +31,19 @@
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/js/tempusdominus-bootstrap-4.min.js"></script>
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css"/>
 <link rel="stylesheet" type="text/css" href="../../../resources/dist/assets/css/calendar.css" />
-
+<style type="text/css">
+	.bootstrap-datetimepicker-widget{
+		width:50px;
+	}
+</style>
 
 </head>
 <body class="">
+<input id="userinfo_name" type="hidden" value="${user.user_name}"/><input id="userinfo_dept" type="hidden" value="${dept}"/><input id="userinfo_position" type="hidden" value="${user.user_position}"/>
 <!-- [ Pre-loader ] start -->
 <div class="loader-bg">
 	<div class="loader-track">
@@ -75,6 +83,15 @@
 										<c:out value="${calendar.cal_name }" />
 								</div>
 								</td>
+								<td id="cal-share"><!-- 공유캘린더 -->
+									<c:if test="${calendar.sharedCalendar}"><i class="bi bi-people-fill"></i></c:if>
+								</td>	
+								<td id="cal-const"><!-- 생성자 수정 -->
+									<c:if test="${user.user_no eq calendar.users.user_no}"><button type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCalUpdate" aria-controls="offcanvasRight" id="cal-const-update-btn" data-calno="${calendar.cal_no}"><i class="bi bi-gear"></i></button></c:if>
+								</td>							
+								<td><!-- 생성자 삭제-->
+            						<c:if test="${user.user_no eq calendar.users.user_no}"><button type="button" id="cal-const-delete-btn" data-bs-toggle="modal" data-bs-target="#deleteModal" data-calno="${calendar.cal_no}"><i class="bi bi-trash3"></i></button></c:if>
+								</td>
 							</tr>
 						</c:forEach>
 				</table>
@@ -92,14 +109,13 @@
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body">
-  	<form action="/calendar/register" method="post">
+  	<form action="/calendar/register" method="post" id="createCal-form">
 	    <div class="form-group">
 	    	<label class="floating-label">캘린더명</label>
 	        <input type="text" class="form-control" name="cal_name">
 	    </div>
 	    <div class="form-group">
-	    	<label class="floating-label">유저넘버</label>
-	        <input type="text" class="form-control" name="users.user_no" >
+	    	<input type="hidden" name="users.user_no" value="${user.user_no }"/>
 	    </div>
 	    <div class="form-group">
 	    	<label class="floating-label">캘린더 색상</label>
@@ -112,20 +128,72 @@
 		    	<button type="button" class="color-box selected" style="background-color:#AC58FA" value="#AC58FA"></button>
 	    	</div>     
 	    	
-	        <input type="text" class="form-control color-input" name="cal_color">
+	        <input type="hidden" class="form-control color-input" name="cal_color">
 	    </div>
 	    <div class="form-group">
 	    	<label class="floating-label">공유 멤버</label>
-	    	<button type="button" class="btn  btn-primary" id="calParti-btn" data-toggle="modal" data-target=".bd-example-modal-lg">Large modal</button>
+	    	<button type="button" class="btn btn-primary" id="calParti-btn" data-toggle="modal" data-target="#shareModal">Large modal</button>
+	    	<div class="calParti-fin">
+	    		<table id="calParti-fin-table"></table>
+	    	</div>
+	        <!-- <input type="text" class="form-control" name="calParti_no[]">
 	        <input type="text" class="form-control" name="calParti_no[]">
-	        <input type="text" class="form-control" name="calParti_no[]">
-	        <input type="text" class="form-control" name="calParti_no[]">
+	        <input type="text" class="form-control" name="calParti_no[]"> -->
 	    </div>
 	    <div class="form-group">
 	    	<label class="floating-label">설명</label>
 	        <input type="text" class="form-control" name="cal_con" >
 	    </div>
 	    <input type="submit" value="등록">
+    </form>
+  </div>
+</div>
+
+<!-- calendar 수정 -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCalUpdate" aria-labelledby="offcanvasRightLabel">
+  <div class="offcanvas-header">
+    <h4 id="offcanvasRightLabel1">내 캘린더 추가</h4>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+  	<form action="/calendar/update" method="post" id="updateCal-form">
+	    <div class="form-group">
+	    	<label class="floating-label">캘린더명</label>
+	        <input type="text" class="form-control" name="cal_name">
+	    </div>
+	    <div class="form-group">
+	    	<input type="hidden" name="users.user_no" value="${user.user_no }"/>
+	    	<input type="hidden" name="cal_no"/>
+	    </div>
+	    <div class="form-group">
+	    	<label class="floating-label">캘린더 색상</label>
+	    	<div>
+	    		<button type="button" class="color-box selected" style="background-color:#FA5858" value="#FA5858"></button>
+		    	<button type="button" class="color-box selected" style="background-color:#FA8258" value="#FA8258"></button>
+		    	<button type="button" class="color-box selected" style="background-color:#F4FA58" value="#F4FA58"></button>
+		    	<button type="button" class="color-box selected" style="background-color:#58FA82" value="#58FA82"></button>
+		    	<button type="button" class="color-box selected" style="background-color:#58ACFA" value="#58ACFA"></button>
+		    	<button type="button" class="color-box selected" style="background-color:#AC58FA" value="#AC58FA"></button>
+	    	</div>     
+	    	
+	        <input type="hidden" class="form-control color-input" name="cal_color">
+	    </div>
+	    <div class="form-group">
+	    	<label class="floating-label">공유 멤버</label>
+	    	<button type="button" class="btn btn-primary" id="calParti-btn2" data-toggle="modal" data-target="#shareUpdateModal">Large modal</button>
+	    	<div class="calParti-fin">
+	    	<table id="calParti-fin-table2">
+	    	</table>
+	    	</div>
+	        <!-- <input type="text" class="form-control" name="calParti_no[]">
+	        <input type="text" class="form-control" name="calParti_no[]">
+	        <input type="text" class="form-control" name="calParti_no[]"> -->
+	    </div>
+	    <div class="form-group">
+	    	<label class="floating-label">설명</label>
+	        <input type="text" class="form-control" name="cal_con" >
+	    </div>
+	    <input type="submit" value="수정">
     </form>
   </div>
 </div>
@@ -137,14 +205,55 @@
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body">
-    ...
+    <form action="/calendar/regiSch" method="post" id="createSch-form">
+		<div class="form-group">
+	    	<label class="floating-label" for="dropdown">캘린더명</label>
+	    	<select id="dropdown" class="form-control">
+	    		<option>캘린더를 선택하세요</option>
+	    		<c:forEach items="${list}" var="calendar">	    			
+	    			<option value="${calendar.cal_no }">${calendar.cal_name }</option>
+	    		</c:forEach>
+			</select>
+	        <input type="text" class="form-control" id="cal_no-input" name="calendar.cal_no">
+	    </div>
+	    <div class="form-group">
+	    	<label class="floating-label">일정명</label>
+	        <input type="text" class="form-control" name="sch_name">
+	    </div>
+	    <div class="form-group">
+	    	<input type="hidden" name="users.user_no" value="${user.user_no }"/>
+	    </div>
+	    	    	    
+	    
+	    <!-- <div class="form-group">
+	    	<label class="floating-label">시작</label>
+	    	<input type="datetime-local" class="form-control day-time" id="datetimepicker1" name="sch_start">
+	    </div>
+	    	    	   	    
+	    
+	    <div class="form-group">	
+	    	<label class="floating-label">종료</label>
+	    	<input type="datetime-local" class="form-control day-time" id="datetimepicker2" name="sch_end">
+	    </div> -->
+	    
+	    <div class="form-group">
+	    	<label class="floating-label">종일</label>
+	    	<input type="checkbox" class="alldayCheck" name="sch_allday" value="0">
+	    </div>
+	    
+	    <div class="form-group">
+	    	<label class="floating-label">설명</label>
+	        <input type="text" class="form-control" name="sch_con" >
+	    </div>
+	    <input type="submit" value="등록">
+    </form>
   </div>
 </div>
 
 
 <!-- 공유멤버 리스트 모달 -->	
 
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="shareModal" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -171,7 +280,7 @@
 						<button type="button" class="cal-btn" id="plusCal"><i class="bi bi-plus fs-5"></i></button>
 						<button type="button" class="cal-btn" id="minusCal"><i class="bi bi-plus fs-5"></i></button>
 					</div>
-					<div class="calPartiList2">
+					<div class="calPartiList">
 						<table class="calPartiList-table">
 							<thead class="calPartiList-head">
 								<tr>
@@ -184,13 +293,132 @@
 							</thead>
 							<tbody id="calPartiList-body2"></tbody>
 						</table>
+					
 					</div>
-				</div>
+				</div>					
+			</div>
+			<div class="modal-footer">
+        		<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+        		<button type="button" class="btn btn-primary" id="cPartiOk" data-dismiss="modal">선택</button>
+      		</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- 수정 공유멤버 모달 -->
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="shareUpdateModal" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title h4" id="myLargeModalLabel">멤버 초대</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			</div>
+			<div class="modal-body">
+				<div class="calPartiList-wrap">
+					<div class="calPartiList">
+						<table class="calPartiList-table">
+							<thead class="calPartiList-head">
+								<tr>
+									<th><input type="hidden"  value="사원번호"></th>
+									<th>부서</th>
+									<th>사원명</th>
+									<th>직급</th>
+									<th>이메일</th>
+								</tr>
+							</thead>
+							<tbody id="calPartiList-body3"></tbody>
+						</table>
+					</div>
+					<div class="calPartiBtn">
+						<button type="button" class="cal-btn" id="plusCal2"><i class="bi bi-plus fs-5"></i></button>
+						<button type="button" class="cal-btn" id="minusCal2"><i class="bi bi-plus fs-5"></i></button>
+					</div>
+					<div class="calPartiList">
+						<table class="calPartiList-table">
+							<thead class="calPartiList-head">
+								<tr>
+									<th><input type="hidden"  value="사원번호"></th>
+									<th>부서</th>
+									<th>사원명</th>
+									<th>직급</th>
+									<th>이메일</th>
+								</tr>
+							</thead>
+							<tbody id="calPartiList-body4"></tbody>
+						</table>
+					
+					</div>
+				</div>					
+			</div>
+			<div class="modal-footer">
+        		<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+        		<button type="button" class="btn btn-primary" id="cPartiOk2" data-dismiss="modal">선택</button>
+      		</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- 캘린더 삭제 모달 -->
+
+<div id="deleteModal" class="modal fade" tabindex="-1"
+	role="dialog" aria-labelledby="exampleModalCenterTitle"
+	aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalCenterTitle">캘린더 삭제</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<p class="mb-0">정말로 삭제하시겠습니까?</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn  btn-secondary" id="cancelDeleteBtn"
+					data-dismiss="modal">취소</button>
+				<button type="button" class="btn  btn-primary" id="confirmDeleteBtn" data-dismiss="modal">확인</button>
 			</div>
 		</div>
 	</div>
 </div>
 
+
+
+<!-- 일정 조회 모달 ... 다음에 꼭 하자..-->
+<!-- <div id="readModal" class="modal fade" tabindex="-1">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalCenterTitle">캘린더 삭제</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<p class="mb-0">정말로 삭제하시겠습니까?</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn  btn-secondary" id="cancelDeleteBtn"
+					data-dismiss="modal">취소</button>
+				<button type="button" class="btn  btn-primary" id="confirmDeleteBtn">확인</button>
+			</div>
+		</div>
+	</div>
+</div> -->
+
+<script type="text/javascript">
+$(document).ready(function() {
+    let info = '<span>' + $("#userinfo_dept").val() + "/" + $('#userinfo_position').val() + "</span>";
+    $('#username').text($('#userinfo_name').val());
+    $('#more-details').prepend(info);
+});
+
+</script>
 
 	<!-- Required Js -->
 <script src="../../../resources/dist/assets/js/vendor-all.min.js"></script>
