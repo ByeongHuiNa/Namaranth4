@@ -17,7 +17,10 @@
 	<security:http>
 		<!-- isAuthenticated() : 인증한 사람만 들어갈 수 있음 -->
 		<security:intercept-url pattern="/main" access="isAuthenticated()"/> 
-		<security:intercept-url pattern="/notice/list" access="isAuthenticated()"/> 
+		<security:intercept-url pattern="/notice/*" access="isAuthenticated()"/> 
+		<security:intercept-url pattern="/calendar/*" access="isAuthenticated()"/> 
+		<security:intercept-url pattern="/email/*" access="isAuthenticated()"/> 
+		<security:intercept-url pattern="/document/*" access="isAuthenticated()"/> 
 		<security:form-login login-page="/login" authentication-success-handler-ref="customLoginSuccess"/>
 		<security:access-denied-handler ref="customAccessDenied"/>
 		<security:logout logout-url="/logout" invalidate-session="true"/>
