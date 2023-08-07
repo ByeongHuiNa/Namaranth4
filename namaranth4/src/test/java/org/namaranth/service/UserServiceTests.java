@@ -28,6 +28,6 @@ public class UserServiceTests {
 	
 	@Test
 	public void testDoc() {
-		service.getDoc(4);
+		service.getUserByName("ÀÌÀ¯³ª");
 	}
 }
