@@ -19,7 +19,7 @@
 			
 			<div class="">
 				<div class="main-menu-header">
-					<img class="img-radius" src="../../resources/dist/assets/images/user/avatar-2.jpg" alt="User-Profile-Image">
+					<img class="img-radius" id="userprofile" src="" alt="User-Profile-Image">
 					<div class="user-details">
 						<span id="username"></span>
 						<div id="more-details"><i class="fa fa-chevron-down m-l-5"></i></div>
@@ -47,18 +47,8 @@
 				    <a href="/main" class="nav-link "><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">메인페이지</span></a>
 				</li>
 				<li class="nav-item">
-				    <a href="form_elements.html" class="nav-link "><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span class="pcoded-mtext">공지사항</span></a>
+				    <a href="/notice/list" class="nav-link "><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span class="pcoded-mtext">공지사항</span></a>
 				</li>
-				<!-- 
-					* 필요하면 사용하기
-					<li class="nav-item pcoded-hasmenu">
-						<a href="#!" class="nav-link "><span class="pcoded-micon"><i class="feather icon-layout"></i></span><span class="pcoded-mtext">공지사항</span></a>
-						<ul class="pcoded-submenu">
-							<li><a href="layout-vertical.html" target="_blank">공지사항</a></li>
-							<li><a href="layout-horizontal.html" target="_blank">공지사항 등록</a></li>
-						</ul>
-					</li>
-				-->
 				<li class="nav-item pcoded-menu-caption">
 					<label>E-mail</label>
 				</li>
@@ -93,16 +83,16 @@
 					<label>Approval</label>
 				</li>
 				<li class="nav-item">
-				    <a href="/document/docboard" class="nav-link "><span class="pcoded-micon"></span><span class="pcoded-mtext">기안문서함</span></a>
+				    <a href="/document/docboard" class="nav-link "><span class="pcoded-micon"><i class="bi bi-clipboard-data" style="color:white;"></i></span><span class="pcoded-mtext">기안문서함</span></a>
 				</li>
 				<li class="nav-item">
-				    <a href="/document/docappReq" class="nav-link "><span class="pcoded-micon"></span><span class="pcoded-mtext">결재요청함</span></a>
+				    <a href="/document/docappReq" class="nav-link "><span class="pcoded-micon"><i class="bi bi-clipboard-minus" style="color:white;"></i></span><span class="pcoded-mtext">결재요청함</span></a>
 				</li>
 				<li class="nav-item">
-				    <a href="/document/docappRej" class="nav-link "><span class="pcoded-micon"></span><span class="pcoded-mtext">반려문서함</span></a>
+				    <a href="/document/docappRej" class="nav-link "><span class="pcoded-micon"><i class="bi bi-clipboard-x" style="color:white;"></i></span><span class="pcoded-mtext">반려문서함</span></a>
 				</li>
 				<li class="nav-item">
-				    <a href="/document/docappComp" class="nav-link "><span class="pcoded-micon"></span><span class="pcoded-mtext">결재완료문서함</span></a>
+				    <a href="/document/docappComp" class="nav-link "><span class="pcoded-micon"><i class="bi bi-clipboard-check" style="color:white;"></i></span><span class="pcoded-mtext">결재완료문서함</span></a>
 				</li>
 				<li class="nav-item">
 				    <a href="/document/docRefBoard" class="nav-link "><span class="pcoded-micon"></span><span class="pcoded-mtext">참조문서함</span></a>

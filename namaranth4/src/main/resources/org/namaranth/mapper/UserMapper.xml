@@ -67,28 +67,28 @@
 	
 	<!-- 일정 -->
 	<resultMap type="org.namaranth.domain.ScheduleVO" id="scheduleMap">
-      <id property="sch_no" column="sch_no"/>
-      <result property="sch_name" column="sch_name"/>
-      <result property="sch_start" column="sch_start"/>
-      <result property="sch_end" column="sch_end"/>
-      <result property="sch_place" column="sch_place"/>
-      <result property="sch_noti" column="sch_noti"/>
-      <result property="sch_con" column="sch_con"/>
-      <result property="sch_allday" column="sch_allday"/>
-      <collection property="calendar" ofType="org.namaranth.domain.CalendarVO">
-         <id property="cal_no" column="cal_no"/>
-         <result property="user_no" column="user_no"/>
-         <result property="cal_name" column="cal_name"/>
-         <result property="cal_color" column="cal_color"/>
-         <result property="cal_noti" column="cal_noti"/>
-         <result property="cal_con" column="cal_con"/>
-      </collection>
-      <collection property="users" ofType="org.namaranth.domain.UsersVO">
-         <id property="user_no" column="user_no"/>
-         <result property="user_name" column="user_name"/>
-         <result property="user_birth" column="user_birth"/>   
-      </collection>      
-   </resultMap>
+		<id property="sch_no" column="sch_no"/>
+		<result property="sch_name" column="sch_name"/>
+		<result property="sch_start" column="sch_start"/>
+		<result property="sch_end" column="sch_end"/>
+		<result property="sch_place" column="sch_place"/>
+		<result property="sch_noti" column="sch_noti"/>
+		<result property="sch_con" column="sch_con"/>
+		<result property="sch_allday" column="sch_allday"/>
+		<collection property="calendar" ofType="org.namaranth.domain.CalendarVO">
+			<id property="cal_no" column="cal_no"/>
+			<result property="user_no" column="user_no"/>
+			<result property="cal_name" column="cal_name"/>
+			<result property="cal_color" column="cal_color"/>
+			<result property="cal_noti" column="cal_noti"/>
+			<result property="cal_con" column="cal_con"/>
+		</collection>
+		<collection property="users" ofType="org.namaranth.domain.UsersVO">
+			<id property="user_no" column="user_no"/>
+			<result property="user_name" column="user_name"/>
+			<result property="user_birth" column="user_birth"/>	
+		</collection>		
+	</resultMap>
    
 	<select id="list" resultType="org.namaranth.domain.UsersVO">
 		select * from users
@@ -106,6 +106,14 @@
 			WHERE users.user_email = #{user_email}
 	</select>
 	
+	<select id="searchUserByName" resultMap="userMap">
+		SELECT users.user_name, users.user_phone, users.user_position, users.user_email, dept.dept_name
+			FROM users users 
+			LEFT OUTER JOIN dept dept 
+			ON users.dept_no = dept.dept_no 
+			WHERE users.user_name = #{user_name} 
+	</select>
+	
 	<select id="readDept" resultType="String">
 		SELECT dept_name FROM dept JOIN users
 		    ON dept.dept_no = users.dept_no
@@ -113,7 +121,7 @@
 	</select>
 	
 	<select id="readEmail" resultMap="emailMap">
-		SELECT mail.mail_title, mail.mail_regdate, users.user_name
+		SELECT mail.mail_title, mail.mail_content, mail.mail_regdate, users.user_name
 		    FROM mail mail LEFT OUTER JOIN mail_rcver rcver
 		    ON mail.mail_no = rcver.mail_no
 		    left outer join users users
@@ -128,13 +136,16 @@
     		where doc.user_no = #{user_no}
 	</select>
 	
-	<!-- 일정 조회 -->
-	<select id="getSchedule" resultMap="scheduleMap">
-      select distinct s.sch_no, s.sch_name, s.sch_start, s.sch_end, s.sch_place, s.sch_noti, s.sch_con, s.sch_allday, c.cal_color, c.cal_no
-      from schedule s
-      left join calendar c on s.cal_no = c.cal_no
-      left join sch_parti sp on s.sch_no = sp.sch_no
-      where s.user_no = #{user_no} or sp.user_no = #{user_no}
+	<!-- 특정 사용자의 오늘 일정 조회 -->
+	<select id="readSch" resultMap="scheduleMap">
+      	<![CDATA[
+	      	select distinct s.sch_no, s.sch_name, s.sch_start, s.sch_end, s.sch_place, s.sch_noti, s.sch_con, s.sch_allday, c.cal_color, c.cal_no
+			from schedule s
+			left join calendar c on s.cal_no = c.cal_no
+			left join sch_parti sp on s.sch_no = sp.sch_no
+			where (s.user_no = #{user_no} or sp.user_no = #{user_no})
+		    AND (TRUNC(s.sch_start) <= TRUNC(SYSDATE) AND TRUNC(SYSDATE) <= TRUNC(s.sch_end))
+   		]]>
    </select>
    
 </mapper>

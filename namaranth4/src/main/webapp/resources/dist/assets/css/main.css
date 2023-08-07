@@ -1,5 +1,25 @@
 @charset "EUC-KR";
 
+li, td{
+	cursor: pointer;	
+}
+
+ul#noticeList li:hover, ul#noteList li:hover, tr:hover td {
+    color: #1abc9c !important;
+}
+
+li {
+	padding-bottom: 5px;
+}
+
+#searchForm {
+	height: 30px;
+}
+
+#inputBox {
+	width: 85%;
+}
+
 #mypage{
 	margin-bottom: 0px;
 	height: 379px;
@@ -12,13 +32,6 @@
 
 #email {
 	height: 420px;
-}
-
-#logoutBtn {
-	border: 0;
-    background-color: transparent;
-    color: #d0dcda;
-    padding: 0px;
 }
 
 .longBox {
@@ -145,10 +158,10 @@
 	color: #1abc9c;
 }
 
-#myTab li > a:focus {
+/* #myTab li > a:focus {
 	color: #ffffff;
 	background-color: #1abc9c;
-}
+} */
 
 #noteContent {
 	width: 95%;
@@ -183,6 +196,7 @@
  }
  
  #bigGroup2 {
+ 	display:flex;
  	flex-grow:1;
  }
  
@@ -194,6 +208,15 @@
  }
  
  
+#profileImg {
+	padding-bottom: 8px;	
+}
+
+#profileImg > img {
+    margin: auto;
+    display: block;
+    height: 90px;
+}
  
  
  

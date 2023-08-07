@@ -1,18 +1,16 @@
 package org.namaranth.domain;
 
-
 import java.util.Date;
 
 import lombok.Data;
 
 @Data
-public class NoticeVO {
+public class AttendVO {
 	
-	private int noti_no;
-	private String noti_title;
-	private String noti_content;
-	private Date noti_regdate;
+	private int at_no;
 	private UsersVO user;
+	private Date start_time;
+	private Date end_time;
 	
     public int getUser_no() {
         return user.getUser_no();

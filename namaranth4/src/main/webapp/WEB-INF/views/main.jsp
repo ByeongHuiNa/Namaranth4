@@ -13,7 +13,6 @@
 	href="../../resources/dist/assets/scss/style.scss" />
 <link rel="stylesheet" type="text/css"
 	href="../../resources/dist/assets/css/style.css" />
-
 <head>
 <title>메인페이지</title>
 <!-- HTML5 Shim and Respond.js IE11 support of HTML5 elements and media queries -->
@@ -62,6 +61,7 @@
 	<input id="userinfo_name" type="hidden" value="${user.user_name}" />
 	<input id="userinfo_dept" type="hidden" value="${dept}" />
 	<input id="userinfo_position" type="hidden" value="${user.user_position}" />
+	<input id="userinfo_profile" type="hidden" value="${user.user_profile}" />
 	<div class="pcoded-main-container">
 		<div class="pcoded-content">
 			<!-- [ breadcrumb ] start -->
@@ -73,11 +73,21 @@
 								<i class="bi bi-person-circle iconSet"></i>내 정보
 							</h5>
 						</div>
-						<div class="card-body">
-							<p class="lead m-t-0 myinfo">${user.user_name}</p>
+						<div class="card-body" id="attend" style="padding: 10;">
+							<div id="profileImg">
+								<img class="img-radius" src="${user.user_profile}" alt="User-Profile-Image"/>
+							</div>
+							<div class="lead m-t-0 myinfo" style="padding-top:5px; padding-bottom:5px;"><b>${user.user_name}</b></div>
 							<div class="myinfo">사원번호 ${user.user_no}</div>
 							<div class="myinfo">${dept}/${user.user_position}</div>
 							<div class="myinfo">메일 ${user.user_email}</div>
+						    <c:if test="${formattedStartTime != null}">
+						        <div class="myinfo" id="startTime" style="color:grey; padding-top:5px;"><b>출근</b> : ${formattedStartTime}</div>
+						    	<input type="hidden" value="${attend.at_no}" id="attendNo"/>
+						    </c:if>							
+						    <c:if test="${formattedEndTime != null}">
+							    <div class="myinfo" id="endTime" style="color:grey;"><b>퇴근</b> : ${formattedEndTime}</div>
+						    </c:if>								    
 						</div>
 						<div class="attenBtn">
 							<button type="button" class="btn btn-outline-primary">
@@ -141,7 +151,7 @@
 											<th class="align-middle">수신일</th>
 										</tr>
 									</thead>
-									<tbody>
+									<tbody id="mailList">
 										<c:forEach items="${emails}" var="email">
 											<tr>
 												<td>
@@ -153,13 +163,16 @@
 														</label>
 													</div>
 												</td>
-												<td class="align-middle"><c:out
-														value="${email.mail_title}" /></td>
-												<td class="align-middle"><c:out
-														value="${email.user_name}" /></td>
-												<td class="align-middle"><fmt:formatDate
-														value="${email.mail_regdate}" pattern="yyyy/MM/dd" /></td>
+												<td class="align-middle">
+													<c:out value="${email.mail_title}" />
+													<input type="hidden" value="${email.mail_title}" class="mailTitle"/>
+												</td>
+												<td class="align-middle"><c:out value="${email.user_name}" />
+													<input type="hidden" value="${email.user_name}" class="mailUserName"/>
+												</td>
+												<td class="align-middle"><fmt:formatDate value="${email.mail_regdate}" pattern="yyyy/MM/dd" /></td>
 											</tr>
+											<input type="hidden" value="${email.mail_content}" class="mailContent"/>
 										</c:forEach>
 									</tbody>
 								</table>
@@ -168,9 +181,9 @@
 					</div>
 				</div>
 
-				<!-- [ Hover-table ] end -->
 				<div id="vbigGroup">
 					<div class="col-lg-8 " id="bigGroup1">
+					
 						<div class="w-100" id="smallGroup">
 							<div class="col-lg-6 paddingSet">
 								<div class="mainCard">
@@ -180,12 +193,16 @@
 										</h5>
 									</div>
 									<div class="card-body readDoc">
-										<ul>
+										<ul id="noticeList">
 											<c:forEach items="${notices}" var="notice">
-												<li><i class="bi bi-stop-fill listIconSet"></i> <c:out
-														value="${notice.noti_no}" />. <c:out
-														value="${notice.noti_title}" /> [<c:out
-														value="${notice.user.user_name}" />]</li>
+												<li><i class="bi bi-stop-fill listIconSet"></i> 
+													<c:out value="${notice.noti_no}" />. 
+													<strong><c:out value="${notice.noti_title}" /></strong>
+													&nbsp;&nbsp;
+													[<c:out value="${notice.user.user_name}" />]
+													<input type="hidden" value="${notice.noti_title}" id="noticeTitle"/>
+													<input type="hidden" value="${notice.noti_content}" id="noticeContent"/>
+												</li>
 											</c:forEach>
 										</ul>
 									</div>
@@ -254,31 +271,55 @@
 								</div>
 							</div>
 						</div>
-
-						<div class="" id="bigGroup2">
-							<div class="col-lg-12 paddingSet">
+					
+						
+						<div id="bigGroup2" >
+							<div class="col-lg-6 paddingSet">
 								<div class="mainCard">
 									<div class="card-header">
-										<h5>
-											<i class="bi bi-calendar3 iconSet"></i>일정
-										</h5>
+										<h5><i class="bi bi-calendar3 iconSet"></i>오늘의 일정</h5>
 									</div>
-									<div class="card-body">
-										<ol>
-											<li>Nulla volutpat aliquam velit
-												<ul>
-													<li>Phasellus iaculis neque</li>
-													<li>Vestibulum laoreet porttitor sem</li>
-												</ul>
-											</li>
-											<li>Faucibus porta lacus fringilla vel</li>
-											<li>Eget porttitor lorem</li>
-										</ol>
+									<div class="card-body readDoc">
+										<ul id="scheduleList">
+											<c:forEach items="${schedules}" var="schedule">
+												<li>
+													<p style="margin-bottom:0px !important;"><i class="bi bi-stop-fill listIconSet"></i><b><c:out value="${schedule.sch_name}" /></b></p>
+													<div style="color:grey;"><fmt:formatDate value="${schedule.sch_start}" pattern="yyyy/MM/dd hh:mm:ss" /> ~ <fmt:formatDate value="${schedule.sch_end}" pattern="yyyy/MM/dd hh:mm:ss" /></div>
+												</li>
+											</c:forEach>
+										</ul>
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-lg-6 paddingSet">
+								<div class="mainCard">
+									<div class="card-header">
+										<h5><i class="bi bi-search iconSet"></i>사원검색</h5>
+									</div>
+		                                
+							         <form id='searchForm'>
+							         	<div class="card-body readDoc">
+											<div class="input-group mb-3">
+				                                <div class="input-group mb-3" id="inputBox">
+				                                    <input type="text" style="height:40px;" name="user_name" id="searchByName" class="form-control" placeholder="사원 이름 입력" aria-label="Recipient's username" aria-describedby="basic-addon2">
+				                                    <div class="input-group-append">
+				                                        <button class="btn btn-primary" style="height:40px;" id="searchUsers" type="button">Button</button>
+				                                    </div>
+				                                </div>					                     
+					                     	</div>
+							             </div>
+					                  </form>
+					                  
+					                <div class="card-body" id="searchResults">
+
 									</div>
 								</div>
 							</div>
 						</div>
+						
 					</div>
+				
 
 					<div class="col-8 col-lg-4 paddingSet">
 						<div class="mainCard" style="height:550px;">
@@ -318,7 +359,7 @@
 										<div class="tab-pane fade" id="profile" role="tabpanel"
 											aria-labelledby="profile-tab">
 											<input type="hidden" id="noteWriter" value="${user.user_no}"/>
-											<input type="text" id="noteTitle" placeholder="제목"/>
+											<input type="text" id="noteTitle" placeholder="제목" required />
 											<textarea rows="6" cols="39" id="noteContent" placeholder="내용"></textarea>
 											<div
 												style="display: inline-block; margin: 0 20px; float: right;">
@@ -331,7 +372,8 @@
 							</div>
 						</div>
 					</div>
-					
+				</div>	
+					<!-- 메모장 관련 모달창 -->
 					<div class="col-xl-4 col-md-6">
 						<div class="card-body">
 							<div id="exampleModalLong" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
@@ -355,12 +397,33 @@
 							</div>
 						</div>
 					</div>
+					
+					<!-- 메일, 공지사항 모달창 -->
+					<div class="col-xl-4 col-md-6">
+						<div class="card-body">
+							<div id="exampleModalCenter" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="exampleModalCenterTitle"></h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+										</div>
+										<div class="modal-body" id="viewContent">
+										
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn  btn-primary" data-dismiss="modal">닫기</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 			<!-- Widget primary-success card end -->
 		</div>
 		<!-- [ Main Content ] end -->
-	</div>
 	</div>
 	<!-- [ Main Content ] end -->
 
@@ -377,13 +440,14 @@
 
 <!-- JS -->
 <script type="text/javascript">
+// 메모 관련 함수 : 등록, 삭제, 수정, 목록 조회
 var note = (function(){
 	// 메모 추가
 	function add(memo, callback, error){
 		console.log(memo);
 		$.ajax({
 			type: 'POST',
-			url: '/notes/new',
+			url: '/page/notes/new',
 			data: JSON.stringify(memo),
 			contentType: "application/json; charset=utf-8",
 			success: function(result, status, xhr){
@@ -408,7 +472,7 @@ var note = (function(){
 		console.log(note_no);
 		$.ajax({
 			type: 'DELETE',
-			url: '/notes/delete/' + note_no,
+			url: '/page/notes/delete/' + note_no,
 			success: function(result, status, xhr){
 				if(callback){
 					callback(result);
@@ -427,7 +491,7 @@ var note = (function(){
 		console.log("updateMemo : " + updateMemo.note_no);
 		$.ajax({
 			type: 'PATCH',
-			url: '/notes/update/' + updateMemo.note_no,
+			url: '/page/notes/update/' + updateMemo.note_no,
 			data: JSON.stringify(updateMemo),
 			contentType : "application/json; charset=utf-8",
 			success : function(result, status, xhr){
@@ -449,7 +513,7 @@ var note = (function(){
 		var user_no = param.user_no;
 		
 		$.getJSON(
-			"/notes/list/" + user_no,
+			"/page/notes/list/" + user_no,
 			function(data){
 				if(callback){
 					callback(data);
@@ -460,7 +524,6 @@ var note = (function(){
 				error();
 			}
 		});
-		
 	}
 	
 	return {
@@ -471,14 +534,91 @@ var note = (function(){
 	};
 })();
 
+// 출근, 퇴근
+var attend = (function(){
+	function attendStart(startTime, callback, error){
+		console.log(startTime);
+		$.ajax({
+			type: 'POST',
+			url: '/page/attend/start/' + startTime.user.user_no,
+			data: JSON.stringify(startTime),
+			contentType: "application/json; charset=utf-8",
+			success: function(result, status, xhr){
+				if(callback){
+					callback(result);
+				}
+			},
+			error: function(xhr, status, err){
+				if(error){
+					error(err);
+				}
+			}
+		})
+	}
+	
+	function attendEnd(endTime, callback, error){
+		console.log(endTime);
+		console.log($("#userinfo_no").val());
+		$.ajax({
+			type: 'POST',
+			url: '/page/attend/end/' + $("#userinfo_no").val(),
+			data: JSON.stringify(endTime),
+			contentType: "application/json; charset=utf-8",
+			success: function(result, status, xhr){
+				if(callback){
+					callback(result);
+				}
+			},
+			error: function(xhr, status, err){
+				if(error){
+					error(err);
+				}
+			}
+		})
+	}
+	
+	return {
+		attendStart: attendStart,
+		attendEnd: attendEnd
+	};
+	
+})();
+
+// 검색
+var search = (function(){
+	function searchUser(param, callback, error){
+		var user_name = param.user_name;
+		console.log(user_name);
+		
+		$.getJSON(
+			"/page/search/users/" + user_name,
+			function(data){
+				if(callback){
+					callback(data);
+				}
+			}
+		).fail(function(xhr, status, err){
+			if(error){
+				error();
+			}
+		});
+	}
+	
+	return {
+		searchUser: searchUser
+	}
+})();
+
 $(document).ready(function() {
 	// 네비바에 로그인 사용자의 정보 나타내기
 	let info = '<span>' + $("#userinfo_dept").val() + "/" + $('#userinfo_position').val() + "</span>";
 	$('#username').text($('#userinfo_name').val());
+	$('#userprofile').attr("src", $('#userinfo_profile').val());
 	$('#more-details').prepend(info);
 
 	// 모달창
-	var modal = $('#exampleModalLong');
+	var modal = $('#exampleModalLong'); // 메모장
+	var otherModal = $('#exampleModalCenter'); // 공지사항, 결재, 메일
 	// 메모 작성자
 	var noteWriter = $("#noteWriter");
 	// 메모 제목
@@ -494,12 +634,83 @@ $(document).ready(function() {
 	// 메모 수정 완료 버튼
 	var noteUpdateComplete = $("#noteUpdateComplete");
 	
+	// 메일 내용 모달창
+	$("#mailList").on("click", "tr", function(){
+		let mailTitle = $(this).find(".mailTitle").val();
+		let mailContent = $(this).next().val();
+		let mailUserName = $(this).find(".mailUserName").val();
+		let mailRegdate = $(this).find(".mailRegdate").val();
+		
+		$("#exampleModalCenterTitle").text(mailTitle);
+		$("#viewContent").text(mailContent);
+		otherModal.modal('show');
+	});
+	
+	// 공지사항 내용 모달창
+	$("#noticeList").on("click", "li", function(){
+		let noticeTitle = $(this).find("#noticeTitle").val();
+		let noticeContent = $(this).find("#noticeContent").val();
+		
+		$("#exampleModalCenterTitle").text(noticeTitle);
+		$("#viewContent").text(noticeContent);
+		otherModal.modal('show');
+	})
+	
+	// 출퇴근 처리
+	let start = $(".attenBtn button:nth-child(1)");
+	let end = $(".attenBtn button:nth-child(2)");
+
+	start.on("click", function(){
+		var startTime = {
+			user: {
+				user_no: $("#userinfo_no").val()
+			},
+			start_time: new Date().toISOString(),
+			end_time: null
+		}
+		
+		attend.attendStart(startTime, function(result){
+			// 출근 모달창
+			if(result == 'fail'){
+ 				$("#exampleModalCenterTitle").text("출근 실패");
+				$("#viewContent").text("이미 출근하셨습니다.");
+				otherModal.modal('show');
+			} else if(result == 'success'){
+				window.location.href = "/main";
+			}
+		})
+	})
+	
+	end.on("click", function(){
+		var endTime = {
+			at_no: $("#attendNo").val(),
+			user: {
+				user_no: $("#userinfo_no").val()
+			},
+			end_time: new Date().toISOString()
+		}
+		
+		attend.attendEnd(endTime, function(result){
+			// 퇴근 모달창
+			if(result == 'already success'){
+ 				$("#exampleModalCenterTitle").text("퇴근 실패");
+				$("#viewContent").text("이미 퇴근하였습니다.");
+				otherModal.modal('show');
+			} else if(result == 'fail'){
+ 				$("#exampleModalCenterTitle").text("퇴근 실패");
+				$("#viewContent").text("출근을 먼저 하세요.");
+				otherModal.modal('show');
+			} else if(result == 'success'){
+				window.location.href = "/main";
+			}
+		})
+	})
+	
+	// 메모장 목록 가져오는 메소드
 	function showList(user_no){
 		note.getList(
 			{user_no : noteWriter.val()},
 			function(list){
-		        console.log("list[0]: ", list[0]);
-				
 				var str = ""
 				for(var i=0; i<list.length; i++){
 					str += '<li class="noteDetail" data-toggle="modal" data-target="#exampleModalLong">';
@@ -513,6 +724,7 @@ $(document).ready(function() {
 			}
 		)
 	}
+	
 	// 메모 등록하기
 	noteRegister.on("click", function(e){
 		console.log(noteWriter.val());
@@ -525,7 +737,12 @@ $(document).ready(function() {
 		};
 		
 		note.add(memo, function(result){
-			alert(result);
+			$("#noteList").empty();
+			showList(noteWriter.val());
+			// 등록이 완료됐다는 모달창
+			$("#exampleModalCenterTitle").text("제목 : " + memo.note_title);
+			$("#viewContent").text("메모 등록이 완료되었습니다.");
+			otherModal.modal('show');
 		});
 	});
 	
@@ -534,7 +751,6 @@ $(document).ready(function() {
 		let noteTitle = $(this).next().val();
 		let noteContent = $(this).next().next().val();
 		let noteNo = $(this).next().next().next().val();
-		console.log("여기도 주목!" + noteNo);
 	
 		$("#exampleModalLongTitle").text(noteTitle);
 		$("#viewNote").text(noteContent);
@@ -549,16 +765,23 @@ $(document).ready(function() {
   	noteDelete.on("click", function(){
 		let note_no = $("#readNoteNo").val();
 		note.remove(note_no, function(result){
-			alert(result);
+			$("#noteList").empty();
+			showList(noteWriter.val());
 			modal.modal('hide');
+			
+			// 삭제가 완료됐다는 모달창
+			$("#exampleModalCenterTitle").text("삭제 완료");
+			$("#viewContent").text("메모가 삭제되었습니다.");
+			otherModal.modal('show');
 		})
 		
-		$("#noteList").empty();
-		showList(noteWriter.val());
 	});
 	
 	// 메모 수정하기
  	noteUpdate.on("click", function(){
+ 		// 이전 핸들러 삭제
+ 		noteUpdateComplete.off("click");
+ 		
  	    var noteWriterNo = $("#userinfo_no").val();
  	    var noteNo = $("#readNoteNo").val();
  	    var noteTitle = $("#exampleModalLongTitle").text();
@@ -577,7 +800,7 @@ $(document).ready(function() {
 		noteUpdateComplete.show();
 		
 		// 모당찰에 입력창 추가하기
-		$("#exampleModalLongTitle").append('<input type="text" id="noteTitleUpdate" value="' + noteTitle + '" placeholder="제목"/>');
+		$("#exampleModalLongTitle").append('<input type="text" id="noteTitleUpdate" value="' + noteTitle + '" placeholder="제목"/ required >');
 		$("#viewNote").append('<textarea rows="6" cols="58" id="noteContentUpdate" placeholder="내용">' + noteContent + '</textarea>');		
 
  		noteUpdateComplete.on("click", function(){
@@ -599,18 +822,44 @@ $(document).ready(function() {
  	 		};
  	 		
 	 		note.update(updateMemo, function(result){
-	 			alert(result);
 	 			modal.modal('hide');
+	 			
+	 			$("#noteList").empty();
+	 			showList(noteWriter.val());
+	 			
+				// 수정이 완료됐다는 모달창
+				$("#exampleModalCenterTitle").text("제목 : " + updateMemo.note_title);
+				$("#viewContent").text("메모 수정이 완료되었습니다.");
+				otherModal.modal('show');
  			})
  		})
- 		
  	})
-	
+ 	
+ 	// 검색
+ 	$("#searchUsers").on("click", function(){
+ 		
+ 		var param = {
+ 			user_name: encodeURIComponent($("#searchByName").val())
+ 		};
+ 		
+ 		search.searchUser(param, function(result){
+ 			var $searchResults = $("#searchResults");
+ 			$searchResults.empty();
+ 			
+ 			if(result.length > 0){
+ 				$.each(result, function(index, user){
+ 					var html =  
+ 						'<p><big>' + user.user_name + '</big> (' + user.dept.dept_name + '/' + user.user_position + ')' + '</p>' +
+ 						'<div>전화번호 : ' + user.user_phone + '</div>' +
+ 						'<div>이메일 : ' + user.user_email + '</div>';
+ 					$searchResults.append(html);
+ 				});
+ 			} else {
+ 	            $searchResults.append('<p>검색 결과가 없습니다.</p>');
+ 	        }
+ 		})
+ 	})
 });
-
-	
-
-	
 
 </script>
 </body>

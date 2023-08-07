@@ -31,7 +31,7 @@
 
 	<!-- 메모장 조회 (특정 사용자) -->
 	<select id="noteList" resultMap="noteMap">
-		select * from note where user_no = #{user_no} order by note_no
+		select * from note where user_no = #{user_no} order by note_no DESC
 	</select>
 
 	<!-- 메모장 조회 (특정 번호 : 상세조회) -->

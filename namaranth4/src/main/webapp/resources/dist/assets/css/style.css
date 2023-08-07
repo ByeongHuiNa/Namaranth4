@@ -30183,3 +30183,14 @@ new-task label input[type=checkbox] {
 	display : flex;
 	align-items: center;
 }
+
+#logoutBtn {
+	border: 0;
+    background-color: transparent;
+    color: #d0dcda;
+    padding: 0px;
+}
+
+body {
+  overflow-x: hidden;
+}

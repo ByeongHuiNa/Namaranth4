@@ -33,23 +33,60 @@
 		<result property="auth" column="auth"/>
 	</resultMap>
 
-	<!-- 공지사항 첨부파일 -->
-<!-- 	<resultMap type="org.namaranth.domain.NoticeAttachVO" id="notiAttachMap">
-			<result property="noti_uuid" column="noti_uuid"/>
-			<result property="noti_no" column="noti_no"/>
-			<result property="noti_filepath" column="noti_filepath"/>
-			<result property="noti_filename" column="noti_filename"/>
-			<result property="noti_filetype" column="noti_filetype"/>
-		</resultMap>
--->
+	<!-- 공지사항 상제 조회 -->
+	<select id="noticeDetail" resultMap="noticeMap">
+		SELECT noti.noti_no, noti.noti_title, noti.noti_content, noti.noti_regdate, 
+		  	users.user_no, users.user_name, users.user_birth, users.user_phone, 
+		  	users.user_position, users.user_email, users.user_pwd, users.user_profile
+		FROM notice noti LEFT OUTER JOIN users users	
+		ON noti.user_no = users.user_no
+		WHERE noti.noti_no = #{noti_no}
+	</select>
 
-	<!-- 공지사항 조회 -->
+	<!-- 공지사항 전체 조회 -->
 	<select id="noticeList" resultMap="noticeMap">
 		SELECT noti.noti_no, noti.noti_title, noti.noti_content, noti.noti_regdate, 
 		  	users.user_no, users.user_name, users.user_birth, users.user_phone, 
 		  	users.user_position, users.user_email, users.user_pwd, users.user_profile
-				FROM notice noti LEFT OUTER JOIN users users	
-				ON noti.user_no = users.user_no
-				ORDER BY noti_no ASC
+		FROM notice noti LEFT OUTER JOIN users users	
+		ON noti.user_no = users.user_no
+		ORDER BY noti_no DESC
 	</select>
+	
+	<!-- 공지사항 등록 -->
+	<insert id="noticeInsert" parameterType="org.namaranth.domain.NoteVO">
+		INSERT into notice(noti_no, user_no, noti_title, noti_content, noti_regdate)
+			values(seq_noti.nextval, #{user_no}, #{noti_title}, #{noti_content}, SYSDATE)
+	</insert>
+	
+	<!-- 공지사항 삭제 -->
+	<delete id="noticeDelete">
+		delete from notice where noti_no = #{noti_no}
+	</delete>
+	
+	<!-- 공지사항 수정 -->
+	<update id="noticeUpdate">
+		UPDATE notice
+		SET noti_title=#{noti_title}, noti_content=#{noti_content}, noti_regdate=SYSDATE
+		WHERE noti_no = #{noti_no}
+	</update>
+	
+	<select id="noticeListWithPaging" parameterType="org.namaranth.domain.Criteria" resultMap="noticeMap">
+	    <![CDATA[
+		    SELECT * FROM (
+			    SELECT n.noti_no, n.noti_title, n.noti_content, n.noti_regdate, n.user_no, u.user_name, d.dept_name,
+			           ROW_NUMBER() OVER (ORDER BY noti_no DESC) AS rn
+			    FROM notice n, users u, dept d
+			    WHERE n.user_no = u.user_no AND u.dept_no = d.dept_no
+			)
+			WHERE ( rn > (#{pageNum}-1) * #{amount} ) AND  ( rn <= #{pageNum} * #{amount} ) 
+	    ]]>
+	</select> 
+	
+	<select id="getTotalCount" resultType="int">
+ 	   select count(n.noti_no)
+    		from notice n, users u, dept d
+   			where u.user_no = n.user_no and u.dept_no = d.dept_no
+	</select>
+	
 </mapper>

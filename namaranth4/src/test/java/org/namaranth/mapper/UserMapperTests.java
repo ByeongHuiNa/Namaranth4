@@ -19,6 +19,9 @@ public class UserMapperTests {
 	private EmailMapper em;
 	private EmailService es;
 	
+	@Autowired
+	private UserMapper mapper;
+	
 //	@Test
 //	public void test() {
 //		mapper.list();
@@ -39,6 +42,11 @@ public class UserMapperTests {
 //	@Test
 //	public void testReadEmail() {
 //		mapper.readEmail(1);
+//	}
+	
+//	@Test
+//	public void testReadDocCom() {
+//		mapper.readDoc(4);
 //	}
 	
 	@Test
