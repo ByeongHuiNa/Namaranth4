@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.namaranth.domain.CalendarVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -18,15 +19,23 @@ public class ScheduleMapperTests {
 	@Autowired
 	private ScheduleMapper mapper;
 	
+	@Autowired
+	private CalendarMapper cMapper;
 	
 //	@Test
 //	public void test() {
 //		mapper.getSchedule();
 //	}
 	
+//	@Test
+//	public void test() {
+//		cMapper.getList(1);
+//	}
+	
 	@Test
 	public void test() {
-		mapper.getSchedule();
+		cMapper.read(1);
 	}
+	
 
 }
