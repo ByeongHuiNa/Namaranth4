@@ -3,7 +3,9 @@ package org.namaranth.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.namaranth.domain.Criteria;
 import org.namaranth.domain.DocumentVO;
+import org.namaranth.domain.UsersVO;
 
 public interface DocumentMapper {
 	
@@ -15,6 +17,17 @@ public interface DocumentMapper {
 	public String getDocAppDegree(@Param("doc_no") int doc_no,@Param("user_no") int user_no);
 	public List<DocumentVO> appRejList(int user_no);
 	public List<DocumentVO> appComplList(int user_no);
+	public UsersVO docFirstApp(int doc_no);
+	public UsersVO docSecondApp(int doc_no);
+	public int appCheck(@Param("doc_no") int doc_no,@Param("user_no") int user_no);
+	public int rejCheck(@Param("doc_no") int doc_no,@Param("user_no") int user_no);
+	public List<UsersVO> selectRefList(int doc_no);
+	public List<DocumentVO> refBoardList(int user_no);
+	public String rejContent(int doc_no);
+	public int getDocTotal(int doc_no);
+	
+	//criSelect
+	public List<DocumentVO> docList(@Param("user_no") int user_no, @Param("cri") Criteria cri);
 	
 	
 	//insert
@@ -23,6 +36,8 @@ public interface DocumentMapper {
 	public void insertSecondApp(@Param("doc_no") int doc_no,@Param("user_no") int user_no);
 	public void docAppInsert(@Param("doc_no") int doc_no,@Param("user_no") int user_no);
 	public void docRejInsert(@Param("doc_no") int doc_no,@Param("user_no") int user_no, @Param("docrej_content") String docrej_content);
+	public void insertRef(@Param("doc_no") int doc_no,@Param("user_no") int user_no);
+
 	
 	//update
 	public void docAppUpdate(int doc_no);

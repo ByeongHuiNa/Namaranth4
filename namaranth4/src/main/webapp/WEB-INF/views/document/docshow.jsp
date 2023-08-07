@@ -21,18 +21,84 @@
     <link rel="icon" href="../../../resources/dist/assets/images/favicon.ico" type="image/x-icon">
 
 <style>
-    /* 동적으로 생성되는 테이블에 스타일을 적용하는 클래스 스타일 */
+
+
     .doc-content-table table {
-        border-collapse: collapse; /* 테이블 셀 병합 */
-        border: 1px solid #000;    /* 테이블 테두리 스타일 */
-        width: 900px;              /* 테이블 가로 폭 */
+        border-collapse: collapse; 
+        border: 1px solid #000;    
+        width: 900px;              
     }
 
     .doc-content-table td {
-        border: 1px solid #000;    /* 셀 테두리 스타일 */
-        padding: 8px;              /* 셀 안의 여백 */
-        text-align: center;         /* 셀 내용 가운데 정렬 */
+        border: 1px solid #000;    
+        padding: 8px;             
+        text-align: center;         
     }
+    
+    .tb_title{
+    	width: 180px;
+    }
+    
+    
+    .card-header {
+    	display: flex;
+    	justify-content: space-between;
+    	font-size: 3px;
+	}
+	
+	.header-info {
+	    display: flex;
+	    flex-direction: column;
+	    justify-content: flex-start; /* 왼쪽 정렬 */
+	}
+	
+	.header-info table {
+    	font-size: 18px; /* 원하는 글씨 크기로 조절 */
+	}
+	
+	.header-info table td{
+		padding: 15px;
+	}
+	
+	.header-info .tb_title {
+		font-size: 17px;
+		font-weight: bold;
+	}
+	
+    .table-wrapper {
+    	margin-left: auto;
+	}
+	
+	.rc_btn{
+		margin-top: 15px;
+		margin-left: 57%;
+	}
+    
+    #tb{
+    position:
+    	width:240px;
+    	border-collapse: collapse;
+    	text-align: center;
+    }
+    
+    #tb th, #tb td{
+    	border: 1px solid #000000;
+    	width: 110px;
+    }
+    
+	.sec_tb{
+    	border:none;
+  		
+    }
+    
+    .on_body{
+    	padding: 30px;
+    	background-color: #
+    }
+    
+    #rc_modal_btn {
+    	display: none;
+	}
 </style>
 </head>
 <body class="">
@@ -84,31 +150,109 @@
 		            <div class="col-sm-12">
 		                <div class="card borderless">
 		                    <div class="card-header">
-		                        <h5>문서</h5>
+		                    <div class="header-info">
+		                    	<table>
+		                    		<tr>
+		                    			<td class="tb_title">제목</td>
+		                    			<td>${get.doc_title }</td>
+		                    		</tr>
+		                    		<tr>
+		                    			<td class="tb_title">문서 번호</td>
+		                    			<td>${get.doc_no }</td>
+		                    		</tr>
+		                    		<tr>
+		                    			<td class="tb_title">기안자</td>
+		                    			<td>${get.user.user_name }</td>
+		                    		</tr>                    	
+		                    	</table>
+		                    	<div>
+		                    		<p style="margin-bottom: 2px;">참조자 목록</p>
+			                    	<div style="overflow:scroll; overflow-x: hidden; width:500px; height:50px; padding:10px; background-color:#EAEAEA;">
+			                    		<c:forEach items="${reflist }" var="list">
+											<div class="refList"> ${list.user_name} ${list.user_email} ${list.dept.dept_name } ${list.user_position}</div>
+										</c:forEach>
+			                    	</div>
+		                    	</div>
 		                    </div>
+		                        <div class="tbl_wrap">
+		                    		<table id="tb">
+		                    			<tr>
+		                    				<th>1차 결재</th>
+		                    				<td class="sec_tb" style="border-top: none; border-bottom: none; width: 20px;"></td>
+		                    				<th>2차 결재</th>
+		                    			</tr>
+		                    			<tr>
+		                    				<td id="firstApprovalimg"></td>
+		                    				<td class="sec_tb" style="border-top: none; border-bottom: none; width: 20px; height: 90px;" ></td>
+		                    				<td id="secondApprovalimg"></td>
+		                    			</tr>
+		                    			<tr>
+		                    				<td id="firstApprovalUser" class="selected-boxs">${first_app.user_position }  ${first_app.user_name }</td>
+		                    				<td class="sec_tb" style="border-top: none; border-bottom: none; width: 20px;"></td>
+		                    				<td id="secondApprovalUser" class="selected-boxs">${second_app.user_position } ${second_app.user_name }</td>
+		                    			</tr>
+		                    		</table>
+		                    		<div class="rc_btn">
+		                    			<button type="button" id="rc_modal_btn" class="btn  btn-primary" data-toggle="modal" data-target="#rejContentModal">반려 의견</button>
+		                    		</div>
+		                    	</div>
+		                    	
+		                    </div>
+		                    
 		                    
 		                    <!-- [Document contents] -->
 		                    <div class="card-body">
-		                    	<form>
-		                    		문서번호 : <input name="doc_title" value="${get.doc_no }" readonly="readonly"/>
-		                    		제목 : <input name="doc_title" value="${get.doc_title }" readonly="readonly"/>
-		                    		기안자: <input name="user_name" value="${get.user.user_name }" readonly="readonly"/>
+		                    	<div class="on_body">
 									<div class="doc-content-table">${get.doc_content}</div>
-									</form>
+								</div>
+								
+								
+								
+								<button type="button" id="app_modal_btn" class="btn  btn-primary" data-toggle="modal" data-target="#appModal">결재</button>
+		                    	<button type="button" id="rej_modal_btn" class="btn  btn-primary" data-toggle="modal" data-target="#rejModal">반려</button>
+		                    	<button type="button" id="ref_modal_btn" class="btn  btn-primary" data-toggle="modal" data-target="#refModal">참초</button>
+		                    	
+		                    	
 		                    </div>
-		                    
 		                    
 		                </div>
 		            </div>
 		        </div>
-		        <form id="app_form" action="/document/docApp" method="post">
-						<input type="hidden" name="doc_no" value="${get.doc_no }">
-						<button id="app_submit_btn">결재하기</button>
-				</form>
+		        <!-- ref list -->
+				
+				<!-- app modal -->
+				
+						<div class="modal fade" id="appModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="exampleModalLabel">결재</h5>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									</div>
+									<div class="modal-body">
+										<form id="app_form" action="/document/docApp" method="post">
+											<div class="form-group">
+												<label for="recipient-name" class="col-form-label">결재하시겠습니까?</label>
+											</div>
+											<div class="form-group">
+												<input type="hidden" name="doc_no" value="${get.doc_no }">
+											</div>
+										</form>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn  btn-secondary" data-dismiss="modal">닫기</button>
+										<button type="button" class="btn  btn-primary" id="app_submit_btn">확인</button>
+									</div>
+								</div>
+							</div>
+						</div>
+				
+				
+				
 				
 				
 				<!-- reject modal -->
-				<button type="button" class="btn  btn-primary" data-toggle="modal" data-target="#rejModal">반려</button>
+				
 						<div class="modal fade" id="rejModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 							<div class="modal-dialog" role="document">
 								<div class="modal-content">
@@ -135,11 +279,79 @@
 								</div>
 							</div>
 						</div>
+						
+						
+				<!-- reference modal -->
 				
+						<div class="modal fade" id="refModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLabel">참조 추가</h5>
+									<form id="ref_form" action="/document/docRef" method="post">
+										<input type="hidden" name="doc_no" value="${get.doc_no }">
+										<input type="hidden" id="userNoList" name="refUserList" value="">
+									</form>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									</div>
+									
+										<div class="modal-body">
+												<div id="SelectedRefUser">
+														
+												</div>
+												<div class="form-group">	
+													<label for="recipient-name" class="col-form-label">참조 추가</label>
+													<input type="text" class="form-control" id="refInput">
+												</div>
+												<div class="form-group">
+													<label for="message-text" class="col-form-label">리스트</label>
+													<div id="refSearchResults" style="display: none;">
+													    <!-- 검색 결과를 드롭다운으로 표시할 영역 -->
+													</div>
+												</div>
+										</div>
+									
+									<div class="modal-footer">
+										<button type="button" class="btn  btn-secondary" data-dismiss="modal">닫기</button>
+										<button type="button" class="btn  btn-primary" id="ref_submit_btn">확인</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<!-- rej content modal -->
+						<div id="rejContentModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+							<div class="modal-dialog modal-dialog-centered" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="exampleModalCenterTitle">반려 의견</h5>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									</div>
+									<div class="modal-body">
+										<p class="mb-0">${rejContent }</p>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn  btn-secondary" data-dismiss="modal">Close</button>
+									</div>
+								</div>
+							</div>
+						</div>
+				
+				
+				<input type="hidden" id="firstAppCheck" value="${first_app_check}">
+				<input type="hidden" id="secondAppCheck" value="${second_app_check}">
+				<input type="hidden" id="first_app_user_no" value="${first_app.user_no}">
+				<input type="hidden" id="second_app_user_no" value="${second_app.user_no}">
+				<input type="hidden" id="login_user_no" value="${login.user_no }"/>
 				
 		        
 		        <!-- [ Main Content ] end -->
 	    	</div>
+	    	
+	    	<input id="userinfo_name" type="hidden" value="${user.user_name}"/>
+			<input id="userinfo_dept" type="hidden" value="${dept}"/>
+			<input id="userinfo_position" type="hidden" value="${user.user_position}"/>
+	    	
     	</div>
     </div>
     
@@ -202,21 +414,238 @@
     <script src="../../../resources/dist/assets/js/plugins/bootstrap.min.js"></script>
     <script src="../../../resources/dist/assets/js/pcoded.min.js"></script>
     <script type="text/javascript">
+	$(document).ready(function() {
+	    let info = '<span>' + $("#userinfo_dept").val() + "/" + $('#userinfo_position').val() + "</span>";
+	    $('#username').text($('#userinfo_name').val());
+	    $('#more-details').prepend(info);
+	});
+	
+	</script>
+    
+    <script type="text/javascript">
     $(document).ready(function() {
+    	
+    	
+    	var firstAppCheck = $('#firstAppCheck').val();
+    	var secondAppCheck = $('#secondAppCheck').val();
+    	var first_app_user = $('#first_app_user_no').val();
+    	var second_app_user = $('#second_app_user_no').val();
+    	var login_user = $('#login_user_no').val();
+    	var userNoList = [];
+    	var refInput = $('#userNoList');
+    	
+    	
+    	console.log(firstAppCheck);
+    	console.log(secondAppCheck);
+    	console.log(login_user);
+    	console.log(first_app_user);
+    	console.log(second_app_user);
+    	
         $(".doc-content-table table").addClass("doc-content-table");
         $(".doc-content-table table").removeClass("table table-bordered");
         
         
         $("#app_submit_btn").click(function() {
-            // form을 submit
             $("#app_form").submit();
         });
         
         $("#rej_submit_btn").click(function() {
-            // form을 submit
             $("#rej_form").submit();
         });
+        
+        $("#ref_submit_btn").click(function() {
+            $("#ref_form").submit();
+        });
+        
+        
+        //로그인한 사용자에 따라 button의 hide 여부
+        if(firstAppCheck =='rej' || secondAppCheck =='rej'){
+        	$("#rc_modal_btn").show();
+        }
+        
+        if(first_app_user != login_user && second_app_user != login_user ){
+        	 $("#app_modal_btn").hide();
+        	 $("#rej_modal_btn").hide();
+        }
+        
+        if(first_app_user == login_user){
+        	if(firstAppCheck=='app' || firstAppCheck=='rej'){
+        		$("#app_modal_btn").hide();
+           		$("#rej_modal_btn").hide();
+        	}
+        }
+        
+        if(second_app_user == login_user){
+        	if(firstAppCheck=='app'){
+        		$("#app_modal_btn").show();
+           		$("#rej_modal_btn").show();
+           		if(secondAppCheck=='app'||secondAppCheck=='rej'){
+           			$("#app_modal_btn").hide();
+               		$("#rej_modal_btn").hide();
+           		}
+        	}else if(secondAppCheck=='app'||secondAppCheck=='rej'){
+        		$("#app_modal_btn").hide();
+           		$("#rej_modal_btn").hide();
+        	}else{
+        		$("#app_modal_btn").hide();
+           		$("#rej_modal_btn").hide();
+        	}
+        }
+        
+        
+        
+        
+
+        if (firstAppCheck == 'app') {
+			firstcreateImage("../../../resources/dist/assets/images/app/app.png", "100", "100", "Approval");
+        } else if (firstAppCheck == 'rej') {
+        	firstcreateImage("../../../resources/dist/assets/images/app/rej.png", "100", "100", "Rejection");
+        }
+        
+        if (secondAppCheck == 'app') {
+        	secondcreateImage("../../../resources/dist/assets/images/app/app.png", "100", "100", "Approval");
+          } else if (secondAppCheck == 'rej') {
+			secondcreateImage("../../../resources/dist/assets/images/app/rej.png", "100", "100", "Rejection");
+        }
+        
+        
+        
+      //결재자 추가
+        $("#refInput").on("focus keyup", function() {
+			console.log(1);
+	        var input = $(this).val();
+	        var searchResults = $("#refSearchResults");
+	        var refInput = $("#refInput");
+	        $.ajax({
+	          url: "/searchApprovalUser",
+	          type: "GET",
+	          data: { keyword: input },
+	          dataType: "json",
+	          success: function(response) {
+	            // 서버로부터 받은 결재자 목록(response)을 화면에 표시하거나 자동완성 결과로 사용
+	            searchResults.empty(); // 기존 결과 초기화
+	            var filteredResults = response.filter(function(refData) {
+	                // 입력한 글자가 포함된 결재자들만 필터링하여 반환
+	                return refData.user_name.includes(input) ||
+	                refData.user_email.includes(input) ||
+	                refData.dept.dept_name.includes(input) ||
+	                refData.user_position.includes(input);
+	              });
+	            
+	            filteredResults.forEach(function(refData) {
+	            	var resultItem = $("<div>", {
+	                    text: refData.user_position + 
+				  	      "\t" + refData.user_name +
+			  	          "\t" + refData.user_email +
+			  	          "\t" + refData.dept.dept_name,
+	                    class: "result-items"
+	                  });
+	              resultItem.on("click", function() {
+						refInput.empty();
+						searchResults.hide();
+						SelectRefUser(refData);
+						console.log(refData);
+	                	//$("#first_app_input").val(refData.user_no);
+	              });
+	              searchResults.append(resultItem);
+	            });
+
+	            // 검색 결과가 있을 경우 드롭다운 표시, 없을 경우 숨김 처리
+	            if (response.length > 0) {
+	              searchResults.show();
+	            } else {
+	              searchResults.hide();
+	            }
+	          },
+	          error: function(error) {
+	            console.error("Error fetching select users:", error);
+	          }
+	        });
+      });
+        
+        
+        function firstcreateImage(src, width, height, alt) {
+      	  var img = $('<img />', {
+      	    src: src,
+      	    width: width,
+      	    height: height,
+      	    alt: alt
+      	  });
+
+      	  $('#firstApprovalimg').append(img);
+      	}
+      function secondcreateImage(src, width, height, alt) {
+    	  var img = $('<img />', {
+    	    src: src,
+    	    width: width,
+    	    height: height,
+    	    alt: alt
+    	  });
+
+    	  $('#secondApprovalimg').append(img);
+    	}
+        
+        
+        function SelectRefUser(selectdata) {
+        	var selectedBox = $("#SelectedRefUser");
+        	//중복값 안들어가게
+        	if(!userNoList.includes(selectdata.user_no)){
+	            // 선택한 결재자 정보를 하나의 박스로 표시
+	            var selectedContent = $("<div>").text(
+	            		selectdata.user_position + 
+	    				" " + selectdata.user_name
+	            );
+	            
+	            
+	            
+	            console.log(selectedContent);
+	            selectedBox.append(selectedContent);
+	            addUserList(selectdata.user_no);
+	            console.log(userNoList);
+	            
+	            selectedContent.on("click", function() {
+	                removeUserList(selectdata.user_no);
+	                selectedContent.remove(); // 박스를 화면에서 제거
+	             });
+	            
+        	}
+    	}
+        
+        function addUserList(userNo) {
+        	userNoList.push(userNo);
+            updateRefInput();
+    	}
+        
+        function removeUserList(userNo) {
+            var index = userNoList.indexOf(userNo);
+            if (index !== -1) {
+              userNoList.splice(index, 1);
+              updateRefInput();
+            }
+    	}
+        
+        function updateRefInput() {
+        	refInput.val(userNoList.join(','));
+    	}
+        
+        
+        
     });
+    
+   
+    
+    
+  
+	
+    
+    
+    
+    
+    
+    
+    
+    
+
     </script>
 </body>
 </html>

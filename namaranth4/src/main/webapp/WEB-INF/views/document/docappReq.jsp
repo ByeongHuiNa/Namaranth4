@@ -43,19 +43,8 @@
 
     <div class="col-md-12">
     	<div class="row">
-	    	<div class="col-md-2 appside">
 	    	
-	    		<!-- [ Side Content ] start-->
-				<div class="page-header-title m-t-10">
-						<h4 class="m-t-10 m-b-20">전자결재</h4>
-				</div>
-				<div>
-					<button type="button" class="btn btn-primary regi_btn" id="doc_regi_btn">기안작성</button>
-				</div>
-					
-			</div>
-	    	
-	    	<div class="col-md-10">
+	    	<div class="col-md-12">
 	    		<!-- [ breadcrumb ] start -->
 		        <div class="page-header">
 		            <div class="page-block">
@@ -79,7 +68,12 @@
 		            <div class="col-sm-12">
 		                <div class="card borderless">
 		                    <div class="card-header">
-		                        <h5>Basic Component</h5>
+		                        <div class="subtt">
+		                        	<h5>결재요청문서</h5>
+		                        </div>
+		                        <div>
+									<button type="button" class="btn btn-primary regi_btn" id="doc_regi_btn">기안작성</button>
+								</div>
 		                    </div>
 		                    
 		                    <!-- [table] -->
@@ -118,6 +112,11 @@
 		        <!-- [ Main Content ] end -->
 	    	</div>
     	</div>
+    	
+    	<input id="userinfo_name" type="hidden" value="${user.user_name}"/>
+		<input id="userinfo_dept" type="hidden" value="${dept}"/>
+		<input id="userinfo_position" type="hidden" value="${user.user_position}"/>
+    	
     </div>
     
 </section>
@@ -174,6 +173,14 @@
     <script src="../../../resources/dist/assets/js/vendor-all.min.js"></script>
     <script src="../../../resources/dist/assets/js/plugins/bootstrap.min.js"></script>
     <script src="../../../resources/dist/assets/js/pcoded.min.js"></script>
+    <script type="text/javascript">
+	$(document).ready(function() {
+	    let info = '<span>' + $("#userinfo_dept").val() + "/" + $('#userinfo_position').val() + "</span>";
+	    $('#username').text($('#userinfo_name').val());
+	    $('#more-details').prepend(info);
+	});
+	
+	</script>
     
     <!-- button custom -->
     <script type="text/javascript">

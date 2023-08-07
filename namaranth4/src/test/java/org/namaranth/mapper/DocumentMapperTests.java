@@ -22,14 +22,7 @@ public class DocumentMapperTests {
 	
 	@Test
 	public void test() {
-		DocumentVO vo = new DocumentVO();
-		UsersVO user = new UsersVO();
-		vo.setUser(user);
-		vo.setDoc_no(4);
-		vo.getUser().setUser_no(1);
-		vo.setDoc_title("test����");
-		vo.setDoc_content("test����");
-		mapper.writeDoc(vo);
+		log.info(mapper.rejCheck(19, 2));
 	}
 	
 //	public void test() {

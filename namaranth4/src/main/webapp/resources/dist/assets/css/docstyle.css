@@ -3,11 +3,18 @@
 	height: 1000px;
 }
 
-.regi_btn{
-	width:80%;
-	margin-left: 10%;
-	margin-right: 10%; 
+
+.card-header {
+    	display: flex;
+    	justify-content: space-between;
+    	align-items: center;
 }
+
+.regi_btn{
+	margin-left: auto;
+	width: 120px;
+}
+
 
 tbody tr {
 	height: 30px;

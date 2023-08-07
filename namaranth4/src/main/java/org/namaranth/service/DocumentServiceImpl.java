@@ -2,14 +2,19 @@ package org.namaranth.service;
 
 import java.util.List;
 
+import org.namaranth.domain.Criteria;
 import org.namaranth.domain.DocumentVO;
+import org.namaranth.domain.UsersVO;
 import org.namaranth.mapper.DocumentMapper;
 import org.namaranth.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import lombok.extern.log4j.Log4j;
+
 @Service
+@Log4j
 public class DocumentServiceImpl implements DocumentService {
 
 	@Autowired
@@ -38,6 +43,8 @@ public class DocumentServiceImpl implements DocumentService {
 		mapper.writeDoc(vo);
 		mapper.insertFisrtApp(vo.getDoc_no(), firstAppNo);
 		mapper.insertSecondApp(vo.getDoc_no(), secondAppNo);
+		mapper.insertRef(vo.getDoc_no(), firstAppNo);
+		mapper.insertRef(vo.getDoc_no(), secondAppNo);
 	}
 
 	@Override
@@ -70,6 +77,81 @@ public class DocumentServiceImpl implements DocumentService {
 	public List<DocumentVO> getDocAppComplList(String user_email) {
 		return mapper.appComplList(usermapper.readUser(user_email).getUser_no());
 	}
+
+	@Override
+	public UsersVO getFirstAppUser(int doc_no) {
+		return mapper.docFirstApp(doc_no);
+	}
+
+	@Override
+	public UsersVO getSecondAppUser(int doc_no) {
+		return mapper.docSecondApp(doc_no);
+	}
+
+	@Override
+	public String checkApp(int doc_no, int user_no) {
+		String check = "";
+		try {
+			if(mapper.appCheck(doc_no, user_no) != 0) {
+				check = "app";
+			}
+		}catch (Exception e) {}
+		try {
+			if(mapper.rejCheck(doc_no, user_no) != 0) {
+				check = "rej";
+			}
+		} catch (Exception e) {}
+		if(check.isEmpty()) {
+			check = "none";
+		}
+		return check;
+	}
+
+	@Override
+	public void docRef(int doc_no, List<Integer> userlist) {
+		if(userlist!=null) {
+			for(int i=0; i<userlist.size(); i++) {
+				try {
+					mapper.insertRef(doc_no, userlist.get(i));
+				}catch (Exception e) {
+					e.printStackTrace();
+					log.warn("이미 참조된 사용자가 존재함 " + userlist.get(i));
+				}
+				
+			}
+		}
+		
+	}
+
+	@Override
+	public List<UsersVO> getRefUserList(int doc_no) {
+		return mapper.selectRefList(doc_no);
+	}
+
+	@Override
+	public List<DocumentVO> getRefDocList(String user_email) {
+		return mapper.refBoardList(usermapper.readUser(user_email).getUser_no());
+	}
+
+	@Override
+	public String getRejContent(int doc_no) {
+		return mapper.rejContent(doc_no);
+	}
+
+	@Override
+	public int getDocTotal(String user_email) {
+		return mapper.getDocTotal(usermapper.readUser(user_email).getUser_no());
+	}
+
+	@Override
+	public List<DocumentVO> getCriDocList(String user_email, Criteria cri) {
+		return mapper.docList(usermapper.readUser(user_email).getUser_no(), cri);
+	}
+	
+	
+
+	
+
 	
 	
 

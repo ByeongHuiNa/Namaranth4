@@ -10,9 +10,45 @@
 <link rel="stylesheet" type="text/css" href="../../../resources/dist/assets/css/docstyle.css" />
 <link rel="stylesheet" type="text/css" href="../../../resources/dist/assets/css/summernote-lite.css" />
 <style>
-    /* 테이블 테두리(border)의 색상을 변경하는 스타일 */
+	.main_header {
+    	display: flex;
+    	justify-content: space-between;
+	}
+	.main_left{
+		margin-top: 20px;
+	}
+	
+	.main_left table{
+		margin-bottom: 20px;
+		font-size: 17px;
+		
+	}
+	
+	
+	.main_left table td {
+	    padding: 10px;
+	}
+	
+	.title_length input{
+		width: 500px;
+	}
+	
+
+	.main_left select {
+		margin-left : 10px;
+		margin-top: 35px;
+	}
+	
+	.main_right{
+		margin-left: auto;
+	}
+	
+	.main_right button{
+		margin-bottom: 5px;
+	}
+	
     #summernote table {
-        border: 1px solid #000; /* 테두리 색상 변경 */
+        border: 1px solid #000;
     }
     
     .result-items {
@@ -103,49 +139,64 @@
 		                    
 		                    <!-- [Document contents] -->
 		                    <div class="card-body">
-		                    	<form id="regi_form" action="/document/docregi" method="post">
-		                    		제목 : <input name="doc_title"/>
-		                    		기안자: <input value="${login.user_name }" readonly="readonly"/>
-		                    		
-		                    		<input type="hidden" name="user.user_no" value="${login.user_no }" readonly="readonly"/>
-		                    		
-		                    		<button type="button" class="btn  btn-primary" data-toggle="modal" data-target="#firstappmodal">1차 결재자</button>
-		                    		<button type="button" class="btn  btn-primary" data-toggle="modal" data-target="#secondappmodal">2차 결재자</button>
-		                    		
-		                    		<br>
-		                    		
-		                    		<table id="tb">
-		                    			<tr>
-		                    				<th>1차 결재</th>
-		                    				<td class="sec_tb" style="border-top: none; border-bottom: none; width: 20px;"></td>
-		                    				<th>2차 결재</th>
-		                    			</tr>
-		                    			<tr>
-		                    				<td></td>
-		                    				<td class="sec_tb" style="border-top: none; border-bottom: none; width: 20px; height: 90px;" ></td>
-		                    				<td></td>
-		                    			</tr>
-		                    			<tr>
-		                    				<td id="firstSelectedApprovalUser" class="selected-boxs"></td>
-		                    				<td class="sec_tb" style="border-top: none; border-bottom: none; width: 20px;"></td>
-		                    				<td id="secondSelectedApprovalUser" class="selected-boxs"></td>
-		                    			</tr>
-		                    		</table>
-
-		                    		
-		                    		
-		                    		
-									  <br>
-		                    		<select id="templateDropdown">
-										<option value="" disabled selected>양식선택</option>
-										<option value="expense_report">지출결의서</option>
-										<option value="vacation_app">휴가신청서</option>
-										<option value="round_robin">품의서</option>
-									</select>
+			                    
+			                    
+			                    	<form id="regi_form" action="/document/docregi" method="post">
+								<div class="main_header">
+					                    <div class="main_left">
+					                    	<table>
+					                    		<tr>
+					                    			<td>제목</td>
+					                    			<td class="title_length"><input name="doc_title"/></td>
+					                    		</tr>
+					                    		<tr>
+					                    			<td>기안자</td>
+					                    			<td>${login.user_name }</td>
+					                    		</tr>
+											</table>
+					                    		<select id="templateDropdown">
+														<option value="" disabled selected>양식선택</option>
+														<option value="expense_report">지출결의서</option>
+														<option value="vacation_app">휴가신청서</option>
+														<option value="round_robin">품의서</option>
+												</select>
+					                    		<input type="hidden" name="user.user_no" value="${login.user_no }"/>
+					                    		<input type="hidden" name="user.user_name" value="${login.user_name }"/>
+					                   	</div>
+					                   	
+			                    		<div class="main_right">
+				                    		<button type="button" class="btn  btn-primary" data-toggle="modal" data-target="#firstappmodal" style="margin-right: 20px;">1차 결재자</button>
+				                    		<button type="button" class="btn  btn-primary" data-toggle="modal" data-target="#secondappmodal">2차 결재자</button>
+				                    		
+				                    		<br>
+				                    		
+				                    		<table id="tb">
+				                    			<tr>
+				                    				<th>1차 결재</th>
+				                    				<td class="sec_tb" style="border-top: none; border-bottom: none; width: 20px;"></td>
+				                    				<th>2차 결재</th>
+				                    			</tr>
+				                    			<tr>
+				                    				<td></td>
+				                    				<td class="sec_tb" style="border-top: none; border-bottom: none; width: 20px; height: 90px;" ></td>
+				                    				<td></td>
+				                    			</tr>
+				                    			<tr>
+				                    				<td id="firstSelectedApprovalUser" class="selected-boxs"></td>
+				                    				<td class="sec_tb" style="border-top: none; border-bottom: none; width: 20px;"></td>
+				                    				<td id="secondSelectedApprovalUser" class="selected-boxs"></td>
+				                    			</tr>
+				                    		</table>
+										</div>
+			                    		
+			                    		
+			                    		
+										  <br>
+									</div>
 		                    		<br>
 		                    		<textarea id="summernote" name="doc_content"></textarea>
-		                    		<button id="submit_btn">작성</button>
-		                    		<button id="ts_btn">임시저장</button>
+		                    		<button type="button" id="submit_btn">작성</button>
+		                    		<button type="button" id="ts_btn">임시저장</button>
 		                    		
 		                    		<input type="hidden" name="first_app"  id="first_app_input"/>
 		                    		<input type="hidden" name="second_app" id="second_app_input"/>
@@ -214,12 +265,18 @@
 							</div>
 						</div>
 						
+						
 		            
 		            
 		        </div>
 		        <!-- [ Main Content ] end -->
 	    	</div>
     	</div>
+    	
+    	<input id="userinfo_name" type="hidden" value="${user.user_name}"/>
+		<input id="userinfo_dept" type="hidden" value="${dept}"/>
+		<input id="userinfo_position" type="hidden" value="${user.user_position}"/>
+    	
     </div>
     
         
@@ -282,6 +339,15 @@
     <script src="../../../resources/dist/assets/js/pcoded.min.js"></script>
     <script src="../../../resources/dist/assets/js/lang/summernote-ko-KR.js"></script>
     <script src="../../../resources/dist/assets/js/summernote-lite.js"></script>
+    <script type="text/javascript">
+	$(document).ready(function() {
+	    let info = '<span>' + $("#userinfo_dept").val() + "/" + $('#userinfo_position').val() + "</span>";
+	    $('#username').text($('#userinfo_name').val());
+	    $('#more-details').prepend(info);
+	});
+	
+	</script>
+    
     <script type="text/javascript">
     $(document).ready(function() {
     	
@@ -415,52 +481,12 @@
 		        );
 		        selectedBox.append(selectedContent);
 		      }
-	
+
 	      
-	      /* // 검색 결과를 화면에 표시하는 함수
-	      function displaySearchResults(response) {
-		        var searchResults = $("#searchResults");
-		        searchResults.empty(); // 기존 결과 초기화
-		        response.forEach(function(approverData) {
-		        	var resultItem = $("<div>", {
-		                text: "이름: " + approverData.user_name +
-		                      ", 이메일: " + approverData.user_email +
-		                      ", 부서: " + approverData.dept.dept_name,
-		                class: "result-items"
-		              });
-		          resultItem.on("click", function(event) {
-					event.stopPropagation();
-		            $("#searchInput").val(approverData.user_name);
-		            searchResults.hide();
-		            selectApprovalUser(approverData); // 선택한 결재자 정보를 박스로 표시
-		            $(".modal-footer").find('[data-dismiss="modal"]').trigger("click");
-		          });
-		          searchResults.append(resultItem);
-		        });
-	
-	        // 검색 결과가 있을 경우 드롭다운 표시, 없을 경우 숨김 처리
-	        if (response.length > 0) {
-	          searchResults.show();
-	        } else {
-	          searchResults.hide();
-	        }
-	      } */
-	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
     	/*-----------------------------------*/
     	//여기 아래 부분
     	$('#summernote').summernote({
-				height: 300,                 // 에디터 높이
+				height: 350,                 // 에디터 높이
 				minHeight: null,             // 최소 높이
 				maxHeight: null,             // 최대 높이
 				focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
@@ -520,9 +546,7 @@
     	
         function isEditorContentEmpty(content) {
             // 에디터의 내용이 <p><br></p>로 이뤄진 빈 태그인지 확인
-            //console.log(content.trim())
             var i = content.replace(/<p><br><\/p>/gi, '');
-            //console.log(!i);
             
             return !i;
         }
@@ -530,8 +554,26 @@
     	//작성버튼 onclick
     	$("#submit_btn").click(function() {
             // form을 submit
-            $("#regi_form").submit();
+            const isValid = checkApprovers();
+            
+    	    if (isValid===3) {
+    	    	$("#regi_form").submit();
+    	    }
         });
+    	
+    	
+    	function checkApprovers() {
+    	    var firstAppInput = $("#first_app_input").val();
+    	    var secondAppInput = $("#second_app_input").val();
+
+    	    if (!firstAppInput || !secondAppInput) {
+    	      alert("결재자가 지정되지 않았습니다.");
+    	      	return 2; // POST 요청 막기
+    	    }else{
+    	    	return 3; // POST 요청 허용	
+    	    }
+
+    	  }
     	
     	
     	
