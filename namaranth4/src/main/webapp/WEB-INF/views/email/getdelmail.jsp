@@ -32,13 +32,12 @@
     
 <style>
     /* 동적으로 생성되는 테이블에 스타일을 적용하는 클래스 스타일 */
-    .doc-content-table {
+   .doc-content-table {
         border-collapse: collapse; /* 테이블 셀 병합 */
         border: 1px solid #000;    /* 테이블 테두리 스타일 */
         width: 900px;              /* 테이블 가로 폭 */
         background-color: #eeeeee;
     }
-
     .doc-content-table td {
         border: 1px solid #000;    /* 셀 테두리 스타일 */
         padding: 8px;              /* 셀 안의 여백 */
@@ -95,24 +94,23 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header">
-                    <form role="form" action="/email/maildel" method="post">
-                    <input type="hidden" name="user_no" value="${getmail.user_no}"/>
-                       <input type="hidden" name="mail_no" value="${getmail.mail_no}"/>
-	                    <button type="submit" class="btn  btn-primary" id="deleteButton">삭제</button>
-	                     <button type="button" class="btn  btn-primary">전달</button>
-	                     <button type="button" class="btn  btn-primary">답장</button>
-	                  </form>
-	                 
-	                    
-	                 
+                    <form id="restoreForm" role="form" action="/email/mailrestore" method="post">
+                    <input type="hidden" name="user_no" value="${getdelmail.user_no}"/>
+                       <input type="hidden" name="mail_no" value="${getdelmail.mail_no}"/>
+	                    <button type="submit" class="btn  btn-primary" id="restoreButton">복구</button>
+	                
+	                    <button type="button" class="btn  btn-primary">답장</button>
+	                    <button type="button" class="btn  btn-primary">전달</button>
+	                   </form>
 	                   
                     </div>
                     <div class="card-body">
-                        <h5>보낸사람 : <c:out value="${getmail.user_name}" /> <c:out value="${getmail.user_email}" /></h5>
-                        <h5>받는사람 : <c:forEach items="${getreceiver}" var="receiver"><c:out value="${receiver.user_name} "/><c:out value="${receiver.user_email} "/> </c:forEach></h5>
+                        <h5>보낸사람 : <c:out value="${getdelmail.user_name}" /> <c:out value="${getdelmail.user_email}" /></h5>
+                        <h5>받는사람 : <c:forEach items="${getreceiver}" var="receiver"><c:out value="${receiver.user_name}   "/><c:out value="${receiver.user_email} "/> </c:forEach></h5>
                         <h5><fmt:formatDate pattern="yyyy년 MM월 dd일 a hh시 mm분"
-									value="${getmail.mail_regdate}" /></h5>
-                       	<h5>제목 : <c:out value="${getmail.mail_title}" /></h5>
+									value="${getdelmail.mail_regdate}" />
+                       </h5>
+                       
                         <hr>
                         <div class="row">
                           
@@ -122,8 +120,8 @@
                              		
                                     <div class="form-group">
 		                                       
-							
-										<div class="doc-content-table">${getmail.mail_content}</div>
+									<!-- 	<textarea class="form-control" id="exampleFormControlTextarea1" rows="3" readonly="readonly">${getmail.mail_content}"</textarea> -->
+										<div class="doc-content-table">${getdelmail.mail_content}</div>
                                     </div>
                                     
                                 </form>
@@ -212,29 +210,25 @@ $(document).ready(function() {
     let info = '<span>' + $("#userinfo_dept").val() + "/" + $('#userinfo_position').val() + "</span>";
     $('#username').text($('#userinfo_name').val());
     $('#more-details').prepend(info);
-    
-    $(".doc-content-table table").addClass("doc-content-table");
-    $(".doc-content-table table").removeClass("table table-bordered");
-    
-    
-    $("#deleteButton").on("click", function() {
-        // 버튼이 클릭되면 아래의 코드 블록이 실행됩니다.
-        if (confirm("정말로 이 메일을 삭제하시겠습니까?")) {
-            // 확인 버튼을 눌렀을 때, 폼을 제출합니다.
-            $("#deleteForm").submit();
-        } else {
-            return false;
-        }
-    });
-    
-    
 });
 
 
 
 </script>
 
-
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".doc-content-table table").addClass("doc-content-table");
+        $(".doc-content-table table").removeClass("table table-bordered");
+        
+        $("#restoreButton").on("click", function() {
+            // 버튼이 클릭되면 아래의 코드 블록이 실행됩니다.
+            alert("메일이 복구되었습니다.");
+        });
+        
+        
+    });
+    </script>
 </body>
 
 </html>

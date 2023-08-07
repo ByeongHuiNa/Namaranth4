@@ -43,6 +43,6 @@ public class UserMapperTests {
 	
 	@Test
 	public void testReadDocCom() {
-		mapper.readDoc(4);
+		es.getDelList(2);
 	}
 }

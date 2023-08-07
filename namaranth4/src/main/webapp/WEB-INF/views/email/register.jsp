@@ -86,15 +86,21 @@
                 <div class="card">
                     <div class="card-header">
 	                    
-	                    <button type="submit" class="btn  btn-primary">전송</button>
+	                    <button type="submit" class="btn  btn-primary" id="registerButton">전송</button>
 	                   
-	                    <button type="submit" formaction="/email/tsregister" class="btn  btn-primary">임시저장</button>
+	                    <button type="submit" formaction="/email/tsregister" class="btn  btn-primary" id="tsButton">임시저장</button>
                     </div>
                     
                     <div class="card-body">
                          <input id="userinfo_no "type="hidden" name="user_no" value="${user.user_no}"/>
-                        <h5>받는사람 <input type="text" name="receiver_no"/> </h5>
-                        <h5>제목 <input type="text" name="mail_title"/> </h5>
+                         
+                         <h5>제목<input type="text" name="mail_title" style="margin-left: 35px"/> </h5>
+                         <h5>받는사람 <input type="text" id ="firstSearchInput" name="receiver_no"/> </h5>
+                        <div id="fisrtSearchResults" style="display: none;">
+												    <!-- 검색 결과를 드롭다운으로 표시할 영역 -->
+						</div>
+						
+                        
                         
                         <hr>
                         <div class="row">
@@ -199,13 +205,39 @@ $(document).ready(function() {
     let info = '<span>' + $("#userinfo_dept").val() + "/" + $('#userinfo_position').val() + "</span>";
     $('#username').text($('#userinfo_name').val());
     $('#more-details').prepend(info);
+    
+    
+    
+    $("#tsButton").on("click", function() {
+        // 버튼이 클릭되면 아래의 코드 블록이 실행됩니다.
+        alert("메일을 임시저장 하였습니다.");
+    });
+    
+    $("#registerButton").on("click", function (e) {
+        e.preventDefault(); // 기본 동작(폼 제출)을 막습니다.
+
+        // 받는 사람(input 요소)의 value를 가져옵니다.
+        const receiverNo = $("#firstSearchInput").val();
+
+        // 받는 사람이 비어있을 경우에는 alert 창을 띄웁니다.
+        if (receiverNo === "") {
+            alert("받는 사람을 입력해주세요!");
+        } else {
+        	alert("메일전송을 하였습니다.");
+            // 받는 사람이 입력되었을 경우에는 폼을 제출합니다.
+            // 폼의 ID를 가지고 있는 부모 요소를 찾고, 해당 폼을 submit합니다.
+            $(this).closest("form").submit();
+        }
+    });
+    
 });
 
 </script>
 
-</body>
 <script type="text/javascript">
 $(document).ready(function() {
+	
+	
 	//여기 아래 부분
 	$('#summernote').summernote({
 		  height: 300,                 // 에디터 높이
@@ -216,10 +248,116 @@ $(document).ready(function() {
 		  placeholder: '최대 2048자까지 쓸 수 있습니다'	//placeholder 설정
           
 	});
+
+	
+	//결재자 추가
+	$("#firstSearchInput").on("focus keyup", function() {
+			
+	        var input = $(this).val();
+	        var searchResults = $("#fisrtSearchResults");
+	        var firstSearchInput = $("#firstSearchInput");
+	        $.ajax({
+	          url: "/searchApprovalUser",
+	          type: "GET",
+	          data: { keyword: input },
+	          dataType: "json",
+	          success: function(response) {
+	            // 서버로부터 받은 결재자 목록(response)을 화면에 표시하거나 자동완성 결과로 사용
+	            searchResults.empty(); // 기존 결과 초기화
+	            var filteredResults = response.filter(function(approverData) {
+	                // 입력한 글자가 포함된 결재자들만 필터링하여 반환
+	                return approverData.user_name.includes(input) ||
+	                       approverData.user_email.includes(input) ||
+	                       approverData.dept.dept_name.includes(input) ||
+	                       approverData.user_position.includes(input);
+	              });
+	            
+	            filteredResults.forEach(function(approverData) {
+	            	var resultItem = $("<div>", {
+	                    text: approverData.user_position + 
+				  	      "\t" + approverData.user_name +
+			  	          "\t" + approverData.user_email +
+			  	          "\t" + approverData.dept.dept_name,
+	                    class: "result-items"
+	                  });
+	              resultItem.on("click", function() {
+	            	firstSearchInput.empty();
+	                searchResults.hide();
+	                firstSelectApprovalUser(approverData);
+	                $("#firstSearchInput").val(approverData.user_no);
+	                $(".modal-footer").find('[data-dismiss="modal"]').trigger("click");
+	              });
+	              searchResults.append(resultItem);
+	            });
+
+	            // 검색 결과가 있을 경우 드롭다운 표시, 없을 경우 숨김 처리
+	            if (response.length > 0) {
+	              searchResults.show();
+	            } else {
+	              searchResults.hide();
+	            }
+	          },
+	          error: function(error) {
+	            console.error("Error fetching approval users:", error);
+	          }
+	        });
+      });
+	
+	
+
+      // 사용자가 드롭다운 항목을 선택했을 때 실행되는 함수
+      function firstSelectApprovalUser(approverData) {
+        var firstSearchInput = $("#firstSearchInput");
+        firstSearchInput.empty(); // 기존 박스 초기화
+
+        // 선택한 결재자 정보를 하나의 박스로 표시
+        var selectedContent = $("<div>").text(
+        				approverData.user_position + 
+		  	      " " + approverData.user_name
+        );
+        firstSearchInput.append(selectedContent);
+      }
+      
+  
+
+      
+      /* // 검색 결과를 화면에 표시하는 함수
+      function displaySearchResults(response) {
+	        var searchResults = $("#searchResults");
+	        searchResults.empty(); // 기존 결과 초기화
+	        response.forEach(function(approverData) {
+	        	var resultItem = $("<div>", {
+	                text: "이름: " + approverData.user_name +
+	                      ", 이메일: " + approverData.user_email +
+	                      ", 부서: " + approverData.dept.dept_name,
+	                class: "result-items"
+	              });
+	          resultItem.on("click", function(event) {
+				event.stopPropagation();
+	            $("#searchInput").val(approverData.user_name);
+	            searchResults.hide();
+	            selectApprovalUser(approverData); // 선택한 결재자 정보를 박스로 표시
+	            $(".modal-footer").find('[data-dismiss="modal"]').trigger("click");
+	          });
+	          searchResults.append(resultItem);
+	        });
+
+        // 검색 결과가 있을 경우 드롭다운 표시, 없을 경우 숨김 처리
+        if (response.length > 0) {
+          searchResults.show();
+        } else {
+          searchResults.hide();
+        }
+      } */
+
+
 });
 
 
 
 </script>
+
+</body>
+
 
 </html>

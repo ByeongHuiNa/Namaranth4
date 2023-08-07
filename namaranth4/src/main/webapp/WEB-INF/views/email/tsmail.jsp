@@ -61,12 +61,12 @@
                 <div class="row align-items-center">
                     <div class="col-md-12">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">보낸메일함</h5>
+                            <h5 class="m-b-10">임시보관함</h5>
                         </div>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
                             <li class="breadcrumb-item"><a href="#!">메일함</a></li>
-                            <li class="breadcrumb-item"><a href="#!">보낸메일함</a></li>
+                            <li class="breadcrumb-item"><a href="#!">임시보관함</a></li>
                         </ul>
                     </div>
                 </div>
@@ -89,21 +89,21 @@
                                 <thead>
                                     <tr>
                                         <th><input type="checkbox"></th>
-                                        <th>수신자이메일</th>
+                                        <th>발신자이메일</th>
                                         <th>제목</th>
                                         <th>날짜</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                   <!--<c:forEach items="${getreceiver}" var="receiver">--> <!--</c:forEach>-->
-                                <c:forEach items="${allmail}" var="email">
+                                <c:forEach items="${tsmail}" var="tsmail">
                               
                                 <tr>
                                 	<td><input type="checkbox"></td>
-                                	<td> <c:out value="${email.user_email}"/></td>
-                                	<td><a href='/email/getmail?mail_no=<c:out value="${email.mail_no}"/>'> <c:out value="${email.mail_title}"/></a></td>
+                                	<td> <c:out value="${tsmail.user_email}"/></td>
+                                	<td><a href='/email/gettsmail?mailts_no=<c:out value="${tsmail.mailts_no}"/>'> <c:out value="${tsmail.mailts_title}"/></a></td>
                                 	<td> <fmt:formatDate pattern="yyyy년 MM월 dd일 a hh시 mm분"
-									value="${email.mail_regdate}" /></td>
+									value="${tsmail.mailts_regdate}" /></td> 
                                 
                                 </tr>
                                

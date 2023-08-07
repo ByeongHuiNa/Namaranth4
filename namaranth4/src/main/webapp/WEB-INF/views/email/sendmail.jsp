@@ -61,12 +61,12 @@
                 <div class="row align-items-center">
                     <div class="col-md-12">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">보낸메일함</h5>
+                            <h5 class="m-b-10">발신메일함</h5>
                         </div>
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
+                            <li class="breadcrumb-item"><a href="/main"><i class="feather icon-home"></i></a></li>
                             <li class="breadcrumb-item"><a href="#!">메일함</a></li>
-                            <li class="breadcrumb-item"><a href="#!">보낸메일함</a></li>
+                            <li class="breadcrumb-item"><a href="#!">발신메일함</a></li>
                         </ul>
                     </div>
                 </div>
@@ -78,7 +78,7 @@
                 <div class="card">
                     <div class="card-header">
                     <button type="button" class="btn  btn-primary">삭제</button>
-                    <button type="button" class="btn  btn-primary">답장</button>
+                
                     <button type="button" class="btn  btn-primary">전달</button>
                         
                     </div>
@@ -89,7 +89,7 @@
                                 <thead>
                                     <tr>
                                         <th><input type="checkbox"></th>
-                                        <th>수신자이메일</th>
+                                        <th>발신자이메일</th>
                                         <th>제목</th>
                                         <th>날짜</th>
                                     </tr>

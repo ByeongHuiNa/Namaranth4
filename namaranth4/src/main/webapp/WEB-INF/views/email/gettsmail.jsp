@@ -8,6 +8,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"/>
 <link rel="stylesheet" type="text/scss" href="../../../resources/dist/assets/scss/style.scss" />
 <link rel="stylesheet" type="text/css" href="../../../resources/dist/assets/css/style.css" />
+<link rel="stylesheet" href="../../../resources/dist/assets/css/summernote-lite.css">
 
 <head>
     <title>Flat Able - Premium Admin Template by Phoenixcoded</title>
@@ -29,23 +30,6 @@
 
     <!-- vendor css -->
     <link rel="stylesheet" href="../../../resources/dist/assets/css/style.css">
-    
-<style>
-    /* 동적으로 생성되는 테이블에 스타일을 적용하는 클래스 스타일 */
-    .doc-content-table {
-        border-collapse: collapse; /* 테이블 셀 병합 */
-        border: 1px solid #000;    /* 테이블 테두리 스타일 */
-        width: 900px;              /* 테이블 가로 폭 */
-        background-color: #eeeeee;
-    }
-
-    .doc-content-table td {
-        border: 1px solid #000;    /* 셀 테두리 스타일 */
-        padding: 8px;              /* 셀 안의 여백 */
-        text-align: center;         /* 셀 내용 가운데 정렬 */
-    }
-</style>
-
 </head>
 <body class="">
 	<!-- [ Pre-loader ] start -->
@@ -67,7 +51,10 @@
 	<!-- [ Header ] end -->
 
 	<!-- [ Main Content ] start -->
-	<input id="userinfo_name" type="hidden" value="${user.user_name}"/><input id="userinfo_dept" type="hidden" value="${dept}"/><input id="userinfo_position" type="hidden" value="${user.user_position}"/>
+	
+	<input id="userinfo_name" type="hidden" value="${user.user_name}"/>
+	<input id="userinfo_dept" type="hidden" value="${dept}"/>
+	<input id="userinfo_position" type="hidden" value="${user.user_position}"/>
 	<section class="pcoded-main-container">
     <div class="pcoded-content">
         <!-- [ breadcrumb ] start -->
@@ -76,12 +63,12 @@
                 <div class="row align-items-center">
                     <div class="col-md-12">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">메일조회</h5>
+                            <h5 class="m-b-10">메일작성</h5>
                         </div>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
-                            <li class="breadcrumb-item"><a href="/email/allmail">전체메일함</a></li>
-                            <li class="breadcrumb-item"><a href="#!">메일조회</a></li>
+                            <li class="breadcrumb-item"><a href="#!">E-Mail</a></li>
+                            <li class="breadcrumb-item"><a href="#!">메일작성</a></li>
                         </ul>
                     </div>
                 </div>
@@ -89,30 +76,30 @@
         </div>
         <!-- [ breadcrumb ] end -->
         <!-- [ Main Content ] start -->
+        <input id="userinfo_name" type="hidden" value="${user.user_name}"/><input id="userinfo_dept" type="hidden" value="${dept}"/><input id="userinfo_position" type="hidden" value="${user.user_position}"/>
+        
         <div class="row">
             
             <!-- [ form-element ] start -->
+            <form role="form" action="/email/register" method="post">
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header">
-                    <form role="form" action="/email/maildel" method="post">
-                    <input type="hidden" name="user_no" value="${getmail.user_no}"/>
-                       <input type="hidden" name="mail_no" value="${getmail.mail_no}"/>
-	                    <button type="submit" class="btn  btn-primary" id="deleteButton">삭제</button>
-	                     <button type="button" class="btn  btn-primary">전달</button>
-	                     <button type="button" class="btn  btn-primary">답장</button>
-	                  </form>
-	                 
 	                    
-	                 
+	                    <button type="submit" class="btn  btn-primary">전송</button>
 	                   
+	                    <button type="submit" formaction="/email/tsregister" class="btn  btn-primary">임시저장</button>
                     </div>
+                    
                     <div class="card-body">
-                        <h5>보낸사람 : <c:out value="${getmail.user_name}" /> <c:out value="${getmail.user_email}" /></h5>
-                        <h5>받는사람 : <c:forEach items="${getreceiver}" var="receiver"><c:out value="${receiver.user_name} "/><c:out value="${receiver.user_email} "/> </c:forEach></h5>
-                        <h5><fmt:formatDate pattern="yyyy년 MM월 dd일 a hh시 mm분"
-									value="${getmail.mail_regdate}" /></h5>
-                       	<h5>제목 : <c:out value="${getmail.mail_title}" /></h5>
+                         <input id="userinfo_no "type="hidden" name="user_no" value="${user.user_no}"/>
+                        <h5>받는사람 <input type="text" id ="firstSearchInput" name="receiver_no"/> </h5>
+                        <div id="fisrtSearchResults" style="display: none;">
+												    <!-- 검색 결과를 드롭다운으로 표시할 영역 -->
+						</div>
+						
+                        <h5>제목 <input type="text" name="mail_title" value="${gettsmail.mailts_title}"/> </h5>
+                        <input type="hidden" name="mailts_no" value="${gettsmail.mailts_no}"/>
                         <hr>
                         <div class="row">
                           
@@ -121,9 +108,8 @@
                               
                              		
                                     <div class="form-group">
-		                                       
-							
-										<div class="doc-content-table">${getmail.mail_content}</div>
+                                       
+                                        <textarea class="form-control" id="summernote" name="mail_content" rows="3" >${gettsmail.mailts_content}</textarea>
                                     </div>
                                     
                                 </form>
@@ -135,6 +121,8 @@
                         </div>
                     </div>
                 </div>
+                	
+                </form>
                 
                             </div>
                         </div>
@@ -201,6 +189,9 @@
     <script src="../../../resources/dist/assets/js/vendor-all.min.js"></script>
     <script src="../../../resources/dist/assets/js/plugins/bootstrap.min.js"></script>
 	<script src="../../../resources/dist/assets/js/pcoded.min.js"></script>
+	
+	<script src="../../../resources/dist/assets/js/summernote-lite.js"></script>
+	<script src="../../../resources/dist/assets/js/lang/summernote-ko-KR.js"></script>
 <!-- Apex Chart -->
 <script src="../../../resources/dist/assets/js/plugins/apexcharts.min.js"></script>
 
@@ -212,29 +203,134 @@ $(document).ready(function() {
     let info = '<span>' + $("#userinfo_dept").val() + "/" + $('#userinfo_position').val() + "</span>";
     $('#username').text($('#userinfo_name').val());
     $('#more-details').prepend(info);
-    
-    $(".doc-content-table table").addClass("doc-content-table");
-    $(".doc-content-table table").removeClass("table table-bordered");
-    
-    
-    $("#deleteButton").on("click", function() {
-        // 버튼이 클릭되면 아래의 코드 블록이 실행됩니다.
-        if (confirm("정말로 이 메일을 삭제하시겠습니까?")) {
-            // 확인 버튼을 눌렀을 때, 폼을 제출합니다.
-            $("#deleteForm").submit();
+});
+
+</script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+	
+	
+	//여기 아래 부분
+	$('#summernote').summernote({
+		  height: 300,                 // 에디터 높이
+		  minHeight: null,             // 최소 높이
+		  maxHeight: null,             // 최대 높이
+		  focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
+		  lang: "ko-KR",					// 한글 설정
+		  placeholder: '최대 2048자까지 쓸 수 있습니다'	//placeholder 설정
+          
+	});
+
+	
+	//결재자 추가
+	$("#firstSearchInput").on("focus keyup", function() {
+			
+	        var input = $(this).val();
+	        var searchResults = $("#fisrtSearchResults");
+	        var firstSearchInput = $("#firstSearchInput");
+	        $.ajax({
+	          url: "/searchApprovalUser",
+	          type: "GET",
+	          data: { keyword: input },
+	          dataType: "json",
+	          success: function(response) {
+	            // 서버로부터 받은 결재자 목록(response)을 화면에 표시하거나 자동완성 결과로 사용
+	            searchResults.empty(); // 기존 결과 초기화
+	            var filteredResults = response.filter(function(approverData) {
+	                // 입력한 글자가 포함된 결재자들만 필터링하여 반환
+	                return approverData.user_name.includes(input) ||
+	                       approverData.user_email.includes(input) ||
+	                       approverData.dept.dept_name.includes(input) ||
+	                       approverData.user_position.includes(input);
+	              });
+	            
+	            filteredResults.forEach(function(approverData) {
+	            	var resultItem = $("<div>", {
+	                    text: approverData.user_position + 
+				  	      "\t" + approverData.user_name +
+			  	          "\t" + approverData.user_email +
+			  	          "\t" + approverData.dept.dept_name,
+	                    class: "result-items"
+	                  });
+	              resultItem.on("click", function() {
+	            	firstSearchInput.empty();
+	                searchResults.hide();
+	                firstSelectApprovalUser(approverData);
+	                $("#firstSearchInput").val(approverData.user_no);
+	                $(".modal-footer").find('[data-dismiss="modal"]').trigger("click");
+	              });
+	              searchResults.append(resultItem);
+	            });
+
+	            // 검색 결과가 있을 경우 드롭다운 표시, 없을 경우 숨김 처리
+	            if (response.length > 0) {
+	              searchResults.show();
+	            } else {
+	              searchResults.hide();
+	            }
+	          },
+	          error: function(error) {
+	            console.error("Error fetching approval users:", error);
+	          }
+	        });
+      });
+	
+	
+
+      // 사용자가 드롭다운 항목을 선택했을 때 실행되는 함수
+      function firstSelectApprovalUser(approverData) {
+        var firstSearchInput = $("#firstSearchInput");
+        firstSearchInput.empty(); // 기존 박스 초기화
+
+        // 선택한 결재자 정보를 하나의 박스로 표시
+        var selectedContent = $("<div>").text(
+        				approverData.user_position + 
+		  	      " " + approverData.user_name
+        );
+        firstSearchInput.append(selectedContent);
+      }
+      
+  
+
+      
+      /* // 검색 결과를 화면에 표시하는 함수
+      function displaySearchResults(response) {
+	        var searchResults = $("#searchResults");
+	        searchResults.empty(); // 기존 결과 초기화
+	        response.forEach(function(approverData) {
+	        	var resultItem = $("<div>", {
+	                text: "이름: " + approverData.user_name +
+	                      ", 이메일: " + approverData.user_email +
+	                      ", 부서: " + approverData.dept.dept_name,
+	                class: "result-items"
+	              });
+	          resultItem.on("click", function(event) {
+				event.stopPropagation();
+	            $("#searchInput").val(approverData.user_name);
+	            searchResults.hide();
+	            selectApprovalUser(approverData); // 선택한 결재자 정보를 박스로 표시
+	            $(".modal-footer").find('[data-dismiss="modal"]').trigger("click");
+	          });
+	          searchResults.append(resultItem);
+	        });
+
+        // 검색 결과가 있을 경우 드롭다운 표시, 없을 경우 숨김 처리
+        if (response.length > 0) {
+          searchResults.show();
         } else {
-            return false;
+          searchResults.hide();
         }
-    });
-    
-    
+      } */
+
+
 });
 
 
 
 </script>
 
-
 </body>
+
 
 </html>

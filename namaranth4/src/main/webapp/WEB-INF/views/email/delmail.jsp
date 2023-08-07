@@ -29,23 +29,6 @@
 
     <!-- vendor css -->
     <link rel="stylesheet" href="../../../resources/dist/assets/css/style.css">
-    
-<style>
-    /* 동적으로 생성되는 테이블에 스타일을 적용하는 클래스 스타일 */
-    .doc-content-table {
-        border-collapse: collapse; /* 테이블 셀 병합 */
-        border: 1px solid #000;    /* 테이블 테두리 스타일 */
-        width: 900px;              /* 테이블 가로 폭 */
-        background-color: #eeeeee;
-    }
-
-    .doc-content-table td {
-        border: 1px solid #000;    /* 셀 테두리 스타일 */
-        padding: 8px;              /* 셀 안의 여백 */
-        text-align: center;         /* 셀 내용 가운데 정렬 */
-    }
-</style>
-
 </head>
 <body class="">
 	<!-- [ Pre-loader ] start -->
@@ -67,87 +50,91 @@
 	<!-- [ Header ] end -->
 
 	<!-- [ Main Content ] start -->
-	<input id="userinfo_name" type="hidden" value="${user.user_name}"/><input id="userinfo_dept" type="hidden" value="${dept}"/><input id="userinfo_position" type="hidden" value="${user.user_position}"/>
-	<section class="pcoded-main-container">
-    <div class="pcoded-content">
-        <!-- [ breadcrumb ] start -->
-        <div class="page-header">
+	<input id="userinfo_name" type="hidden" value="${user.user_name}"/>
+	<input id="userinfo_dept" type="hidden" value="${dept}"/>
+	<input id="userinfo_position" type="hidden" value="${user.user_position}"/>
+	<div class="pcoded-main-container">
+	    <div class="pcoded-content">
+	        <!-- [ breadcrumb ] start -->
+	        <div class="page-header">
             <div class="page-block">
                 <div class="row align-items-center">
                     <div class="col-md-12">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">메일조회</h5>
+                            <h5 class="m-b-10">휴지통</h5>
                         </div>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
-                            <li class="breadcrumb-item"><a href="/email/allmail">전체메일함</a></li>
-                            <li class="breadcrumb-item"><a href="#!">메일조회</a></li>
+                            <li class="breadcrumb-item"><a href="#!">메일함</a></li>
+                            <li class="breadcrumb-item"><a href="#!">휴지통</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- [ breadcrumb ] end -->
-        <!-- [ Main Content ] start -->
-        <div class="row">
-            
-            <!-- [ form-element ] start -->
-            <div class="col-sm-12">
+	        
+	         <!-- [ stiped-table ] start -->
+            <div class="col-xl-12">
                 <div class="card">
                     <div class="card-header">
-                    <form role="form" action="/email/maildel" method="post">
-                    <input type="hidden" name="user_no" value="${getmail.user_no}"/>
-                       <input type="hidden" name="mail_no" value="${getmail.mail_no}"/>
-	                    <button type="submit" class="btn  btn-primary" id="deleteButton">삭제</button>
-	                     <button type="button" class="btn  btn-primary">전달</button>
-	                     <button type="button" class="btn  btn-primary">답장</button>
-	                  </form>
-	                 
-	                    
-	                 
-	                   
-                    </div>
-                    <div class="card-body">
-                        <h5>보낸사람 : <c:out value="${getmail.user_name}" /> <c:out value="${getmail.user_email}" /></h5>
-                        <h5>받는사람 : <c:forEach items="${getreceiver}" var="receiver"><c:out value="${receiver.user_name} "/><c:out value="${receiver.user_email} "/> </c:forEach></h5>
-                        <h5><fmt:formatDate pattern="yyyy년 MM월 dd일 a hh시 mm분"
-									value="${getmail.mail_regdate}" /></h5>
-                       	<h5>제목 : <c:out value="${getmail.mail_title}" /></h5>
-                        <hr>
-                        <div class="row">
-                          
-                            <div class="col-md-12">
-                                <form>
-                              
-                             		
-                                    <div class="form-group">
-		                                       
-							
-										<div class="doc-content-table">${getmail.mail_content}</div>
-                                    </div>
-                                    
-                                </form>
-                            </div>
-                        </div>
+                    <button type="button" class="btn  btn-primary">삭제</button>
+                    <button type="button" class="btn  btn-primary">답장</button>
+                    <button type="button" class="btn  btn-primary">전달</button>
                         
-                        
-                            
-                        </div>
                     </div>
-                </div>
-                
-                            </div>
+                    <div class="card-body table-border-style">
+                   
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox"></th>
+                                        <th>이메일</th>
+                                        <th>제목</th>
+                                        <th>날짜</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                
+                                <c:forEach items="${delmail}" var="delmail">
+                                <tr>
+                                	<td><input type="checkbox"></td>
+                                	<td> <c:out value="${delmail.user_email}"/></td>
+                                	<td><a href='/email/getdelmail?mail_no=<c:out value="${delmail.mail_no}"/>'> <c:out value="${delmail.mail_title}"/></a></td>
+                                	<td> <fmt:formatDate pattern="yyyy년 MM월 dd일 a hh시 mm분"
+									value="${delmail.mail_regdate}" /></td>
+                                
+                                </tr>
+                                
+                                </c:forEach>
+                                    <!--  <tr>
+                                        <td>1</td>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <td>@mdo</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>Jacob</td>
+                                        <td>Thornton</td>
+                                        <td>@fat</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>Larry</td>
+                                        <td>the Bird</td>
+                                        <td>@twitter</td>
+                                    </tr>-->
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- [ form-element ] end -->
-        </div>
-        <!-- [ Main Content ] end -->
-
-    </div>
-</section>
-<!-- [ Main Content ] end -->
+            <!-- [ stiped-table ] end -->
+	        <!-- [ Main Content ] end -->
+	    </div>
+	</div>
 	<!-- [ Main Content ] end -->
 	
     <!-- Warning Section start -->
@@ -212,29 +199,9 @@ $(document).ready(function() {
     let info = '<span>' + $("#userinfo_dept").val() + "/" + $('#userinfo_position').val() + "</span>";
     $('#username').text($('#userinfo_name').val());
     $('#more-details').prepend(info);
-    
-    $(".doc-content-table table").addClass("doc-content-table");
-    $(".doc-content-table table").removeClass("table table-bordered");
-    
-    
-    $("#deleteButton").on("click", function() {
-        // 버튼이 클릭되면 아래의 코드 블록이 실행됩니다.
-        if (confirm("정말로 이 메일을 삭제하시겠습니까?")) {
-            // 확인 버튼을 눌렀을 때, 폼을 제출합니다.
-            $("#deleteForm").submit();
-        } else {
-            return false;
-        }
-    });
-    
-    
 });
 
-
-
 </script>
-
-
 </body>
 
 </html>

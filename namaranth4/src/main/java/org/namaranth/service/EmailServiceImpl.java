@@ -3,6 +3,7 @@ package org.namaranth.service;
 import java.util.List;
 
 import org.namaranth.domain.EmailVO;
+import org.namaranth.domain.EmailtsVO;
 import org.namaranth.domain.UsersVO;
 import org.namaranth.mapper.EmailMapper;
 import org.springframework.stereotype.Service;
@@ -36,9 +37,21 @@ public class EmailServiceImpl implements EmailService {
 	}
 	
 	@Override
+	public List<EmailVO> getDelList(int user_no) {
+		log.info("getDelList..");
+		return mapper.getDelList(user_no);
+	}
+	
+	@Override
 	public EmailVO get(int mail_no) {
 		log.info("get......" + mail_no);
 		return mapper.read(mail_no);
+	}
+	
+	@Override
+	public EmailtsVO getts(int mailts_no) {
+		log.info("getts......" + mailts_no);
+		return mapper.readts(mailts_no);
 	}
 	
 	@Override
@@ -68,10 +81,34 @@ public class EmailServiceImpl implements EmailService {
 	}
 
 	@Override
-	public List<EmailVO> getTsList(int user_no) {
+	public List<EmailtsVO> getTsList(int user_no) {
 		log.info("getTsList..");
 		return mapper.getTsList(user_no);
 	}
+
+	@Override
+	public boolean tsremove(int mailts_no) {
+		log.info("tsremove..." + mailts_no);
+		return mapper.tsdelete(mailts_no) == 1;
+	}
+
+	@Override
+	public void emailDel(EmailVO email) {
+		log.info("emailDel...");
+		mapper.mailDel(email);
+	}
+
+	@Override
+	public boolean restore(int mail_no) {
+		log.info("restore...." + mail_no);
+		return mapper.mailRestore(mail_no) == 1;
+	}
+
+	
+
+	
+
+	
 
 	
 

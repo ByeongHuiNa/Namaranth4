@@ -69,13 +69,13 @@
 					<a href="#!" class="nav-link "><span class="pcoded-micon"><i class="bi bi-envelope" style="color:white;"></i></span><span class="pcoded-mtext">메일함</span></a>
 					<ul class="pcoded-submenu">
 						<li><a href="/email/allmail">전체메일함</a></li>
-						<li><a href="bc_button.html">수신메일함</a></li>
-						<li><a href="bc_badges.html">발신메일함</a></li>
-						<li><a href="bc_breadcrumb-pagination.html">임시보관함</a></li>
+						<li><a href="/email/receivemail">수신메일함</a></li>
+						<li><a href="/email/sendmail">발신메일함</a></li>
+						<li><a href="/email/tsmail">임시보관함</a></li>
 					</ul>
 				</li>
 				<li class="nav-item">
-				    <a href="index.html" class="nav-link "><span class="pcoded-micon"><i class="bi bi-trash2" style="color:white;"></i></span><span class="pcoded-mtext">휴지통</span></a>
+				    <a href="/email/delmail" class="nav-link "><span class="pcoded-micon"><i class="bi bi-trash2" style="color:white;"></i></span><span class="pcoded-mtext">휴지통</span></a>
 				</li>
 				<li class="nav-item pcoded-menu-caption">
 				    <label>Schedule</label>
