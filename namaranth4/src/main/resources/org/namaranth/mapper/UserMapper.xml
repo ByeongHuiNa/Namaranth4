@@ -136,4 +136,5 @@
       left join sch_parti sp on s.sch_no = sp.sch_no
       where s.user_no = #{user_no} or sp.user_no = #{user_no}
    </select>
+   
 </mapper>

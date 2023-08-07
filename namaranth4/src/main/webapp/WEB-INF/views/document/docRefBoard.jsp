@@ -44,6 +44,7 @@
     <div class="col-md-12">
     	<div class="row">
 	    	
+	    	
 	    	<div class="col-md-12">
 	    		<!-- [ breadcrumb ] start -->
 		        <div class="page-header">
@@ -51,13 +52,12 @@
 		                <div class="row align-items-center">
 		                    <div class="col-md-12">
 		                        <div class="page-header-title m-t-20">
-		                            <h5 class="m-b-10">기안문서함</h5>
+		                            <h5 class="m-b-10">참조문서함</h5>
 		                        </div>
 		                        <ul class="breadcrumb">
 		                            <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
-		                            <li class="breadcrumb-item"><a href="#!">기안문서함</a></li>
+		                            <li class="breadcrumb-item"><a href="#!">참조문서함</a></li>
 		                        </ul>
-		                        
 		                    </div>
 		                </div>
 		            </div>
@@ -69,13 +69,14 @@
 		            <div class="col-sm-12">
 		                <div class="card borderless">
 		                    <div class="card-header">
-		                    	<div class="subtt">
-		                        	<h5>기안문서</h5>
+		                        <div class="subtt">
+		                        	<h5>참조문서</h5>
 		                        </div>
 		                        <div>
 									<button type="button" class="btn btn-primary regi_btn" id="doc_regi_btn">기안작성</button>
 								</div>
 		                    </div>
+		                    
 		                    <!-- [table] -->
 		                    <div class="card-body table-border-style">
 		                        <div class="table-responsive">
@@ -103,46 +104,24 @@
 		                                    </c:forEach>
 		                                </tbody>
 		                            </table>
-		                            <nav aria-label="Page navigation">
-										<ul class="pagination justify-content-center">
-											<c:if test="${pageMaker.prev}">
-												<li class="page-item paginate_button"><a class="page-link" href="${pageMaker.startPage -1}">Previous</a></li>
-											</c:if>
-											<c:forEach var="num" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
-												<li class="page-item paginate_button  ${pageMaker.cri.pageNum == num ? "active":""}"><a class="page-link" href="${num}">${num}</a></li>
-											</c:forEach>
-											<c:if test="${pageMaker.next}">
-												<li class="page-item paginate_button"><a class="page-link" href="${pageMaker.endPage +1 }">Next</a></li>
-											</c:if>
-											
-											
-										</ul>
-									</nav>
-		                            
 		                        </div>
 		                    </div>
 		                    
 		                </div>
-		                
 		            </div>
-		            
-		            
 		        </div>
 		        <!-- [ Main Content ] end -->
 	    	</div>
     	</div>
-    </div>
-
-		<form id='actionForm' action="/document/docboard" method='get'>
-			<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
-			<input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
-		</form>
-		
-		<input id="userinfo_name" type="hidden" value="${user.user_name}"/>
+    	
+    	<input id="userinfo_name" type="hidden" value="${user.user_name}"/>
 		<input id="userinfo_dept" type="hidden" value="${dept}"/>
 		<input id="userinfo_position" type="hidden" value="${user.user_position}"/>
-
-	</section>
+    	
+    	
+    </div>
+    
+</section>
 <!-- [ Main Content ] end -->
     <!-- Warning Section start -->
     <!-- Older IE warning message -->
@@ -196,16 +175,16 @@
     <script src="../../../resources/dist/assets/js/vendor-all.min.js"></script>
     <script src="../../../resources/dist/assets/js/plugins/bootstrap.min.js"></script>
     <script src="../../../resources/dist/assets/js/pcoded.min.js"></script>
-    
-    <!-- button custom -->
     <script type="text/javascript">
-		$(document).ready(function() {
-		    let info = '<span>' + $("#userinfo_dept").val() + "/" + $('#userinfo_position').val() + "</span>";
-		    $('#username').text($('#userinfo_name').val());
-		    $('#more-details').prepend(info);
-		});
+	$(document).ready(function() {
+	    let info = '<span>' + $("#userinfo_dept").val() + "/" + $('#userinfo_position').val() + "</span>";
+	    $('#username').text($('#userinfo_name').val());
+	    $('#more-details').prepend(info);
+	});
+	
 	</script>
     
+    <!-- button custom -->
     <script type="text/javascript">
 	    $(document).ready(function() {
 	    	
@@ -224,20 +203,7 @@
 	            var url = "/document/docregi";
 	            window.location.href = url;
 	        });
-	    	
-	    	
-	    	
-	    	
-	    	//페이징 처리
-	        var actionForm = $("#actionForm");
-
-			$(".paginate_button a").on("click",function(e) {
-						e.preventDefault();
-						console.log('click');
-						actionForm.find("input[name='pageNum']").val($(this).attr("href"));
-						actionForm.submit();
-					});
-
+	        
 	        
 	    });
     </script>
