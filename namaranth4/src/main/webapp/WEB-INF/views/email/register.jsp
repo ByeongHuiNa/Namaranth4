@@ -238,7 +238,7 @@ $(document).ready(function() {
 $(document).ready(function() {
 	
 	
-	//여기 아래 부분
+	//써머노트
 	$('#summernote').summernote({
 		  height: 300,                 // 에디터 높이
 		  minHeight: null,             // 최소 높이

@@ -86,6 +86,10 @@
 	    	where m.mail_no = r.mail_no
 	    	and u.user_no = m.user_no
 	    	and r.user_no = #{user_no}
+	    	and m.mail_no not in(
+			select mail_no
+			from mail_del
+			)
 	    	ORDER BY m.mail_no DESC
 </select>
 

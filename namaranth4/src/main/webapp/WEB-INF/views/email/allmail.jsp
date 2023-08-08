@@ -89,7 +89,7 @@
                                 <thead>
                                     <tr>
                                         <th><input type="checkbox"></th>
-                                        <th>이메일</th>
+                                        <th>발신자이메일</th>
                                         <th>제목</th>
                                         <th>날짜</th>
                                     </tr>
