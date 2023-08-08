@@ -1,6 +1,7 @@
 package org.namaranth.controller;
 
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 
 import org.namaranth.domain.CalendarVO;
@@ -79,9 +80,22 @@ public class CalendarController {
 	
 	//스케줄 등록
 	@PostMapping("/regiSch")
-	public String registerSch(ScheduleVO sch) {
+	public String registerSch(ScheduleVO sch, 
+			@RequestParam("start") Long start, @RequestParam("end") Long end) {
 		log.info(sch);
-	
+		log.info(start);
+	    log.info(end);
+
+	    Date startDate = new Date(start);
+	    Date endDate = new Date(end);
+	     
+	    
+	    log.info(startDate);
+	    log.info(endDate);
+	    
+	    sch.setSch_start(startDate);
+	    sch.setSch_end(endDate);
+
 		sService.registerSch(sch);
 		
 		return "redirect:/calendar/calendar";

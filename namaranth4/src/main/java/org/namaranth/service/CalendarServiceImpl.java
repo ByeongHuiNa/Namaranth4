@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.namaranth.domain.CalendarVO;
 import org.namaranth.mapper.CalendarMapper;
+import org.namaranth.mapper.ScheduleMapper;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
@@ -16,6 +17,7 @@ import lombok.extern.log4j.Log4j;
 public class CalendarServiceImpl implements CalendarService {
 
 	private CalendarMapper mapper;
+	private ScheduleMapper sMapper;
 	
 //	@Override
 //	public List<CalendarVO> getList(int user_no) {
@@ -86,8 +88,10 @@ public class CalendarServiceImpl implements CalendarService {
 
 	@Override
     public void deleteCal(int cal_no) {
-        mapper.deleteCalParti(cal_no);
+		sMapper.deleteSchWithCal(cal_no);
+		mapper.deleteCalParti(cal_no);
         mapper.deleteCal(cal_no);
+        
     }
 	
 	@Override

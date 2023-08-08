@@ -37,6 +37,14 @@
 		
 	</select>
 	
+	<!-- <insert id="insertSch">
+		insert into schedule (sch_no, cal_no, user_no, sch_name, sch_start, sch_end, sch_place, sch_con, sch_allday)
+		values (seq_sch.nextval, #{calendar.cal_no}, #{users.user_no}, #{sch_name}, #{sch_start}, #{sch_end}, #{sch_place}, #{sch_con},
+		#{sch_allday})
+	</insert> -->
+	
+	
+	
 	<insert id="insertSelectKey">
 		<selectKey keyProperty="sch_no" order="BEFORE" resultType="int">
 			select seq_sch.nextval from dual
@@ -45,5 +53,19 @@
 		values (#{sch_no}, #{calendar.cal_no}, #{users.user_no}, #{sch_name}, #{sch_start}, #{sch_end}, #{sch_place}, #{sch_con},
 		#{sch_allday})
 	</insert>
+	
+	<delete id="deleteSchWithCal">
+		delete from schedule where cal_no = #{cal_no} 
+	</delete>
 		
 </mapper>
+
+
+
+
+
+
+
+
+
+
