@@ -1,5 +1,6 @@
-//전체 일정 및 캘린더 전체 조회 버튼
 $(function(){
+
+//전체 일정	
 	showAllCalendar();
 	
 	function showAllCalendar(){
@@ -31,7 +32,6 @@ $(function(){
 						});
 					}
 				}); //forEach 
-
 				var calendarEl = document.getElementById('calendar');
 				var calendar = new FullCalendar.Calendar(calendarEl, {
 					initialView : 'dayGridMonth', 
@@ -56,21 +56,6 @@ $(function(){
 					locale : 'ko', // 한국어 설정
 					height : 830,
 					events : events,
-					select: function(arg) {
-						// 다음에 꼭 써보자,,, ㅠㅠ
-			      	},
-			      	eventClick: function(arg) {
-						//readSchedule(arg);
-			      	},
-				  	eventChange: function(arg){
-						
-				  	},
-				  	eventDrop: function(arg){
-					  	
-				  	},
-				  	eventResize: function(arg){
-					  	
-				  	},	
 				}); //fullcalendar
 				calendar.render();
 				}
@@ -99,9 +84,13 @@ $(function(){
     //체크박스(allday)
 	$('.alldayCheck').on('change', function() {
         let value = this.checked ? 1 : 0;
-
         
-        console.log(value);
+        //console.log(value);
+        //console.log($('.alldayCheck').val());
+        //console.log($('.alldayCheck').prop('checked') ? 1 : 0);
+        
+        $('#alldayInput').val(value);
+        console.log($('#alldayInput').val());
     }); 
     
     //날짜 선택
@@ -110,11 +99,15 @@ $(function(){
        
         console.log(value);
         
-        let startVal = moment(value).format("YYYY-MM-DD HH:mm:ss");
+        //let startVal = moment(value).format("YYYY-MM-DD HH:mm:ss");
         
+        //let startVal2 = new Date(startVal).toISOString();
+        let startVal = Date.parse(value);
         console.log(startVal);
+        //console.log(startVal2);
         
-        $('#datetimepicker1').val(startVal);
+    	$('#datetimeStart').val(startVal);
+    	console.log($('#datetimeStart').val());
         
         
     });
@@ -124,11 +117,14 @@ $(function(){
        
         console.log(value);
         
-        let endVal = moment(value).format("YYYY-MM-DD HH:mm:ss");
+        //let endVal = moment(value).format("YYYY-MM-DD HH:mm:ss");
         
+        //let endVal2 = new Date(endVal).toISOString();
+        
+        let endVal = Date.parse(value);
         console.log(endVal);
         
-        $('#datetimepicker2').val(endVal);
+        $('#datetimeEnd').val(endVal);
         
         
     });

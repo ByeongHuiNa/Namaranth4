@@ -8,4 +8,6 @@ public interface ScheduleMapper {
 	public List<ScheduleVO> getSchedule(int user_no);
 	
 	public void insertSelectKey(ScheduleVO sch);
+	
+	public void deleteSchWithCal(int cal_no);
 }

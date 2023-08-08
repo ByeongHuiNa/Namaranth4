@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ page session="false" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,7 +32,7 @@
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/js/tempusdominus-bootstrap-4.min.js"></script>
+
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css"/>
 <link rel="stylesheet" type="text/css" href="../../../resources/dist/assets/css/calendar.css" />
@@ -43,7 +44,10 @@
 
 </head>
 <body class="">
-<input id="userinfo_name" type="hidden" value="${user.user_name}"/><input id="userinfo_dept" type="hidden" value="${dept}"/><input id="userinfo_position" type="hidden" value="${user.user_position}"/>
+<input id="userinfo_name" type="hidden" value="${user.user_name}"/>
+<input id="userinfo_dept" type="hidden" value="${dept}"/>
+<input id="userinfo_position" type="hidden" value="${user.user_position}"/>
+<input id="userinfo_profile" type="hidden" value="${user.user_profile}" />
 <!-- [ Pre-loader ] start -->
 <div class="loader-bg">
 	<div class="loader-track">
@@ -70,7 +74,7 @@
 			<div class="title-wrap">
 				<div id="calendar-list-title">내 캘린더</div>
 				<div><button type="button" id="create-cal" 
-				data-bs-toggle="offcanvas" data-bs-target="#offcanvasCalendar" aria-controls="offcanvasRight"><i class="bi bi-plus fs-10"></i></button></div>
+				data-bs-toggle="offcanvas" data-bs-target="#offcanvasCalendar" aria-controls="offcanvasRight"><i class="bi bi-plus fs-10" id="whitePlus"></i></button></div>
 			</div>
 				<table id="calendar-list-table">
 					<c:forEach items="${list}" var="calendar">
@@ -105,7 +109,7 @@
 <!-- 캘린더 등록 -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCalendar" aria-labelledby="offcanvasRightLabel">
   <div class="offcanvas-header">
-    <h4 id="offcanvasRightLabel1">내 캘린더 추가</h4>
+    <h4 class="offcanvasRightLabel">내 캘린더 추가</h4>
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body">
@@ -120,19 +124,19 @@
 	    <div class="form-group">
 	    	<label class="floating-label">캘린더 색상</label>
 	    	<div>
-	    		<button type="button" class="color-box selected" style="background-color:#FA5858" value="#FA5858"></button>
-		    	<button type="button" class="color-box selected" style="background-color:#FA8258" value="#FA8258"></button>
-		    	<button type="button" class="color-box selected" style="background-color:#F4FA58" value="#F4FA58"></button>
-		    	<button type="button" class="color-box selected" style="background-color:#58FA82" value="#58FA82"></button>
-		    	<button type="button" class="color-box selected" style="background-color:#58ACFA" value="#58ACFA"></button>
-		    	<button type="button" class="color-box selected" style="background-color:#AC58FA" value="#AC58FA"></button>
+	    		<button type="button" class="color-box selected" style="background-color:#8B0000" value="#8B0000"></button>
+		    	<button type="button" class="color-box selected" style="background-color:#FF8C00" value="#FF8C00"></button>
+		    	<button type="button" class="color-box selected" style="background-color:#FFD700" value="#FFD700"></button>
+		    	<button type="button" class="color-box selected" style="background-color:#006400" value="#006400"></button>
+		    	<button type="button" class="color-box selected" style="background-color:#00008B" value="#00008B"></button>
+		    	<button type="button" class="color-box selected" style="background-color:#4B0082" value="#800080"></button>
 	    	</div>     
 	    	
 	        <input type="hidden" class="form-control color-input" name="cal_color">
 	    </div>
 	    <div class="form-group">
 	    	<label class="floating-label">공유 멤버</label>
-	    	<button type="button" class="btn btn-primary" id="calParti-btn" data-toggle="modal" data-target="#shareModal">Large modal</button>
+	    	<button type="button" class="btn btn-primary" id="calParti-btn" data-toggle="modal" data-target="#shareModal"><i class="bi bi-plus fs-10" id="blackPlus"></i></button>
 	    	<div class="calParti-fin">
 	    		<table id="calParti-fin-table"></table>
 	    	</div>
@@ -144,7 +148,11 @@
 	    	<label class="floating-label">설명</label>
 	        <input type="text" class="form-control" name="cal_con" >
 	    </div>
-	    <input type="submit" value="등록">
+	    <div class="buttonCenter">
+	    	<button type="button" class="submitCancel" data-bs-dismiss="offcanvas">취소</button>
+	    	<button type="submit" class="submitBtn">등록</button>
+	    </div>
+	    
     </form>
   </div>
 </div>
@@ -152,7 +160,7 @@
 <!-- calendar 수정 -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCalUpdate" aria-labelledby="offcanvasRightLabel">
   <div class="offcanvas-header">
-    <h4 id="offcanvasRightLabel1">내 캘린더 추가</h4>
+    <h4 id="offcanvasRightLabel1">내 캘린더 수정</h4>
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body">
@@ -168,19 +176,19 @@
 	    <div class="form-group">
 	    	<label class="floating-label">캘린더 색상</label>
 	    	<div>
-	    		<button type="button" class="color-box selected" style="background-color:#FA5858" value="#FA5858"></button>
-		    	<button type="button" class="color-box selected" style="background-color:#FA8258" value="#FA8258"></button>
-		    	<button type="button" class="color-box selected" style="background-color:#F4FA58" value="#F4FA58"></button>
-		    	<button type="button" class="color-box selected" style="background-color:#58FA82" value="#58FA82"></button>
-		    	<button type="button" class="color-box selected" style="background-color:#58ACFA" value="#58ACFA"></button>
-		    	<button type="button" class="color-box selected" style="background-color:#AC58FA" value="#AC58FA"></button>
+	    		<button type="button" class="color-box selected" style="background-color:#8B0000" value="#8B0000"></button>
+		    	<button type="button" class="color-box selected" style="background-color:#FF8C00" value="#FF8C00"></button>
+		    	<button type="button" class="color-box selected" style="background-color:#FFD700" value="#FFD700"></button>
+		    	<button type="button" class="color-box selected" style="background-color:#006400" value="#006400"></button>
+		    	<button type="button" class="color-box selected" style="background-color:#00008B" value="#00008B"></button>
+		    	<button type="button" class="color-box selected" style="background-color:#4B0082" value="#800080"></button>
 	    	</div>     
 	    	
 	        <input type="hidden" class="form-control color-input" name="cal_color">
 	    </div>
 	    <div class="form-group">
 	    	<label class="floating-label">공유 멤버</label>
-	    	<button type="button" class="btn btn-primary" id="calParti-btn2" data-toggle="modal" data-target="#shareUpdateModal">Large modal</button>
+	    	<button type="button" class="btn btn-primary" id="calParti-btn2" data-toggle="modal" data-target="#shareUpdateModal"><i class="bi bi-plus fs-10" id="blackPlus"></i></button>
 	    	<div class="calParti-fin">
 	    	<table id="calParti-fin-table2">
 	    	</table>
@@ -193,7 +201,11 @@
 	    	<label class="floating-label">설명</label>
 	        <input type="text" class="form-control" name="cal_con" >
 	    </div>
-	    <input type="submit" value="수정">
+	    <div class="buttonCenter">
+	    	<button type="button" class="submitCancel" data-bs-dismiss="offcanvas">취소</button>
+	    	<button type="submit" class="submitBtn">수정</button>
+	    </div>
+	    
     </form>
   </div>
 </div>
@@ -201,20 +213,20 @@
 <!-- 일정 등록 -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasSchedule" aria-labelledby="offcanvasRightLabel">
   <div class="offcanvas-header">
-    <h5 id="offcanvasRightLabel2">일정등록</h5>
+    <h4 class="offcanvasRightLabel">일정등록</h4>
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body">
     <form action="/calendar/regiSch" method="post" id="createSch-form">
+    
 		<div class="form-group">
 	    	<label class="floating-label" for="dropdown">캘린더명</label>
-	    	<select id="dropdown" class="form-control">
+	    	<select id="dropdown" class="form-control" name="calendar.cal_no">
 	    		<option>캘린더를 선택하세요</option>
 	    		<c:forEach items="${list}" var="calendar">	    			
 	    			<option value="${calendar.cal_no }">${calendar.cal_name }</option>
 	    		</c:forEach>
 			</select>
-	        <input type="text" class="form-control" id="cal_no-input" name="calendar.cal_no">
 	    </div>
 	    <div class="form-group">
 	    	<label class="floating-label">일정명</label>
@@ -225,27 +237,47 @@
 	    </div>
 	    	    	    
 	    
-	    <!-- <div class="form-group">
+	   	<div class="form-group">
 	    	<label class="floating-label">시작</label>
-	    	<input type="datetime-local" class="form-control day-time" id="datetimepicker1" name="sch_start">
+	    	<input type="datetime-local" class="form-control day-time" id="datetimepicker1">
+	    	<input type="hidden" id="datetimeStart" name="start">
 	    </div>
 	    	    	   	    
 	    
 	    <div class="form-group">	
 	    	<label class="floating-label">종료</label>
-	    	<input type="datetime-local" class="form-control day-time" id="datetimepicker2" name="sch_end">
+	    	<input type="datetime-local" class="form-control day-time" id="datetimepicker2">
+	    	<input type="hidden" id="datetimeEnd" name="end">
+	    </div>
+	    
+	    <!-- <div class="form-group">
+	    	<label class="floating-label">종일</label>
+	    	<input type="checkbox" class="alldayCheck" name="sch_allday" value="0">
 	    </div> -->
 	    
 	    <div class="form-group">
 	    	<label class="floating-label">종일</label>
-	    	<input type="checkbox" class="alldayCheck" name="sch_allday" value="0">
+	    	<input type="checkbox" class="alldayCheck">
+	    	<input type="hidden" id="alldayInput" name="sch_allday">
 	    </div>
+	    
+	    
+	    
+	    <div class="form-group">
+          <label class="floating-label">장소</label>
+           <input type="text" class="form-control" name="sch_place" >
+       	</div>
+	    
 	    
 	    <div class="form-group">
 	    	<label class="floating-label">설명</label>
 	        <input type="text" class="form-control" name="sch_con" >
 	    </div>
-	    <input type="submit" value="등록">
+	    <div class="buttonCenter">
+	    	<button type="button" class="submitCancel" data-bs-dismiss="offcanvas">취소</button>
+	    	<button type="submit" class="submitBtn">등록</button>
+	    </div>
+	    
     </form>
   </div>
 </div>
@@ -278,7 +310,7 @@
 					</div>
 					<div class="calPartiBtn">
 						<button type="button" class="cal-btn" id="plusCal"><i class="bi bi-plus fs-5"></i></button>
-						<button type="button" class="cal-btn" id="minusCal"><i class="bi bi-plus fs-5"></i></button>
+						<button type="button" class="cal-btn" id="minusCal"><i class="bi bi-dash"></i></button>
 					</div>
 					<div class="calPartiList">
 						<table class="calPartiList-table">
@@ -332,7 +364,7 @@
 					</div>
 					<div class="calPartiBtn">
 						<button type="button" class="cal-btn" id="plusCal2"><i class="bi bi-plus fs-5"></i></button>
-						<button type="button" class="cal-btn" id="minusCal2"><i class="bi bi-plus fs-5"></i></button>
+						<button type="button" class="cal-btn" id="minusCal2"><i class="bi bi-dash"></i></i></button>
 					</div>
 					<div class="calPartiList">
 						<table class="calPartiList-table">
@@ -375,6 +407,7 @@
 				</button>
 			</div>
 			<div class="modal-body">
+				<p class="mb-0">캘린더의 일정도 모두 삭제됩니다.</p>
 				<p class="mb-0">정말로 삭제하시겠습니까?</p>
 			</div>
 			<div class="modal-footer">
@@ -416,6 +449,7 @@ $(document).ready(function() {
     let info = '<span>' + $("#userinfo_dept").val() + "/" + $('#userinfo_position').val() + "</span>";
     $('#username').text($('#userinfo_name').val());
     $('#more-details').prepend(info);
+    $('#userprofile').attr("src", $('#userinfo_profile').val());
 });
 
 </script>
